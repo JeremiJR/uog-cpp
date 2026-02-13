@@ -3,14 +3,14 @@ using namespace std;
 
 void walls(int w, int h){
     cout << "+" << string(w, '-') << "+" << endl;
-    for (int i = 0; i < h; i++) {5
-        cout << "|" << string(w, '-') << "|" << endl;
+    for (int i = 0; i < h; i++) {
+        cout << "|" << string(w, '.') << "|" << endl;
     }
     cout << "+" << string(w, '-') << "+" << endl;
 }
 int main(){
 
-    // This part is the top, bottom and height of the box.
+    // This part that makes the box.
     int width;
     int height;
     cout << "Enter the width and height of the box: ";
@@ -19,6 +19,6 @@ int main(){
     cin >> height;
     walls(width, height);
     // This part will be the person in the game.
-
+    
     return 0;
 }

@@ -4,7 +4,7 @@ using namespace std;
 void walls(int w, int h){
     cout << "+" << string(w, '-') << "+" << endl;
     for (int i = 0; i < h; i++) {
-        cout << "|" << string(w, '-') << "|" << endl;
+        cout << "|" << string(w, '.') << "|" << endl;
     }
     cout << "+" << string(w, '-') << "+" << endl;
 }
