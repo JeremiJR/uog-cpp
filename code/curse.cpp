@@ -2,42 +2,57 @@
 #include <ncurses.h>
 using namespace std;
 
-string walls(int w, int h) {
-        string box = "+" + string(w, '-') + "+\n";
-        for (int i = 0; i < h; i++) {
-        box += "|" + string(w, '.') + "|\n";
-    }
-    box += "+" + string(w, '-') + "+\n";
-    return box;
-}
 int main() {
 
-    int width, height, start_y, start_x, h, w, left, right, top, bottom, tlc, trc, blc, brc;   
-    cout << "Enter the width and height of the box: ";
+    int width, height, start_y, start_x, l, r, t, b, tlc, trc, blc, brc;   
+    cout << "Enter the width of the box: ";
     cin >> width;
     cout << "Your width is:\n"<< width << "\nEnter a height for the box: ";
     cin >> height;
-    h = w = 30;
 
     initscr();
+    noecho();
     cbreak();
+    curs_set(0);
     char wall = '|';
     char c = '+';
-    char r = '-';
-    tlc = trc = blc = brc = (int)c;
-    left = right = (int)wall;
-    bottom = top = (int)r;
+    char ro = '-';
     
-    start_y = start_x = 10;
+    tlc = trc = brc = blc = c;
+    t = b = ro;
+    l = r = wall;
 
-    WINDOW * win = newwin(h, w, start_y, start_x);
-    refresh();
+    start_y = start_x = 5;
 
-    wborder(win , left, right, top, bottom, tlc, trc, blc, brc);
-    mvwprintw(win, 1, 1, walls(width, height).c_str());
-    wrefresh(win);
+    WINDOW * win = newwin(height+2, width+2, start_y, start_x);
+    keypad(win, TRUE);
+    wborder(win, l, r, t, b, tlc, trc, blc, brc);
+    for (int i = 1; i <= height; i++) {
+        for (int j = 1; j <= width; j++) {
+            mvwaddch(win, i, j, '.');
+        }
+    }
 
-    getch();
+    int py = 1, px = 1;
+    bool game = true;
+
+    while (game) {
+        mvwaddch(win, py, px, '@');
+        wrefresh(win);
+
+        int ch = wgetch(win);
+
+        mvwaddch(win, py, px, '.');
+
+        switch (ch) {
+            case KEY_UP:    if (py > 1) py--; break;
+            case KEY_DOWN:  if (py < height) py++; break;
+            case KEY_LEFT:  if (px > 1) px--; break;
+            case KEY_RIGHT: if (px < width) px++; break;
+            case 'q':       game = false; break;
+        }
+    }
+
 
     endwin();
     return 0;
