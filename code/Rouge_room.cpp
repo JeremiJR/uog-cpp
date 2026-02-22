@@ -11,8 +11,7 @@ void walls(int w, int h){
 int main(){
 
     // This part that makes the box.
-    int width;
-    int height;
+    int width, height;    
     cout << "Enter the width and height of the box: ";
     cin >> width;
     cout << "Your width is:\n"<< width << "\nEnter a height for the box: ";
