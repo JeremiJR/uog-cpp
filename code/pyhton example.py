@@ -3,25 +3,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sp
 
-def fixed_point(g, x0, niters=1000, tol=1e-6):
-    """
-    Fixed-point iteration method
-    """
+def f(x):
+    return math.exp(-0.1 * x) * math.sin(2 * x)
+
+def df(x):
+    exp_term = math.exp(-0.1 * x)
+    trig_term = (2 * math.cos(2 * x)) - (0.1 * math.sin(2 * x))
+    return exp_term * trig_term
+
+def newton_raphson(func, dfunc, x0, niters=100, tol=1e-6):
     xold = x0
     for iter in range(niters):
-        xnew = g(xold)
+
+        fval = func(xold)
+        dfval = dfunc(xold)
+        if abs(dfval) < 1e-15:
+            print(f"Divergence: Derivative is zero at x = {xold} at iteration {iter}")
+        xnew = xold - fval / dfval
+
         if abs(xnew - xold) < tol:
-            print(f"Solution converges at iteration step {iter+1}")
+            print(f"Solution converges at step {iter + 1}")
             return xnew
         
-        xold = xnew 
-    
-    print(f"Warning: Method did not converge within the maxinum number of iterations")
+        xold = xnew
 
+    print(f"Divergence: Root not found within the defined number of iterations and tolerance")
 
-def g(x):
-    return 0.5 * (x + 5 / x)
-
-sqrt_of_five = fixed_point(g, 2.0)
-print(f"sqrt(5)            = {sqrt_of_five}")
-print(f"sqrt(5) using math = {math.sqrt(5)}")
+x = np.linspace(0, 10, 1000)
+h = np.exp(-0.1 * x) * np.sin(2 * x)
+plt.plot(x, h, x, np.zeros_like(x))
+plt.show()
