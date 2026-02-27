@@ -11,7 +11,7 @@ def df(x):
     trig_term = (2 * math.cos(2 * x)) - (0.1 * math.sin(2 * x))
     return exp_term * trig_term
 
-    def newton_raphson(func, dfunc, x0, niters=100, tol=1e-6):
+def newton_raphson(func, dfunc, x0, niters=100, tol=1e-6):
     xold = x0
     for iter in range(niters):
 
@@ -28,6 +28,9 @@ def df(x):
         xold = xnew
 
     print(f"Divergence: Root not found within the defined number of iterations and tolerance")
+
+xsol = newton_raphson(func=f, dfunc=df, x0=1.5*8)
+print(xsol)
 
 x = np.linspace(0, 10, 1000)
 h = np.exp(-0.1 * x) * np.sin(2 * x)
