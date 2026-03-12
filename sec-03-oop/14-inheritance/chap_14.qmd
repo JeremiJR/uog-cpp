@@ -198,7 +198,7 @@ classDiagram
 &#9998;&nbsp; In an inheritance (is-a) relationship
 
 - the class being inherited from: [**parent class**]{style="color:red"}, [**base class**]{style="color:red"}, or [**superclass**]{style="color:red"}
-- the class doing the inheriting: [**child class**]{style="color:red"}, [**derived class**]{style="color:red"}, or [**subclass**]{style="color:red"}
+- the class doing the inheriting: [**derived class**]{style="color:red"}, [**derived class**]{style="color:red"}, or [**subclass**]{style="color:red"}
 
 ![](./figures/parent-class-vs-child-class.png)
 
@@ -212,7 +212,7 @@ classDiagram
 
 We shall discuss 
 - `work_on_role()` later when we study [**Polymorphism**]{style="color:red"} and [**Virtual Function**]{style="color:red"}.
-- other member functions in `Lecturer` and `Student` when we study [_adding more functionality_] to child class.
+- other member functions in `Lecturer` and `Student` when we study [_adding more functionality_] to derived class.
 
 
 ## Basic inheritance in C++: Mini-diagram for code demonstration
@@ -445,9 +445,9 @@ In this lesson, we take a closer look at the order of construction that happens 
 
 &#10149;&nbsp; Let us look at this simple code involving two classes
 
-::: {#lst-parent-and-child lst-cap="Two simple classes `Parent` and `Child` which inherits from `Parent`. Filename=`parent_and_child.cpp`"}
+::: {#lst-parent-and-derived lst-cap="Two simple classes `Base` and `Derived` which inherits from `Base`. Filename=`base_and_derived.cpp`"}
 ```{.cpp}
-{{< include ./cpp/parent_and_child.cpp >}}
+{{< include ./cpp/base_and_derived.cpp >}}
 ```
 :::
 
@@ -459,36 +459,36 @@ The diagram of the above code snippet is easy:
 %%| echo: false
 classDiagram
     direction TD
-    class Parent {
+    class Base {
         -parent_value double
         +get_parent_value() double
     }
 
-    class Child {
+    class Derived {
         -child_value double
         +get_child_value() double
     }
 
-    Parent <|-- Child
+    Base <|-- Derived
 
     %% Styling (Optional but helpful)
-    style Parent fill:#f9f,stroke:#333,stroke-width:2px
-    style Child fill:#bbf,stroke:#333
+    style Base fill:#f9f,stroke:#333,stroke-width:2px
+    style Derived fill:#bbf,stroke:#333
 ```
 
-&#9998;&nbsp; The members of `Parent` are **not** copied into `Child`.
+&#9998;&nbsp; The members of `Base` are **not** copied into `Derived`.
 
-&#9998;&nbsp; Instead, we can consider `Child` and `Parent` as a two-part class: one part `Child` + one part `Parent`
+&#9998;&nbsp; Instead, we can consider `Derived` and `Base` as a two-part class: one part `Derived` + one part `Base`
 
 ## Order of construction of derived classes: A closer look
 
-::: {#lst-parent-and-child-main lst-cap="The constructor of the `Parent` class is executed before the constructor of the `Child` class. Filename=`parent_and_child_with_main.cpp`"}
+::: {#lst-parent-and-derived-main lst-cap="The constructor of the `Base` class is executed before the constructor of the `Derived` class. Filename=`parent_and_child_with_main.cpp`"}
 ```{.cpp}
 {{< include ./cpp/parent_and_child_with_main.cpp >}}
 ```
 :::
 
-&#10149;&nbsp; The constructor of `Parent` class is executed before the constructor of `Child` class is excuted when a `Child` object is created.
+&#10149;&nbsp; The constructor of `Base` class is executed before the constructor of `Derived` class is excuted when a `Derived` object is created.
 
 ## Order of construction for inheritance chains
 
@@ -529,7 +529,7 @@ classDiagram
 - the great grandparent `A` constructor is executed, **then** 
 - the grandparent `B` constructed is executed, **then** 
 - the parent `C` constructor is executed, and **then** 
-- the child `D` constructor is executed.
+- the derived `D` constructor is executed.
 :::
 
 ## Order of construction for inheritance chains: Code demonstration
@@ -595,37 +595,138 @@ print(f"ID assigned for {khiem}: {khiem.id}")
 ```
 :::
 
-## Initialization: Looking at `Parent` class
+## Initialization: Looking at `Base` class
 
 ```{.cpp}
-Parent parent{ 42 };
+Base parent{ 42 };
 ```
 
-What happens when `Parent` is instantiated:
+What happens when `Base` is instantiated:
 
-- Memory for base class (`Parent`) is set aside.
-- Appropriate `Parent` constructor is called.
+- Memory for base class (`Base`) is set aside.
+- Appropriate `Base` constructor is called.
 - Member initializer list initializes variables
 - Body of constructor executes.
 - Control is returned to the caller.
 
-## Initialization: Looking at `Child` class
+## Initialization: Looking at `Derived` class
 
 ```{.cpp}
-Parent child{ 42.24 };
+Derived derived{ 42.24 };
 ```
 
-What happens when `Child` is instantiated:
+What happens when `Derived` is instantiated:
 
-- Memory for derived class (`Child`) is set aside.
-- Appropriate `Child` constructor is called.
-- [*`Parent` object is constructed first using the pappropriate `Parent` constructor*]{style="color:red"}. If no parent constructor is specified, the default constructor will be used.
+- Memory for derived class (`Derived`) is set aside.
+- Appropriate `Derived` constructor is called.
+- [*`Base` object is constructed first using the pappropriate `Base` constructor*]{style="color:red"}. If no parent constructor is specified, the default constructor will be used.
 - Member initializer list initializes variables.
 - Body of the constructor executes.
 - Control is returned to the caller.
 
 **Question** 
 
-- How about the `id` member that a `Child` object inherits from `Parent`? 
-- How can we initialize it when we create an object of `Child` class.
+- How about the `id` member that a `Derived` object inherits from `Base`? 
+- How can we initialize it when we create an object of `Derived` class.
+
+## Initializing base class members: Approach 01
+
+
+```{.cpp}
+class Derived: public Base
+{
+public:
+    double cost {};
+
+    Derived(double value=0.0, int id=0) 
+        : value { value }, id { id }  // this won't work
+    {}
+
+    double get_cost() const { return cost; }
+};
+```
+
+&#9998;&nbsp; The value of a member variable can only be set in a member initializer list of a constructor belonging to the same class as the variable. &#10140;&nbsp; This attempt won't work. See and run `initialization_of_derived_class_approach_01.cpp`
+
+**Question** What else can we do?
+
+
+## Initializing base class members: Approach 02
+
+```{.cpp}
+class Derived: public Base
+{
+public:
+    double cost {};
+
+    Derived(double value=0.0, int id=0) 
+        : value { value }
+    {   // this work but not work for a const or a reference
+        this->id = id;  
+    }
+
+    double get_cost() const { return cost; }
+};
+```
+
+&#10149;&nbsp; This approach works. See and run `initialization_of_derived_class_approach_02.cpp`. [**But**]{style="color:brown"} 
+
+- [**would not work if `id` were a const or a reference**]{style="color:brown"}. const values and references have to be initialized in the member initializer list of the constructor.
+- [**inefficient**]{style="color:brown"}. Member `id` gets assigned a value twice: once in the member initializer list of `Base` class constructor, and then again in the body of the `Derived` class.
+
+## Initializing base class members: Call parent class constructor
+
+&#9998;&nbsp; C++ allows us to [explicitly choose which Base (Base) class constructor will be called]{style="color:red"}! Simply add a call to the Base class constructor.
+
+```{.cpp}
+class Derived: public Base
+{
+public:
+    double value {};
+
+    Derived(double value=0.0, int id=0) 
+        : Base{ id } // call Base(int) constructor with value id!!!
+        , value{ value } 
+    { } // constructor body
+
+    double get_value() const { return value; }
+};
+```
+
+&#10140;&nbsp; This resolves the troubles we have above.
+
+## Initializing base class members: Put things together
+
+&#10149;&nbsp; Let us run the code snippet
+
+::: {#lst-initialization-call-base-constructor lst-cap="Call Base constructor in the Derived class constructor. Filename=`initialization_of_derived_class_base_constructor.cpp`"}
+```{.cpp}
+{{< include ./cpp/initialization_of_derived_class_base_constructor.cpp >}}
+```
+:::
+
+## Initializing base class members: `UniPerson` and `Student`
+
+**Homework**
+
+Think about rewriting `Student` so that we can call `UniPerson`'s constructor in the member initializer list of `Student`
+
+## Inheritance chains
+
+&#10149;&nbsp; Let us apply the concept we have learned to inheritance chain
+
+::: {#lst-initializing-call-base-constructor-inheritance-chain lst-cap="Calling base constructor in member initializer list of derived classes can be done in inheritance chain. Filename=`initializing_base_members_inheritance_chain.cpp`"}
+```{.cpp}
+{{< include ./cpp/initializing_base_members_inheritance_chain.cpp >}}
+```
+:::
+
+**Question** What's the output on the console?
+
+## Destructors
+
+&#9998;&nbsp; When a derived class is destroyed, each destructor is called in the reverse order of construction. 
+
+
+&#10140;&nbsp; In the above example, when `c` is destroyed, the `C` destructor is called first, then the `B` destructor, then the `A` destructor.
 

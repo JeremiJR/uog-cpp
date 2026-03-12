@@ -1,35 +1,35 @@
 #include <iostream>
-class Parent
+class Base
 {
 public:
-    int parent_value {};
+    int id {};
 
-    Parent(int value=0)
-        : parent_value { value }
-    { std::cout << "Parent object is constructed!\n"; }
+    Base(int id=0)
+        : id { id }
+    { std::cout << "Base object is constructed!\n"; }
 
-    int get_value() const { return parent_value; }
+    int get_id() const { return id; }
 };
 
-class Child: public Parent
+class Derived: public Base
 {
 public:
-    double child_value {};
+    double value {};
 
-    Child(double value=0.0)
-        : child_value { value }
-    { std::cout << "Child object is constructed!\n"; }
+    Derived(double value=0.0)
+        : value { value }
+    { std::cout << "Derived object is constructed!\n"; }
 
-    double get_subvalue() const { return child_value; }
+    double get_value() const { return value; }
 };
 
 int main ()
 {
     std::cout << "Instantiating a Parent object!\n";
-    Parent parent;
+    Base parent;
     std::cout << "===============================\n";
-    std::cout << "Instantiating a Child object!\n";
-    Child child;
+    std::cout << "Instantiating a Derived object!\n";
+    Derived child;
 
     return 0;
 }
