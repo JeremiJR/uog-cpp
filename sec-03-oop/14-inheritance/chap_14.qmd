@@ -783,22 +783,18 @@ Favor private members over protected members.
 &#9998;&nbsp; We have $9$ combinations: $3$ member access specifiers and 3 inheritance types.
 ```{.cpp}
 // Inherit from Base publicly
-class Pub: public Base
-{
+class Pub: public Base {
 };
 
 // Inherit from Base protectedly
-class Pro: protected Base
-{
+class Pro: protected Base {
 };
 
 // Inherit from Base privately
-class Pri: private Base
-{
+class Pri: private Base {
 };
 
-class Def: Base // Defaults to private inheritance
-{
+class Def: Base {// Defaults to private inheritance
 };
 ```
 
@@ -861,3 +857,114 @@ class Def: Base // Defaults to private inheritance
 | **Public** | Public | Protected | Private |
 | **Protected** | Protected | Protected | Private |
 | **Private** | Inaccessible | Inaccessible | Inaccessible |
+
+# Adding new functionality to a derived class
+
+&#9998;&nbsp; One of the biggest benefits of inheritance is the [**ability to reuse written code**]{style="color:navy"}.
+
+&#9998;&nbsp; We can [**add new functionality, modifying existing functionality, or hide functionality**]{style="color:navy"} if we don't want.
+
+:::{.callout}
+We have learned these concepts from **Introductory Programming 2** and also in several last examples. &#10140;&nbsp; No need to go into too much details.
+:::
+
+## Adding new functionality to a derived class: Code illustration
+
+::: {#lst-adding-functionality lst-cap="Besides inheriting members from the base class, the derived class can add more functionalities. Filename=`add_functionality_example.cpp`"}
+```{.cpp}
+{{< include ./cpp/add_functionality_example.cpp >}}
+```
+:::
+
+&#10149;&nbsp; Let us run it and go through it slowly.
+
+## Adding new functionality: An example using `std::vector`
+
+::: {#lst-adding-functionality-vector lst-cap="Same as before but a slightly more complex. Filename=`add_functionality_example_vector.cpp`"}
+```{.cpp}
+{{< include ./cpp/add_functionality_example_vector.cpp >}}
+```
+:::
+
+&#10149;&nbsp; Let us run it and go through it slowly.
+
+# Calling inherited functions and overriding behavior
+
+&#9998;&nbsp; By default, derived classes inherit all of the behaviors defined in a base class.
+
+&#9998;&nbsp; We now examine in more detail how member functions are selected, as well as how we can leverage this to change behaviors in a derived class.
+
+:::{.callout-note}
+- Most of us have learned all these concepts in **Introductory Programming 2** and **Mechanical Engineering Skills 3**. 
+- It does not harm to quickly go through them again. Well, people can forget 😃 😃.
+:::
+
+## Calling a base class function
+
+&#9998;&nbsp; Since the derived class inherits members of its base class, it can use them (need access specifier `public` or `protected` in base class).
+
+:::{#lst-call-base-class-function lst-cap="Derived classes can call their base class functions. Filename=`call_base_class_function.cpp`"}
+```{.cpp}
+{{< include ./cpp/call_base_class_function.cpp >}}
+```
+:::
+
+&#10149;&nbsp; Let us run this code snippet.
+
+## Redefining behaviors
+
+&#9998;&nbsp; However, if we had defined `Derived::identify()` in the Derived class, it would have been used instead.
+
+:::{#lst-redefine-behaviors lst-cap="The derived class can override the member function of the base class. It can redefine behaviors of the base class. Filename=`call_base_class_function.cpp`"}
+```{.cpp}
+{{< include ./cpp/redefine_behaviors.cpp >}}
+```
+:::
+
+## Adding to existing functionality
+
+&#9998;&nbsp; Sometimes we do not want to completely replace a base class function, but instead want to add additional functionality to it when called with a derived object.
+
+:::{#lst-redefine-behaviors lst-cap="We can call the base class's member function and add more to it. Filename=`add_to_existing_functionality.cpp`"}
+```{.cpp}
+{{< include ./cpp/add_to_existing_functionality.cpp >}}
+```
+:::
+
+# Hiding inherited functionality
+
+&#9998;&nbsp; C++ gives us the ability to change an inherited member’s access specifier in the derived class.
+
+&#9998;&nbsp; This is done by using a using declaration to identify the (scoped) base class member that is having its access changed in the derived class, under the new access specifier.
+
+[We skip this component.]{style="color:crimson"} _The students can learn it at home._
+
+## Hiding functionality
+
+## Deleting functions in derived class
+
+# Multiple inheritance
+
+&#9998;&nbsp; [**Multiple inheritance**]{style="color:red"} enables a derived class to inherit members from more than one parent.
+
+:::{.callout-note}
+- Again, I expect that most of us (students) have learned all these concepts in **Introductory Programming 2** and **Mechanical Engineering Skills 3**. 
+- However, I can acknowledge that maybe many of you have not heard about this.
+:::
+
+## Multiple inheritance: Smartphone -- AConcept hierarchy
+
+&#10149;&nbsp; Let us think of this example
+
+- `Camera`: provides the ability to `take_photo()`
+- `Phone`: provides the ability to `make_call()`
+- `Smartphone`: inherits from both, allowing it to perform both actions.
+
+## Multiple inherintance: Smartphone -- Code
+
+
+:::{#lst-multiple-inheritance-smartphone lst-cap="`SmartPhone` inherits both members from `Camera` and `Phone`. Filename=`multiple_inheritance_smartphone.cpp`"}
+```{.cpp}
+{{< include ./cpp/multiple_inheritance_smartphone.cpp >}}
+```
+:::
