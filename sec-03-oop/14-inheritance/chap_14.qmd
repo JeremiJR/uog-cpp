@@ -991,7 +991,7 @@ We can do both with `using` declaration.
 - However, I can acknowledge that maybe many of you have not heard about this.
 :::
 
-## Multiple inheritance: Smartphone -- AConcept hierarchy
+## Multiple inheritance: Smartphone -- A Concept hierarchy
 
 &#10149;&nbsp; Let us think of this example
 
