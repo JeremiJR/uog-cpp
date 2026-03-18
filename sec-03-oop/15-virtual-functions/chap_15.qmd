@@ -48,10 +48,35 @@ format:
 
 ## Quick intro
 
-&#10149;&nbsp; Let us look at this code
+&#10149;&nbsp; Let us look at this code: This example is not difficult to understand.
 
 ::: {#lst-pointers-references-to-derived lst-cap="Pointers and references to `Derived` objects"}
 ```{.cpp}
 {{< include ./cpp/pointers_references_to_derived.cpp >}}
 ```
 :::
+
+## Quick intro
+
+:::{.fragment}
+&#9998;&nbsp; Since `Derived` has a `Base` part, conceptually we can think of:
+
+- How about a `Base` pointer to an `Derived` object
+- How about a `Base` reference refering to a `Derived` object
+
+The question is legitimate and makes sense.
+:::
+
+:::{.fragment}
+&#10140;&nbsp; Indeed, it works in C++.
+:::
+
+## Quick intro
+
+
+::: {#lst-pointers-references-to-derived lst-cap="Pointers and references to `Base` objects can point to/refer to `Derived` objects"}
+```{.cpp}
+{{< include ./cpp/base_pointers_references_to_derived.cpp >}}
+```
+:::
+&#10149;&nbsp; Let us run this code snippet and analyse it.

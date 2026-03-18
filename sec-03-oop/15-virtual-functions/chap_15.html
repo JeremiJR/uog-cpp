@@ -213,7 +213,7 @@
 </section>
 <section id="quick-intro" class="slide level2">
 <h2>Quick intro</h2>
-<p>➥&nbsp; Let us look at this code</p>
+<p>➥&nbsp; Let us look at this code: This example is not difficult to understand.</p>
 <div id="lst-pointers-references-to-derived" class="listing quarto-float quarto-figure quarto-figure-left">
 <figure class="quarto-float quarto-float-lst">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pointers-references-to-derived-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -270,6 +270,79 @@ Listing&nbsp;1: Pointers and references to <code>Derived</code> objects
 </div>
 </figure>
 </div>
+</section>
+<section id="quick-intro-1" class="slide level2">
+<h2>Quick intro</h2>
+<div class="fragment">
+<p>✎&nbsp; Since <code>Derived</code> has a <code>Base</code> part, conceptually we can think of:</p>
+<ul>
+<li>How about a <code>Base</code> pointer to an <code>Derived</code> object</li>
+<li>How about a <code>Base</code> reference refering to a <code>Derived</code> object</li>
+</ul>
+<p>The question is legitimate and makes sense.</p>
+</div>
+<div class="fragment">
+<p>➜&nbsp; Indeed, it works in C++.</p>
+</div>
+</section>
+<section id="quick-intro-2" class="slide level2">
+<h2>Quick intro</h2>
+<div id="lst-pointers-references-to-derived" class="listing quarto-float quarto-figure quarto-figure-left">
+<figure class="quarto-float quarto-float-lst">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pointers-references-to-derived-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;2: Pointers and references to <code>Base</code> objects can point to/refer to <code>Derived</code> objects
+</figcaption>
+<div aria-describedby="lst-pointers-references-to-derived-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string_view&gt;</span></span>
+<span id="cb2-2"><a href=""></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb2-3"><a href=""></a></span>
+<span id="cb2-4"><a href=""></a><span class="kw">class</span> Base</span>
+<span id="cb2-5"><a href=""></a><span class="op">{</span></span>
+<span id="cb2-6"><a href=""></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb2-7"><a href=""></a>    <span class="dt">int</span> id <span class="op">{};</span>      </span>
+<span id="cb2-8"><a href=""></a></span>
+<span id="cb2-9"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb2-10"><a href=""></a>    Base<span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb2-11"><a href=""></a>        <span class="op">:</span> id<span class="op">{</span> id <span class="op">}</span></span>
+<span id="cb2-12"><a href=""></a>    <span class="op">{</span></span>
+<span id="cb2-13"><a href=""></a>    <span class="op">}</span></span>
+<span id="cb2-14"><a href=""></a></span>
+<span id="cb2-15"><a href=""></a>    <span class="bu">std::</span>string_view get_name<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"Base"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-16"><a href=""></a>    <span class="dt">int</span> get_ID<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> id<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-17"><a href=""></a><span class="op">};</span></span>
+<span id="cb2-18"><a href=""></a></span>
+<span id="cb2-19"><a href=""></a><span class="kw">class</span> Derived<span class="op">:</span> <span class="kw">public</span> Base</span>
+<span id="cb2-20"><a href=""></a><span class="op">{</span></span>
+<span id="cb2-21"><a href=""></a><span class="kw">private</span><span class="op">:</span></span>
+<span id="cb2-22"><a href=""></a>    <span class="dt">double</span> value <span class="op">{};</span></span>
+<span id="cb2-23"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb2-24"><a href=""></a>    Derived<span class="op">(</span><span class="dt">double</span> value<span class="op">,</span> <span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb2-25"><a href=""></a>        <span class="op">:</span> Base<span class="op">{</span> id <span class="op">},</span> value<span class="op">{</span> value <span class="op">}</span></span>
+<span id="cb2-26"><a href=""></a>    <span class="op">{</span></span>
+<span id="cb2-27"><a href=""></a>    <span class="op">}</span></span>
+<span id="cb2-28"><a href=""></a></span>
+<span id="cb2-29"><a href=""></a>    <span class="bu">std::</span>string_view get_name<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"Derived"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-30"><a href=""></a>    <span class="dt">int</span> get_value<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> value<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb2-31"><a href=""></a><span class="op">};</span></span>
+<span id="cb2-32"><a href=""></a></span>
+<span id="cb2-33"><a href=""></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb2-34"><a href=""></a><span class="op">{</span></span>
+<span id="cb2-35"><a href=""></a>    Derived derived <span class="op">{</span> <span class="fl">42.24</span><span class="op">,</span> <span class="dv">42</span> <span class="op">};</span></span>
+<span id="cb2-36"><a href=""></a>    Base<span class="op">&amp;</span> base_ref <span class="op">{</span> derived <span class="op">};</span></span>
+<span id="cb2-37"><a href=""></a>    Base<span class="op">*</span> base_ptr <span class="op">{</span> <span class="op">&amp;</span>derived <span class="op">};</span></span>
+<span id="cb2-38"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Name: "</span> <span class="op">&lt;&lt;</span> derived<span class="op">.</span>get_name<span class="op">()</span> </span>
+<span id="cb2-39"><a href=""></a>              <span class="op">&lt;&lt;</span> <span class="st">", value: "</span> <span class="op">&lt;&lt;</span> derived<span class="op">.</span>get_value<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb2-40"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Name: "</span> <span class="op">&lt;&lt;</span> base_ref<span class="op">.</span>get_name<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb2-41"><a href=""></a>              <span class="co">// &lt;&lt; ", value: " &lt;&lt; base_ref.get_value() &lt;&lt; '\n';</span></span>
+<span id="cb2-42"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Name: "</span> <span class="op">&lt;&lt;</span> base_ptr<span class="op">-&gt;</span>get_name<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb2-43"><a href=""></a>              <span class="co">// &lt;&lt; ", value: " &lt;&lt; base_ptr-&gt;get_value() &lt;&lt; '\n';</span></span>
+<span id="cb2-44"><a href=""></a>    </span>
+<span id="cb2-45"><a href=""></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-46"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</figure>
+</div>
+<p>➥&nbsp; Let us run this code snippet and analyse it.</p>
 
 </section></section>
     </div>
