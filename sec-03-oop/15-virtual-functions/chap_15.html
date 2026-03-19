@@ -6,8 +6,8 @@
 <script src="chap_15_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="chap_15_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="chap_15_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="chap_15_files/libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.25">
+<link href="chap_15_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Lecturer in Multiscale Materials">
   <title>Virtual function and Polymorphism</title>
@@ -206,6 +206,8 @@
 <li><a href="#/virtual-functions-and-polymorphism" id="/toc-virtual-functions-and-polymorphism">Virtual functions and polymorphism</a></li>
 <li><a href="#/the-override-and-final-specifiers" id="/toc-the-override-and-final-specifiers">The <code>override</code> and <code>final</code> specifiers</a></li>
 <li><a href="#/pure-virtual-functions-abstract-base-classes-and-interface-classes" id="/toc-pure-virtual-functions-abstract-base-classes-and-interface-classes">Pure virtual functions, abstract base classes and interface classes</a></li>
+<li><a href="#/pure-virtual-functions" id="/toc-pure-virtual-functions">Pure virtual functions</a></li>
+<li><a href="#/interface-classes" id="/toc-interface-classes">Interface classes</a></li>
 </ul>
 </nav>
 </section>
@@ -872,8 +874,233 @@ Listing&nbsp;9: An example of using <code>final</code> specifier. Filename=`fina
 </section></section>
 <section id="pure-virtual-functions-abstract-base-classes-and-interface-classes" class="title-slide slide level1 center">
 <h1>Pure virtual functions, abstract base classes and interface classes</h1>
-
+<p>✎&nbsp; C++ allows a special kind of virtual function called a <span style="color:crimson"><strong>pure virtual function</strong></span></p>
 </section>
+
+<section>
+<section id="pure-virtual-functions" class="title-slide slide level1 center">
+<h1>Pure virtual functions</h1>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string_view&gt;</span></span>
+<span id="cb20-2"><a href=""></a></span>
+<span id="cb20-3"><a href=""></a><span class="kw">class</span> Base</span>
+<span id="cb20-4"><a href=""></a><span class="op">{</span></span>
+<span id="cb20-5"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb20-6"><a href=""></a>    <span class="bu">std::</span>string_view say_hello<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"hello"</span><span class="op">;</span> <span class="op">}</span> <span class="co">// a normal non-virtual function</span></span>
+<span id="cb20-7"><a href=""></a></span>
+<span id="cb20-8"><a href=""></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string_view get_name<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"Base"</span><span class="op">;</span> <span class="op">}</span> <span class="co">// a normal virtual function</span></span>
+<span id="cb20-9"><a href=""></a></span>
+<span id="cb20-10"><a href=""></a>    <span class="kw">virtual</span> <span class="dt">int</span> get_value<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// a pure virtual function</span></span>
+<span id="cb20-11"><a href=""></a></span>
+<span id="cb20-12"><a href=""></a>    <span class="dt">int</span> do_something<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// Compile error: can not set non-virtual functions to 0</span></span>
+<span id="cb20-13"><a href=""></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>✎&nbsp; Using a pure virtual function has two main consequences:</p>
+<ul>
+<li class="fragment">Any class with one or more pure virtual functions becomes an <span style="color:crimson"><strong>abstract base class</strong></span>, which means that <span style="color:royalblue">it can not be instantiated!</span></li>
+<li class="fragment">Any derived class must define a body for this function, or that derived class will be considered an abstract base class as well.</li>
+</ul>
+</section>
+<section id="pure-virtual-function-an-example" class="slide level2">
+<h2>Pure virtual function: An example</h2>
+<p>➥&nbsp; Let us look at this example – We don’t want people create an object of <code>Animal</code> as it does not make sense</p>
+<div id="lst-pure-virtual-function-intro" class="listing quarto-float quarto-figure quarto-figure-left">
+<figure class="quarto-float quarto-float-lst">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pure-virtual-function-intro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;10: Quick intro to why we need pure virtual function.
+</figcaption>
+<div aria-describedby="lst-pure-virtual-function-intro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a href=""></a><span class="kw">class</span> Animal</span>
+<span id="cb21-2"><a href=""></a><span class="op">{</span></span>
+<span id="cb21-3"><a href=""></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb21-4"><a href=""></a>    <span class="bu">std::</span>string name<span class="op">;</span></span>
+<span id="cb21-5"><a href=""></a></span>
+<span id="cb21-6"><a href=""></a>    Animal<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> name<span class="op">{</span> name <span class="op">}</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb21-7"><a href=""></a></span>
+<span id="cb21-8"><a href=""></a>    <span class="co">// To prevent slicing (covered later)</span></span>
+<span id="cb21-9"><a href=""></a>    Animal<span class="op">(</span><span class="at">const</span> Animal<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="cb21-10"><a href=""></a>    Animal<span class="op">&amp;</span> <span class="kw">operator</span><span class="op">=(</span><span class="at">const</span> Animal<span class="op">&amp;)</span> <span class="op">=</span> <span class="kw">delete</span><span class="op">;</span></span>
+<span id="cb21-11"><a href=""></a></span>
+<span id="cb21-12"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb21-13"><a href=""></a>    <span class="bu">std::</span>string_view get_name<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> name<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb21-14"><a href=""></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string_view speak<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"WHAT?!?!"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb21-15"><a href=""></a><span class="op">};</span></span>
+<span id="cb21-16"><a href=""></a></span>
+<span id="cb21-17"><a href=""></a><span class="kw">class</span> Cat<span class="op">:</span> <span class="kw">public</span> Animal</span>
+<span id="cb21-18"><a href=""></a><span class="op">{</span></span>
+<span id="cb21-19"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb21-20"><a href=""></a>    Cat<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> Animal<span class="op">{</span> name <span class="op">}</span> <span class="op">{}</span></span>
+<span id="cb21-21"><a href=""></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string_view speak<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"Meooow"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb21-22"><a href=""></a><span class="op">};</span></span>
+<span id="cb21-23"><a href=""></a></span>
+<span id="cb21-24"><a href=""></a><span class="kw">class</span> Tiger<span class="op">:</span> <span class="kw">public</span> Animal</span>
+<span id="cb21-25"><a href=""></a><span class="op">{</span></span>
+<span id="cb21-26"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb21-27"><a href=""></a>    Tiger<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> Animal<span class="op">{</span> name <span class="op">}</span> <span class="op">{}</span></span>
+<span id="cb21-28"><a href=""></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string_view speak<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"Roarrr"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb21-29"><a href=""></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</figure>
+</div>
+</section>
+<section id="pure-virtual-function-an-example-1" class="slide level2">
+<h2>Pure virtual function: An example</h2>
+<p>➥&nbsp; It is still possible to create derived classes that do not redefine function speak</p>
+<div id="lst-virtual-function-forget-redefine" class="listing quarto-float quarto-figure quarto-figure-left">
+<figure class="quarto-float quarto-float-lst">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-virtual-function-forget-redefine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;11: We forgot to redefine the virtual function <code>speak()</code> in <code>Cow</code>. Filename=`virtual_function_forget_redefine.cpp
+</figcaption>
+<div aria-describedby="lst-virtual-function-forget-redefine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb22-2"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb22-3"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string_view&gt;</span></span>
+<span id="cb22-4"><a href=""></a></span>
+<span id="cb22-5"><a href=""></a><span class="kw">class</span> Animal</span>
+<span id="cb22-6"><a href=""></a><span class="op">{</span></span>
+<span id="cb22-7"><a href=""></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb22-8"><a href=""></a>    <span class="bu">std::</span>string name <span class="op">{};</span></span>
+<span id="cb22-9"><a href=""></a></span>
+<span id="cb22-10"><a href=""></a>    <span class="co">// We're making this constructor protected because</span></span>
+<span id="cb22-11"><a href=""></a>    <span class="co">// we don't want people creating Animal objects directly,</span></span>
+<span id="cb22-12"><a href=""></a>    <span class="co">// but we still want derived classes to be able to use it.</span></span>
+<span id="cb22-13"><a href=""></a>    Animal<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span></span>
+<span id="cb22-14"><a href=""></a>        <span class="op">:</span> name<span class="op">{</span> name <span class="op">}</span></span>
+<span id="cb22-15"><a href=""></a>    <span class="op">{</span></span>
+<span id="cb22-16"><a href=""></a>    <span class="op">}</span></span>
+<span id="cb22-17"><a href=""></a></span>
+<span id="cb22-18"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb22-19"><a href=""></a>    <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> get_name<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> name<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb22-20"><a href=""></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string_view speak<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"???"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb22-21"><a href=""></a></span>
+<span id="cb22-22"><a href=""></a>    <span class="kw">virtual</span> <span class="op">~</span>Animal<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb22-23"><a href=""></a><span class="op">};</span></span>
+<span id="cb22-24"><a href=""></a></span>
+<span id="cb22-25"><a href=""></a><span class="kw">class</span> Cow <span class="op">:</span> <span class="kw">public</span> Animal</span>
+<span id="cb22-26"><a href=""></a><span class="op">{</span></span>
+<span id="cb22-27"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb22-28"><a href=""></a>    Cow<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> Animal<span class="op">{</span> name <span class="op">}</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb22-29"><a href=""></a></span>
+<span id="cb22-30"><a href=""></a>    <span class="co">// We forgot to redefine speak</span></span>
+<span id="cb22-31"><a href=""></a><span class="op">};</span></span>
+<span id="cb22-32"><a href=""></a></span>
+<span id="cb22-33"><a href=""></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb22-34"><a href=""></a><span class="op">{</span></span>
+<span id="cb22-35"><a href=""></a>    Cow cow<span class="op">{</span><span class="st">"Bestie"</span><span class="op">};</span></span>
+<span id="cb22-36"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> cow<span class="op">.</span>get_name<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" says "</span> <span class="op">&lt;&lt;</span> cow<span class="op">.</span>speak<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb22-37"><a href=""></a></span>
+<span id="cb22-38"><a href=""></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb22-39"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</figure>
+</div>
+</section>
+<section id="pure-virtual-function-an-example-2" class="slide level2">
+<h2>Pure virtual function: An example</h2>
+<p>➥&nbsp; A better solution is to make <code>speak()</code> pure virtual function. Now, <code>Animal</code> is an <strong>abstract base class</strong>. Let us run this code.</p>
+<div id="lst-pure-virtual-function-forget-redefine" class="listing quarto-float quarto-figure quarto-figure-left">
+<figure class="quarto-float quarto-float-lst">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pure-virtual-function-forget-redefine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;12: Now, we make <code>speak()</code> in <code>Animal</code> pure virtual function. Filename=`pure_virtual_function_forget_redefine.cpp
+</figcaption>
+<div aria-describedby="lst-pure-virtual-function-forget-redefine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb23-2"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb23-3"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string_view&gt;</span></span>
+<span id="cb23-4"><a href=""></a></span>
+<span id="cb23-5"><a href=""></a><span class="kw">class</span> Animal</span>
+<span id="cb23-6"><a href=""></a><span class="op">{</span></span>
+<span id="cb23-7"><a href=""></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb23-8"><a href=""></a>    <span class="bu">std::</span>string name <span class="op">{};</span></span>
+<span id="cb23-9"><a href=""></a>    <span class="co">// We don't want people creating Animal objects directly,</span></span>
+<span id="cb23-10"><a href=""></a>    <span class="co">// but we still want derived classes to be able to use it.</span></span>
+<span id="cb23-11"><a href=""></a>    Animal<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> name<span class="op">{</span> name <span class="op">}</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb23-12"><a href=""></a></span>
+<span id="cb23-13"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb23-14"><a href=""></a>    <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> get_name<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> name<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb23-15"><a href=""></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string_view speak<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-16"><a href=""></a>    <span class="kw">virtual</span> <span class="op">~</span>Animal<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb23-17"><a href=""></a><span class="op">};</span></span>
+<span id="cb23-18"><a href=""></a></span>
+<span id="cb23-19"><a href=""></a><span class="kw">class</span> Cow <span class="op">:</span> <span class="kw">public</span> Animal</span>
+<span id="cb23-20"><a href=""></a><span class="op">{</span></span>
+<span id="cb23-21"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb23-22"><a href=""></a>    Cow<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> Animal<span class="op">{</span> name <span class="op">}</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb23-23"><a href=""></a></span>
+<span id="cb23-24"><a href=""></a>    <span class="co">// We forgot to redefine speak</span></span>
+<span id="cb23-25"><a href=""></a><span class="op">};</span></span>
+<span id="cb23-26"><a href=""></a></span>
+<span id="cb23-27"><a href=""></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb23-28"><a href=""></a><span class="op">{</span></span>
+<span id="cb23-29"><a href=""></a>    Cow cow<span class="op">{</span><span class="st">"Bestie"</span><span class="op">};</span>      <span class="co">// error -- we cannot instantiate an object of abstract class</span></span>
+<span id="cb23-30"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> cow<span class="op">.</span>get_name<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" says "</span> <span class="op">&lt;&lt;</span> cow<span class="op">.</span>speak<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb23-31"><a href=""></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-32"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</figure>
+</div>
+</section>
+<section id="pure-virtual-function-an-example-3" class="slide level2">
+<h2>Pure virtual function: An example</h2>
+<p>➥&nbsp; A better solution is to make <code>speak()</code> pure virtual function. Now, we redefine <code>speak()</code> in <code>Cow</code></p>
+<div id="lst-pure-virtual-function-forget-redefine" class="listing quarto-float quarto-figure quarto-figure-left">
+<figure class="quarto-float quarto-float-lst">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-pure-virtual-function-forget-redefine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;13: Now, we make <code>speak()</code> in <code>Animal</code> pure virtual function. Filename=`pure_virtual_function_forget_redefine.cpp
+</figcaption>
+<div aria-describedby="lst-pure-virtual-function-forget-redefine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb24-2"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb24-3"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string_view&gt;</span></span>
+<span id="cb24-4"><a href=""></a></span>
+<span id="cb24-5"><a href=""></a><span class="kw">class</span> Animal <span class="co">// This Animal is an abstract base class</span></span>
+<span id="cb24-6"><a href=""></a><span class="op">{</span></span>
+<span id="cb24-7"><a href=""></a><span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb24-8"><a href=""></a>    <span class="bu">std::</span>string name <span class="op">{};</span></span>
+<span id="cb24-9"><a href=""></a></span>
+<span id="cb24-10"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb24-11"><a href=""></a>    Animal<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> name<span class="op">{</span> name <span class="op">}</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb24-12"><a href=""></a></span>
+<span id="cb24-13"><a href=""></a>    <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> get_name<span class="op">()</span> <span class="at">const</span> <span class="op">{</span> <span class="cf">return</span> name<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb24-14"><a href=""></a>    <span class="kw">virtual</span> <span class="bu">std::</span>string_view speak<span class="op">()</span> <span class="at">const</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// note that speak is now a pure virtual function</span></span>
+<span id="cb24-15"><a href=""></a></span>
+<span id="cb24-16"><a href=""></a>    <span class="kw">virtual</span> <span class="op">~</span>Animal<span class="op">()</span> <span class="op">=</span> <span class="cf">default</span><span class="op">;</span></span>
+<span id="cb24-17"><a href=""></a><span class="op">};</span></span>
+<span id="cb24-18"><a href=""></a></span>
+<span id="cb24-19"><a href=""></a><span class="kw">class</span> Cow<span class="op">:</span> <span class="kw">public</span> Animal</span>
+<span id="cb24-20"><a href=""></a><span class="op">{</span></span>
+<span id="cb24-21"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb24-22"><a href=""></a>    Cow<span class="op">(</span><span class="bu">std::</span>string_view name<span class="op">)</span> <span class="op">:</span> Animal<span class="op">(</span>name<span class="op">)</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb24-23"><a href=""></a></span>
+<span id="cb24-24"><a href=""></a>    <span class="bu">std::</span>string_view speak<span class="op">()</span> <span class="at">const</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> <span class="st">"Mooooooo"</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb24-25"><a href=""></a><span class="op">};</span></span>
+<span id="cb24-26"><a href=""></a></span>
+<span id="cb24-27"><a href=""></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb24-28"><a href=""></a><span class="op">{</span></span>
+<span id="cb24-29"><a href=""></a>    Cow cow<span class="op">{</span> <span class="st">"Bestie"</span> <span class="op">};</span></span>
+<span id="cb24-30"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> cow<span class="op">.</span>get_name<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" says "</span> <span class="op">&lt;&lt;</span> cow<span class="op">.</span>speak<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb24-31"><a href=""></a></span>
+<span id="cb24-32"><a href=""></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb24-33"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</figure>
+</div>
+</section></section>
+<section>
+<section id="interface-classes" class="title-slide slide level1 center">
+<h1>Interface classes</h1>
+<p>✎&nbsp; <span style="color:crimson"><strong>Interfaces</strong></span> are useful when we want to define the functionality that derived classes must implement, but leave the details of how the derived class implements that functionality entirely up to the derived class.</p>
+</section>
+<section id="interface-classes-1" class="slide level2">
+<h2>Interface classes</h2>
+<p>✎&nbsp; An <span style="color:crimson"><strong>interface class</strong></span> is a class that has no member variables, and where all of the functions are pure virtual!</p>
+<p>✎&nbsp; Interfaces are useful when you want to define the functionality that derived classes must implement, but leave the details of how the derived class implements that functionality entirely up to the derived class.</p>
+<p>✎&nbsp; Interface classes are often named beginning with an <code>I</code>. ```{.cpp} #include <string_view></string_view></p>
+<p>class IErrorLog { public: virtual bool open_log(std::string_view filename) = 0; virtual bool close_log() = 0;</p>
+<pre><code>virtual bool write_error(std::string_view error_message) = 0;
+
+virtual ~IErrorLog() {} // make a virtual destructor in case we delete an IErrorLog pointer, so the proper derived destructor is called</code></pre>
+<p>};</p>
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

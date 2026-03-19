@@ -409,5 +409,157 @@ public:
 :::
 
 
-
 # Pure virtual functions, abstract base classes and interface classes
+
+&#9998;&nbsp; C++ allows a special kind of virtual function called a [**pure virtual function**]{style="color:crimson"}
+
+# Pure virtual functions
+
+```{.cpp}
+#include <string_view>
+
+class Base
+{
+public:
+    std::string_view say_hello() const { return "hello"; } // a normal non-virtual function
+
+    virtual std::string_view get_name() const { return "Base"; } // a normal virtual function
+
+    virtual int get_value() const = 0; // a pure virtual function
+
+    int do_something() = 0; // Compile error: can not set non-virtual functions to 0
+};
+```
+
+&#9998;&nbsp; Using a pure virtual function has two main consequences: 
+
+:::{.incremental}
+- Any class with one or more pure virtual functions becomes an [**abstract base class**]{style="color:crimson"}, which means that [it can not be instantiated!]{style="color:royalblue"}
+- Any derived class must define a body for this function, or that derived class will be considered an abstract base class as well.
+:::
+
+## Pure virtual function: An example
+
+&#10149;&nbsp; Let us look at this example -- We don't want people create an object of `Animal` as it does not make sense
+
+::: {#lst-pure-virtual-function-intro lst-cap="Quick intro to why we need pure virtual function."}
+```{.cpp}
+class Animal
+{
+protected:
+    std::string name;
+
+    Animal(std::string_view name) : name{ name } { }
+
+    // To prevent slicing (covered later)
+    Animal(const Animal&) = delete;
+    Animal& operator=(const Animal&) = delete;
+
+public:
+    std::string_view get_name() const { return name; }
+    virtual std::string_view speak() const { return "WHAT?!?!"; }
+};
+
+class Cat: public Animal
+{
+public:
+    Cat(std::string_view name) : Animal{ name } {}
+    virtual std::string_view speak() const { return "Meooow"; }
+};
+
+class Tiger: public Animal
+{
+public:
+    Tiger(std::string_view name) : Animal{ name } {}
+    virtual std::string_view speak() const { return "Roarrr"; }
+};
+```
+:::
+
+## Pure virtual function: An example
+
+&#10149;&nbsp; It is still possible to create derived classes that do not redefine function speak
+
+::: {#lst-virtual-function-forget-redefine lst-cap="We forgot to redefine the virtual function `speak()` in `Cow`. Filename=`virtual_function_forget_redefine.cpp"}
+```{.cpp}
+{{< include ./cpp/virtual_function_forget_redefine.cpp >}}
+```
+:::
+
+## Pure virtual function: An example
+
+&#10149;&nbsp; A better solution is to make `speak()` pure virtual function. Now, `Animal` is an **abstract base class**. Let us run this code.
+
+
+::: {#lst-pure-virtual-function-forget-redefine lst-cap="Now, we make `speak()` in `Animal` pure virtual function. Filename=`pure_virtual_function_forget_redefine.cpp"}
+```{.cpp}
+#include <iostream>
+#include <string>
+#include <string_view>
+
+class Animal
+{
+protected:
+    std::string name {};
+    // We don't want people creating Animal objects directly,
+    // but we still want derived classes to be able to use it.
+    Animal(std::string_view name) : name{ name } { }
+
+public:
+    const std::string& get_name() const { return name; }
+    virtual std::string_view speak() const = 0;
+    virtual ~Animal() = default;
+};
+
+class Cow : public Animal
+{
+public:
+    Cow(std::string_view name) : Animal{ name } { }
+
+    // We forgot to redefine speak
+};
+
+int main()
+{
+    Cow cow{"Bestie"};      // error -- we cannot instantiate an object of abstract class
+    std::cout << cow.get_name() << " says " << cow.speak() << '\n';
+    return 0;
+}
+```
+:::
+
+## Pure virtual function: An example
+
+&#10149;&nbsp; A better solution is to make `speak()` pure virtual function. Now, we redefine `speak()` in `Cow`
+
+
+::: {#lst-pure-virtual-function-forget-redefine lst-cap="Now, we make `speak()` in `Animal` pure virtual function. Filename=`pure_virtual_function_forget_redefine.cpp"}
+```{.cpp}
+{{< include ./cpp/pure_virtual_function_remember_redefine.cpp >}}
+```
+:::
+
+# Interface classes
+
+&#9998;&nbsp; [**Interfaces**]{style="color:crimson"} are useful when we want to define the functionality that derived classes must implement, but leave the details of how the derived class implements that functionality entirely up to the derived class.
+
+## Interface classes
+
+&#9998;&nbsp; An [**interface class**]{style="color:crimson"} is a class that has no member variables, and where all of the functions are pure virtual!
+
+&#9998;&nbsp; Interfaces are useful when you want to define the functionality that derived classes must implement, but leave the details of how the derived class implements that functionality entirely up to the derived class.
+
+&#9998;&nbsp; Interface classes are often named beginning with an `I`.
+```{.cpp}
+#include <string_view>
+
+class IErrorLog
+{
+public:
+    virtual bool open_log(std::string_view filename) = 0;
+    virtual bool close_log() = 0;
+
+    virtual bool write_error(std::string_view error_message) = 0;
+
+    virtual ~IErrorLog() {} // make a virtual destructor in case we delete an IErrorLog pointer, so the proper derived destructor is called
+};
