@@ -11,7 +11,7 @@ execute:
   eval: true
 format: 
     html:
-        embed-resources: true
+        # embed-resources: true
         grid:
             body-width: 1400px
             margin-width: 20px
@@ -29,17 +29,18 @@ format:
         toc-location: left      # table of content on the left
         toc-title: "Table of Content"   # table of content title
 
-    pdf:
-        embed-resources: true
-        geometry:
-            - top=24px
-            - bottom=24px
-            - left=36px
-            - right=36px
-        css: style.css
-        number-sections: true
-        number-depth: 2
-        colorlinks: true
+    # pdf:
+    #     # embed-resources: true
+    #     mermaid-format: svg
+    #     geometry:
+    #         - top=24px
+    #         - bottom=24px
+    #         - left=36px
+    #         - right=36px
+    #     css: style.css
+    #     number-sections: true
+    #     number-depth: 2
+    #     colorlinks: true
 ---
 
 <!-- 
@@ -178,3 +179,26 @@ classDiagram
     class SubClass2 {
     }
 ```
+
+**Inheritance example -- Shapes**
+
+This diagram is created by 
+```{mermaid}
+%%| fig-cap: "Inheritance example: Shape"
+classDiagram
+    %% The syntax below forces the layout engine to group these
+    Shape <|-- Polygon
+    Shape <|-- Ellipse
+    Shape <|-- Spline
+
+    class Shape {
+    }
+    class Polygon {
+    }
+    class Ellipse {
+    }
+    class Spline {
+    }
+```
+
+##

@@ -1,0 +1,82 @@
+---
+title: "Virtual function and Polymorphism"
+# subtitle: "More on classes"
+author: |
+    Khiem Nguyen 
+    <br>Lecturer in Multiscale Materials
+    <br><khiem.nguyen@glasgow.ac.uk>
+author-meta: "Lecturer in Multiscale Materials"
+format: 
+    revealjs:
+        # embed-resources: true
+        theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
+        mouse-wheel: true
+        highlight-style: github
+        slide-number: true
+        title-slide-style: pandoc
+        echo: true
+        code-overflow: wrap
+        code-line-numbers: true
+        code-block-bg: false          # <-- remove white background in code blocks
+        # code-block-border-left: false # optional: remove left border
+        # highlight-style: monokai      # good for dark images
+        toc: true
+        toc-depth: 1
+        toc-title: Presentation Outline
+        chalkboard: true
+        css: simple.css
+
+    # html:
+    #     theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
+    #     mouse-wheel: true
+    #     highlight-style: github
+    #     slide-number: true
+    #     title-slide-style: pandoc
+    #     echo: true
+    #     code-overflow: wrap
+    #     code-line-numbers: true
+    #     code-block-bg: false          # <-- remove white background in code blocks
+    #     # code-block-border-left: false # optional: remove left border
+    #     # highlight-style: monokai      # good for dark images
+    #     toc: true
+    #     toc-depth: 1
+    #     toc-title: Presentation Outline
+    #     chalkboard: true
+---
+
+# Object relationships
+
+**Relationships between objects**
+
+&#9998;&nbsp; Life is full of recurring patterns, relationships, and hierarchies between objects. By exploring and understanding these, we can gain insight into how real-life objects behave, enhancing our understanding of those objects.
+
+&#9998;&nbsp; There are many different kinds of relationships two objects may have in real-life, and we use specific “relation type” words to describe these relationships.
+
+## Object relationships 
+
+&#10149;&nbsp; Think about the following statements:
+
+- A square "is-a" shape. An circle "is-an" ellipse
+- A car "has-a" steering wheel. A person "has-a" heart
+- A computer programmer "uses-a" keyboard.
+- A flower "depends-on" a bee or pollination.
+- A student is a "member-of" a class.
+- A brain exists as "part-of" us.
+
+&#9758;&nbsp; We will explore different relation types
+
+- part-of
+- has-a
+- uses-a
+- member-of
+
+and how they are useful in the context of C++ classes.
+
+# Composition
+
+&#9998;&nbsp; Complex objects are often built from smaller, simpler objects.
+
+- A computer is built from: a CPU, a motherboard, some memory, etc.
+- We are built from smaller parts: a head, a body, some legs, arms and so on.
+
+&#9998;&nbsp; [Object composition models a “has-a” relationship]{ style="color:crimson"} between two objects.
