@@ -1093,12 +1093,19 @@ Listing&nbsp;13: Now, we make <code>speak()</code> in <code>Animal</code> pure v
 <h2>Interface classes</h2>
 <p>✎&nbsp; An <span style="color:crimson"><strong>interface class</strong></span> is a class that has no member variables, and where all of the functions are pure virtual!</p>
 <p>✎&nbsp; Interfaces are useful when you want to define the functionality that derived classes must implement, but leave the details of how the derived class implements that functionality entirely up to the derived class.</p>
-<p>✎&nbsp; Interface classes are often named beginning with an <code>I</code>. ```{.cpp} #include <string_view></string_view></p>
-<p>class IErrorLog { public: virtual bool open_log(std::string_view filename) = 0; virtual bool close_log() = 0;</p>
-<pre><code>virtual bool write_error(std::string_view error_message) = 0;
-
-virtual ~IErrorLog() {} // make a virtual destructor in case we delete an IErrorLog pointer, so the proper derived destructor is called</code></pre>
-<p>};</p>
+<p>✎&nbsp; Interface classes are often named beginning with an <code>I</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;string_view&gt;</span></span>
+<span id="cb25-2"><a href=""></a></span>
+<span id="cb25-3"><a href=""></a><span class="kw">class</span> IErrorLog</span>
+<span id="cb25-4"><a href=""></a><span class="op">{</span></span>
+<span id="cb25-5"><a href=""></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb25-6"><a href=""></a>    <span class="kw">virtual</span> <span class="dt">bool</span> open_log<span class="op">(</span><span class="bu">std::</span>string_view filename<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-7"><a href=""></a>    <span class="kw">virtual</span> <span class="dt">bool</span> close_log<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-8"><a href=""></a></span>
+<span id="cb25-9"><a href=""></a>    <span class="kw">virtual</span> <span class="dt">bool</span> write_error<span class="op">(</span><span class="bu">std::</span>string_view error_message<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-10"><a href=""></a></span>
+<span id="cb25-11"><a href=""></a>    <span class="kw">virtual</span> <span class="op">~</span>IErrorLog<span class="op">()</span> <span class="op">{}</span> <span class="co">// make a virtual destructor in case we delete an IErrorLog pointer, so the proper derived destructor is called</span></span>
+<span id="cb25-12"><a href=""></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </section></section>
     </div>

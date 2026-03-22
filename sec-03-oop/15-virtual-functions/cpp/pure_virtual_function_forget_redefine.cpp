@@ -15,7 +15,6 @@ protected:
 public:
     const std::string& get_name() const { return name; }
     virtual std::string_view speak() const = 0;
-
     virtual ~Animal() = default;
 };
 

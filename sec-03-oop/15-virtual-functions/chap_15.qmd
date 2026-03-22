@@ -550,6 +550,7 @@ int main()
 &#9998;&nbsp; Interfaces are useful when you want to define the functionality that derived classes must implement, but leave the details of how the derived class implements that functionality entirely up to the derived class.
 
 &#9998;&nbsp; Interface classes are often named beginning with an `I`.
+
 ```{.cpp}
 #include <string_view>
 
