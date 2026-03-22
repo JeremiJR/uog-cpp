@@ -12,6 +12,7 @@ class ComplexNumber
      re(re), im(im){
     }
     
+
     friend std::ostream& operator<<(std::ostream& os, const ComplexNumber& comp_num)
     {   
         bool no_im = (comp_num.im == 0);
@@ -50,16 +51,14 @@ class ComplexNumber
         return ComplexNumber {re, im};
     }
     
-    friend std::ostream& pow(std::ostream& os, const ComplexNumber& pow) 
-    {
-        
+    int pow(int p = 1) 
+    {   
+        int n
+        if p % 2
         return ComplexNumber {re, im};
     }
 
-    struct pow(x = 1)
-    {
-        
-    }
+
 };
 
 
