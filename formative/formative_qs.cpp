@@ -53,8 +53,16 @@ class ComplexNumber
     
     int pow(int p = 1) 
     {   
-        int n
-        if p % 2
+        int n;
+        if (p % 2 == 0)
+        {
+            return std::cout << "-1";
+        else 
+        {
+            return 1;
+        }
+        }
+
         return ComplexNumber {re, im};
     }
 
