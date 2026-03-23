@@ -178,6 +178,8 @@ Sound obvious!?!? Be patient, we will see that this is not always the case.
 
 &#9998;&nbsp; [Compositions that need to do dynamic allocation or deallocation may be implemented using pointer data members.]{style="color:royalblue"} _In this case, the composition class should be responsible for doing all necessary memory management itself (not the user of the class)_.
 
+&#10149;&nbsp; Look at `creature_game.cpp`, `creature.h`, `point2d.h`
+
 # Aggregation
 
 In last lesson, we discussed one subtype of object composition, namely "composition". In this lesson, we learn the other subtype of object composition, called [**aggegration**]{style="color:red"}.
@@ -228,3 +230,58 @@ To qualify as an aggregation, a whole object and its parts have the following re
 &#9998;&nbsp; [These member variables are typically either references or pointers that used to point at objects that have been created outside the scope of a class.]{style="color:crimson"}
 
 &#9998;&nbsp; Because these parts exist outside of the scope of the class, [when the class is destroyed, the pointer or reference member variable will be destroyed (but not deleted). The parts themselves will still exist.]{style="color:crimson"}
+
+&#10149;&nbsp; Look at `teacher_department.cpp`.
+
+## Summarizing composition and aggregation
+
+### Compositions
+
+- Typically used normal member variables
+- Can use pointer members if the class handles object allocation/deallocation itself.
+- Responsible for creation/destruction of parts
+
+## Aggregations
+- Typically use pointer or reference members that point to or reference objects that live outside the scope of the aggregate class
+- Not responsible for creating/destroying parts
+
+:::{.callout-important}
+
+- Note that concepts of composition and aggregation can be mixed freely within the same class. 
+- It is entirely possible to write a class that is responsible for the creation/destruction of some parts but not others.
+
+:::
+
+# Association
+
+In the previous lessons, we have learned two types of object composition: **composition** and **aggregation**. 
+
+In this lesson, we learn a weaker type of relationship between two otherwise unrelated objects, called an [**association**]{style="color:red"}
+
+## Association
+
+To qualify as an association, an object and another object have the following relationship:
+
+- The associated object (member) is otherwise unrelated to the object (class)
+- The associated object (member) can belong to more than one object (class) at a time
+- The associated object (member) does not have its existence managed by the object (class)
+- The associated object (member) may or may not know about the existence of the object (class)
+
+&#10149;&nbsp; Unlike a composition or aggregation, where the part is a part of the whole object, in an association, the associated object is otherwise unrelated to the object.
+
+&#10149;&nbsp; Unlike an aggregation, where the relationship is always unidirectional, in an association, the relationship may be unidirectional or bidirectional (where the two objects are aware of each other).
+
+## Association: Example
+
+&#10149;&nbsp; The relationship between doctors and patients is a great example of an association.
+
+- The doctor clearly has a relationship with his patients, but conceptually it’s not a part/whole (object composition) relationship.
+- A doctor can see many patients in a day, and a patient can see many doctors.
+- Neither of the object's lifespans are tied to the other.
+
+## Implementing associations
+
+- Because associations are a broad type of relationship, they can be implemented in many different ways.
+- Most often, associations are implemented using pointers, where the object points at the associated object.
+
+&#10149;&nbsp; Have a quick look at `doctor_patient.cpp`
