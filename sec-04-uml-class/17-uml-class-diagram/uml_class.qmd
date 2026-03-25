@@ -156,13 +156,111 @@ UML is not just about pretty pictures. If used correctly, UML precisely conveys 
 
 ![](./figures/07-relationships-between-classes.png)
 
+[**What we have learned so far**]{style="color:royalblue"}
 
-## Inheritance (or Generalization)
+We have learned the following concepts:
 
-- Represents an [**"is-a"**]{style="color:red"} **relationship**.
-- An **abstract class name** is shown **in italics**.
+- Inheritance
+- Composition
+- Aggregation
+- Association
+- Realization
+- Dependiencies
 
-SubClass1 and SubClass2 are specializations of SuperClass.
+This is just another diagram you can find online
+
+![](./figures/class-diagram-relationship.png)
+
+Diagram using `mermaid` in Quarto.
+
+```{mermaid}
+classDiagram
+classA --|> classB : Inheritance
+classC --* classD : Composition
+classE --o classF : Aggregation
+classG -- classH : Association
+%% classI -- classJ : Link(Solid)
+classK ..> classL : Dependency
+classM ..|> classN : Realization
+%% classO .. classP : Link(Dashed)
+```
+
+
+Below, we shall revisit these concepts but we go from weak to strong connections.
+
+## Association
+
+[**Association**]{style="color:royalblue"} is the most general relationship. It signifies a structural link between two peer classes. It can be uni-directional (one class knows about the other) or bi-directional (both know about each other).
+
+- **Logic**: "Class A is associated with class B"
+- **Visual**: A solid line. An arrow indicates the direction of the relationship. No arrow means bi-directional.
+- **Example**: A `Teacher` and a `Student`. They are related, but one does not "own" the other.
+
+```{mermaid}
+classDiagram
+    direction LR
+    class Teacher
+    class Student
+    %% The simple solid line indicates general association
+    Teacher "0..*" -- "0..*" Student
+```
+
+## Aggregation ("Has-a")
+
+[**Aggregation**]{style="color:royalblue"} is a specialized form of association that represents a "whole-part" relationship. However, it is "weak" — the parts can exist independently of the whole.
+
+- **Logic**: "Class A has a Class B (but Class B can live without A)."
+- **Visual**: A solid line with an empty diamond at the "whole" (parent) end.
+- **Example**: A Library and a Book. If the library closes down, the books still exist.
+
+## Composition ("Part-of")
+
+[**Composition**]{style="royalblue"} is a "strong" whole-part relationship. The part's lifecycle is strictly managed by the whole. If the whole is destroyed, the parts are destroyed too.
+
+- **Logic**: "Class B is an integral part of Class A."
+- **Visual**: A solid line with a filled diamond at the "whole" end.
+- **Example**: A `House` and a `Room`. You cannot have a room that exists independently of a house; if the house is demolished, the room is gone.
+
+## Dependency ("Uses-a")
+
+[**Dependency**]{style="royalblue"} is a weaker, often temporary relationship. It exists when one class uses another as a parameter in a method or a local variable. If the definition of the supplier class changes, the client class might need to change as well.
+
+- **Logic**: "Class A uses Class B to perform a task."
+- **Visual**: A dashed line with an open arrow.
+- **Example**: A `Printer` class depends on a `Document` class to print. The printer doesn't "own" the document; it just needs it for a specific operation.
+
+## Inheritance (Generalization - "Is-a")
+
+Inheritance is used when one class (the subclass or child) derives its attributes and methods from another class (the superclass or parent). It represents a specialized version of a more general concept.
+
+- **Logic**: "Class B is a type of Class A."
+- **Visual**: A solid line with a large hollow triangle pointing toward the parent class.
+- **Example**: A Car is a type of Vehicle. The Car inherits general traits like speed but may have specific traits like trunkSize.
+
+## Realization (Implementation)
+
+[**Realization**] is the relationship between an interface (or an abstract class) and the class that implements its behavior. The implementing class "realizes" the contract defined by the interface.
+
+- **Logic**: "Class A implements the functionality defined by Interface B."
+- **Visual**: A dashed line with a hollow triangle arrow pointing to the interface.
+- **Example**: A `Car` class realizing a `Vehicle` interface.
+    
+## Regarding abstract class 
+
+In UML, there are two primary ways to signify that a class is Abstract. Since abstract classes are designed to be inherited rather than instantiated, the visual notation needs to distinguish them from "concrete" classes.
+
+- **The Standard Notation: Italics**
+
+    The most common way to represent an abstract class is to write the class name in italics. If the class has abstract methods (methods with no implementation), those method names should also be italicized.
+
+    **Visual**: _ClassName_
+- **The Explicit Notation: Stereotype**
+
+    If italics aren't clear enough (especially in hand-drawn diagrams), you can use a stereotype. You place the word "abstract" inside guillemets (« ») above the class name.
+
+    **Visual**: «abstract»
+
+<!-- SubClass1 and SubClass2 are specializations of SuperClass.
 
 ![](./figures/08-inheritance-in-class-diagram.png)
 
@@ -199,6 +297,15 @@ classDiagram
     }
     class Spline {
     }
-```
+``` -->
 
-##
+## Summary
+
+| Relationship | Logic | Lifecycle Link | Visual Notation |
+| :--- | :--- | :--- | :--- |
+| **Association** | "Knows-a" | Independent | Solid Line |
+| **Aggregation** | "Has-a" | Independent | Hollow Diamond |
+| **Composition** | "Part-of" | Dependent | Filled Diamond |
+| **Dependency** | "Uses-a" | Temporary | Dashed Arrow |
+| **Inheritance** | "Is-a" | Parent-Child | Hollow Triangle (Solid Line) |
+| **Realization** | "Implements" | Contractual | Hollow Triangle (Dashed Line) |

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.35">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,9 +10,6 @@
 
 <title>Assignment 02</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -30,14 +27,15 @@ ul.task-list li input[type="checkbox"] {
 <script src="uml_class_files/libs/clipboard/clipboard.min.js"></script>
 <script src="uml_class_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="uml_class_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="uml_class_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="uml_class_files/libs/quarto-html/popper.min.js"></script>
 <script src="uml_class_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="uml_class_files/libs/quarto-html/anchor.min.js"></script>
 <link href="uml_class_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="uml_class_files/libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="uml_class_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="uml_class_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="uml_class_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="uml_class_files/libs/bootstrap/bootstrap-9e380c2ed7ec3741b724f7ccfaf80cd1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="uml_class_files/libs/bootstrap/bootstrap-b87272d9800740e7bada56b571600860.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="uml_class_files/libs/quarto-diagram/mermaid.min.js"></script>
 <script src="uml_class_files/libs/quarto-diagram/mermaid-init.js"></script>
 <link href="uml_class_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
@@ -63,8 +61,14 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#perspectives-of-class-diagram" id="toc-perspectives-of-class-diagram" class="nav-link" data-scroll-target="#perspectives-of-class-diagram"><span class="header-section-number">2</span> Perspectives of Class Diagram</a></li>
   <li><a href="#relationships-between-classes" id="toc-relationships-between-classes" class="nav-link" data-scroll-target="#relationships-between-classes"><span class="header-section-number">3</span> Relationships between classes</a>
   <ul class="collapse">
-  <li><a href="#inheritance-or-generalization" id="toc-inheritance-or-generalization" class="nav-link" data-scroll-target="#inheritance-or-generalization"><span class="header-section-number">3.1</span> Inheritance (or Generalization)</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.2</span> </a></li>
+  <li><a href="#association" id="toc-association" class="nav-link" data-scroll-target="#association"><span class="header-section-number">3.1</span> Association</a></li>
+  <li><a href="#aggregation-has-a" id="toc-aggregation-has-a" class="nav-link" data-scroll-target="#aggregation-has-a"><span class="header-section-number">3.2</span> Aggregation (“Has-a”)</a></li>
+  <li><a href="#composition-part-of" id="toc-composition-part-of" class="nav-link" data-scroll-target="#composition-part-of"><span class="header-section-number">3.3</span> Composition (“Part-of”)</a></li>
+  <li><a href="#dependency-uses-a" id="toc-dependency-uses-a" class="nav-link" data-scroll-target="#dependency-uses-a"><span class="header-section-number">3.4</span> Dependency (“Uses-a”)</a></li>
+  <li><a href="#inheritance-generalization---is-a" id="toc-inheritance-generalization---is-a" class="nav-link" data-scroll-target="#inheritance-generalization---is-a"><span class="header-section-number">3.5</span> Inheritance (Generalization - “Is-a”)</a></li>
+  <li><a href="#realization-implementation" id="toc-realization-implementation" class="nav-link" data-scroll-target="#realization-implementation"><span class="header-section-number">3.6</span> Realization (Implementation)</a></li>
+  <li><a href="#regarding-abstract-class" id="toc-regarding-abstract-class" class="nav-link" data-scroll-target="#regarding-abstract-class"><span class="header-section-number">3.7</span> Regarding abstract class</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">3.8</span> Summary</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -288,20 +292,137 @@ Figure&nbsp;1
 <h1 data-number="3"><span class="header-section-number">3</span> Relationships between classes</h1>
 <p>UML is not just about pretty pictures. If used correctly, UML precisely conveys how code should be implemented from diagrams. If precisely interpreted, the implemented code will correctly reflect the intent of the designer.</p>
 <p><img src="./figures/07-relationships-between-classes.png" class="img-fluid"></p>
-<section id="inheritance-or-generalization" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="inheritance-or-generalization"><span class="header-section-number">3.1</span> Inheritance (or Generalization)</h2>
+<p><span style="color:royalblue"><strong>What we have learned so far</strong></span></p>
+<p>We have learned the following concepts:</p>
 <ul>
-<li>Represents an <span style="color:red"><strong>“is-a”</strong></span> <strong>relationship</strong>.</li>
-<li>An <strong>abstract class name</strong> is shown <strong>in italics</strong>.</li>
+<li>Inheritance</li>
+<li>Composition</li>
+<li>Aggregation</li>
+<li>Association</li>
+<li>Realization</li>
+<li>Dependiencies</li>
 </ul>
-<p>SubClass1 and SubClass2 are specializations of SuperClass.</p>
-<p><img src="./figures/08-inheritance-in-class-diagram.png" class="img-fluid"></p>
-<p>Of course, we can also draw like this</p>
+<p>This is just another diagram you can find online</p>
+<p><img src="./figures/class-diagram-relationship.png" class="img-fluid"></p>
+<p>Diagram using <code>mermaid</code> in Quarto.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
+<pre class="mermaid mermaid-js">classDiagram
+classA --|&gt; classB : Inheritance
+classC --* classD : Composition
+classE --o classF : Aggregation
+classG -- classH : Association
+%% classI -- classJ : Link(Solid)
+classK ..&gt; classL : Dependency
+classM ..|&gt; classN : Realization
+%% classO .. classP : Link(Dashed)
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Below, we shall revisit these concepts but we go from weak to strong connections.</p>
+<section id="association" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="association"><span class="header-section-number">3.1</span> Association</h2>
+<p><span style="color:royalblue"><strong>Association</strong></span> is the most general relationship. It signifies a structural link between two peer classes. It can be uni-directional (one class knows about the other) or bi-directional (both know about each other).</p>
+<ul>
+<li><strong>Logic</strong>: “Class A is associated with class B”</li>
+<li><strong>Visual</strong>: A solid line. An arrow indicates the direction of the relationship. No arrow means bi-directional.</li>
+<li><strong>Example</strong>: A <code>Teacher</code> and a <code>Student</code>. They are related, but one does not “own” the other.</li>
+</ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">classDiagram
+    direction LR
+    class Teacher
+    class Student
+    %% The simple solid line indicates general association
+    Teacher "0..*" -- "0..*" Student
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="aggregation-has-a" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="aggregation-has-a"><span class="header-section-number">3.2</span> Aggregation (“Has-a”)</h2>
+<p><span style="color:royalblue"><strong>Aggregation</strong></span> is a specialized form of association that represents a “whole-part” relationship. However, it is “weak” — the parts can exist independently of the whole.</p>
+<ul>
+<li><strong>Logic</strong>: “Class A has a Class B (but Class B can live without A).”</li>
+<li><strong>Visual</strong>: A solid line with an empty diamond at the “whole” (parent) end.</li>
+<li><strong>Example</strong>: A Library and a Book. If the library closes down, the books still exist.</li>
+</ul>
+</section>
+<section id="composition-part-of" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="composition-part-of"><span class="header-section-number">3.3</span> Composition (“Part-of”)</h2>
+<p><span style="royalblue"><strong>Composition</strong></span> is a “strong” whole-part relationship. The part’s lifecycle is strictly managed by the whole. If the whole is destroyed, the parts are destroyed too.</p>
+<ul>
+<li><strong>Logic</strong>: “Class B is an integral part of Class A.”</li>
+<li><strong>Visual</strong>: A solid line with a filled diamond at the “whole” end.</li>
+<li><strong>Example</strong>: A <code>House</code> and a <code>Room</code>. You cannot have a room that exists independently of a house; if the house is demolished, the room is gone.</li>
+</ul>
+</section>
+<section id="dependency-uses-a" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="dependency-uses-a"><span class="header-section-number">3.4</span> Dependency (“Uses-a”)</h2>
+<p><span style="royalblue"><strong>Dependency</strong></span> is a weaker, often temporary relationship. It exists when one class uses another as a parameter in a method or a local variable. If the definition of the supplier class changes, the client class might need to change as well.</p>
+<ul>
+<li><strong>Logic</strong>: “Class A uses Class B to perform a task.”</li>
+<li><strong>Visual</strong>: A dashed line with an open arrow.</li>
+<li><strong>Example</strong>: A <code>Printer</code> class depends on a <code>Document</code> class to print. The printer doesn’t “own” the document; it just needs it for a specific operation.</li>
+</ul>
+</section>
+<section id="inheritance-generalization---is-a" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="inheritance-generalization---is-a"><span class="header-section-number">3.5</span> Inheritance (Generalization - “Is-a”)</h2>
+<p>Inheritance is used when one class (the subclass or child) derives its attributes and methods from another class (the superclass or parent). It represents a specialized version of a more general concept.</p>
+<ul>
+<li><strong>Logic</strong>: “Class B is a type of Class A.”</li>
+<li><strong>Visual</strong>: A solid line with a large hollow triangle pointing toward the parent class.</li>
+<li><strong>Example</strong>: A Car is a type of Vehicle. The Car inherits general traits like speed but may have specific traits like trunkSize.</li>
+</ul>
+</section>
+<section id="realization-implementation" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="realization-implementation"><span class="header-section-number">3.6</span> Realization (Implementation)</h2>
+<p>[<strong>Realization</strong>] is the relationship between an interface (or an abstract class) and the class that implements its behavior. The implementing class “realizes” the contract defined by the interface.</p>
+<ul>
+<li><strong>Logic</strong>: “Class A implements the functionality defined by Interface B.”</li>
+<li><strong>Visual</strong>: A dashed line with a hollow triangle arrow pointing to the interface.</li>
+<li><strong>Example</strong>: A <code>Car</code> class realizing a <code>Vehicle</code> interface.</li>
+</ul>
+</section>
+<section id="regarding-abstract-class" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="regarding-abstract-class"><span class="header-section-number">3.7</span> Regarding abstract class</h2>
+<p>In UML, there are two primary ways to signify that a class is Abstract. Since abstract classes are designed to be inherited rather than instantiated, the visual notation needs to distinguish them from “concrete” classes.</p>
+<ul>
+<li><p><strong>The Standard Notation: Italics</strong></p>
+<p>The most common way to represent an abstract class is to write the class name in italics. If the class has abstract methods (methods with no implementation), those method names should also be italicized.</p>
+<p><strong>Visual</strong>: <em>ClassName</em></p></li>
+<li><p><strong>The Explicit Notation: Stereotype</strong></p>
+<p>If italics aren’t clear enough (especially in hand-drawn diagrams), you can use a stereotype. You place the word “abstract” inside guillemets (« ») above the class name.</p>
+<p><strong>Visual</strong>: «abstract»</p></li>
+</ul>
+<!-- SubClass1 and SubClass2 are specializations of SuperClass.
+
+![](./figures/08-inheritance-in-class-diagram.png)
+
+Of course, we can also draw like this
+
+::::::{.cell layout-align="default"}
+
+:::::{.cell-output-display}
+
+::::{}
+`<figure class=''>`{=html}
+
+:::{}
+
 <pre class="mermaid mermaid-js">classDiagram
     SuperClass &lt;|-- SubClass1
     SuperClass &lt;|-- SubClass2
@@ -313,23 +434,21 @@ Figure&nbsp;1
     class SubClass2 {
     }
 </pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p><strong>Inheritance example – Shapes</strong></p>
-<p>This diagram is created by</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">classDiagram
+:::
+`</figure>`{=html}
+::::
+:::::
+::::::
+
+**Inheritance example -- Shapes**
+
+This diagram is created by 
+%%| fig-cap: "Inheritance example: Shape"
+classDiagram
     %% The syntax below forces the layout engine to group these
-    Shape &lt;|-- Polygon
-    Shape &lt;|-- Ellipse
-    Shape &lt;|-- Spline
+    Shape <|-- Polygon
+    Shape <|-- Ellipse
+    Shape <|-- Spline
 
     class Shape {
     }
@@ -339,15 +458,64 @@ Figure&nbsp;1
     }
     class Spline {
     }
-</pre>
-</div>
-<p></p><figcaption> Inheritance example: Shape</figcaption> </figure><p></p>
-</div>
-</div>
-</div>
+``` -->
 </section>
-<section id="section" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="section"><span class="header-section-number">3.2</span> </h2>
+<section id="summary" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="summary"><span class="header-section-number">3.8</span> Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Relationship</th>
+<th style="text-align: left;">Logic</th>
+<th style="text-align: left;">Lifecycle Link</th>
+<th style="text-align: left;">Visual Notation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Association</strong></td>
+<td style="text-align: left;">“Knows-a”</td>
+<td style="text-align: left;">Independent</td>
+<td style="text-align: left;">Solid Line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Aggregation</strong></td>
+<td style="text-align: left;">“Has-a”</td>
+<td style="text-align: left;">Independent</td>
+<td style="text-align: left;">Hollow Diamond</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Composition</strong></td>
+<td style="text-align: left;">“Part-of”</td>
+<td style="text-align: left;">Dependent</td>
+<td style="text-align: left;">Filled Diamond</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Dependency</strong></td>
+<td style="text-align: left;">“Uses-a”</td>
+<td style="text-align: left;">Temporary</td>
+<td style="text-align: left;">Dashed Arrow</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Inheritance</strong></td>
+<td style="text-align: left;">“Is-a”</td>
+<td style="text-align: left;">Parent-Child</td>
+<td style="text-align: left;">Hollow Triangle (Solid Line)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Realization</strong></td>
+<td style="text-align: left;">“Implements”</td>
+<td style="text-align: left;">Contractual</td>
+<td style="text-align: left;">Hollow Triangle (Dashed Line)</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
