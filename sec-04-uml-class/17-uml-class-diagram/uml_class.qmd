@@ -76,6 +76,7 @@ classDiagram
         +get_length()
     }
 ```
+
 ```{mermaid}
 %%| fig-cap: "Class with signature"
 classDiagram
@@ -87,24 +88,36 @@ classDiagram
 ```
 :::
 
+**It is perfectly fine if you want to draw like this**
 
-[**Class Name**]{style="color:royalblue"}
+```{mermaid}
+classDiagram
+    class Shape{
+        -int length
+        +int get_length()
+        +void set_length(int n)
+    }
+```
+
+
+&#9998;&nbsp; [**Class Name**]{style="color:royalblue"}
 
 - The name of the class appears in the first partition.
 
-[**Class Attributes**]{style="color:crimson"}
+&#9998;&nbsp; [**Class Attributes**]{style="color:royalblue"}
 
 - **Partitioning:** Attributes are listed in the second partition of the class box.
 - **Typing:** The attribute type is shown after a colon (e.g., `-length : int`).
 - **Implementation:** Attributes map directly onto **member variables** (data members) in source code.
 
 
-[Class Operations (Methods)]{style="color:crimson"}
+&#9998;&nbsp; [**Class Operations (Methods)**]{style="color:royalblue"}
 
 - **Partitioning:** Operations are shown in the third partition. They represent the services or behaviors the class provides.
 - **Return Types:** The return type of a method is shown after a colon at the end of the method signature (e.g., `+get_length() : int`).
 - **Parameters:** The return type of method parameters are shown after the colon following the parameter name (e.g., `+set_length(n : int) : void`).
 * **Implementation:** Operations map onto **class methods** in source code.
+
 
 
 ![Class Representation](./figures/03-class-notation-with-examples.png)
@@ -154,8 +167,6 @@ A diagram can be interpreted from various perspectives:
 
 UML is not just about pretty pictures. If used correctly, UML precisely conveys how code should be implemented from diagrams. If precisely interpreted, the implemented code will correctly reflect the intent of the designer.
 
-![](./figures/07-relationships-between-classes.png)
-
 [**What we have learned so far**]{style="color:royalblue"}
 
 We have learned the following concepts:
@@ -167,11 +178,17 @@ We have learned the following concepts:
 - Realization
 - Dependiencies
 
-This is just another diagram you can find online
+[**Diagrams you can find online**]{style="color:royalblue"}
+
+These are the UML class diagrams that you can find online if you Google "UML class diagrams"
+
+![](./figures/07-relationships-between-classes.png)
 
 ![](./figures/class-diagram-relationship.png)
 
-Diagram using `mermaid` in Quarto.
+[**Diagram using `mermaid` in Quarto.**]{style="color:royalblue"}
+
+To see the source code for this diagram, please have a look at `chap_17.qmd` file. This is the source code for this part:
 
 ```{mermaid}
 classDiagram
@@ -184,7 +201,6 @@ classK ..> classL : Dependency
 classM ..|> classN : Realization
 %% classO .. classP : Link(Dashed)
 ```
-
 
 Below, we shall revisit these concepts but we go from weak to strong connections.
 
@@ -201,8 +217,7 @@ classDiagram
     direction LR
     class Teacher
     class Student
-    %% The simple solid line indicates general association
-    Teacher "0..*" -- "0..*" Student
+    Teacher -- Student
 ```
 
 ## Aggregation ("Has-a")
@@ -213,6 +228,14 @@ classDiagram
 - **Visual**: A solid line with an empty diamond at the "whole" (parent) end.
 - **Example**: A Library and a Book. If the library closes down, the books still exist.
 
+```{mermaid}
+classDiagram
+    direction LR
+    class Library
+    class Book
+    Library o-- Book
+```
+
 ## Composition ("Part-of")
 
 [**Composition**]{style="royalblue"} is a "strong" whole-part relationship. The part's lifecycle is strictly managed by the whole. If the whole is destroyed, the parts are destroyed too.
@@ -220,6 +243,14 @@ classDiagram
 - **Logic**: "Class B is an integral part of Class A."
 - **Visual**: A solid line with a filled diamond at the "whole" end.
 - **Example**: A `House` and a `Room`. You cannot have a room that exists independently of a house; if the house is demolished, the room is gone.
+
+```{mermaid}
+classDiagram
+    direction LR
+    class House
+    class Room
+    House *-- Room
+```
 
 ## Dependency ("Uses-a")
 
@@ -229,21 +260,58 @@ classDiagram
 - **Visual**: A dashed line with an open arrow.
 - **Example**: A `Printer` class depends on a `Document` class to print. The printer doesn't "own" the document; it just needs it for a specific operation.
 
+```{mermaid}
+classDiagram
+    direction LR
+    class Printer
+    class Document
+    Printer --> Document: uses
+```
+
 ## Inheritance (Generalization - "Is-a")
 
 Inheritance is used when one class (the subclass or child) derives its attributes and methods from another class (the superclass or parent). It represents a specialized version of a more general concept.
 
 - **Logic**: "Class B is a type of Class A."
 - **Visual**: A solid line with a large hollow triangle pointing toward the parent class.
-- **Example**: A Car is a type of Vehicle. The Car inherits general traits like speed but may have specific traits like trunkSize.
+- **Example**: An `Ellipse` is a `Circle
+
+```{mermaid}
+classDiagram
+    direction LR
+    class Ellipse
+    class Circle
+    Ellipse <|-- Circle
+```
 
 ## Realization (Implementation)
 
-[**Realization**] is the relationship between an interface (or an abstract class) and the class that implements its behavior. The implementing class "realizes" the contract defined by the interface.
+[**Realization**] is the relationship between an abstract class (or an interface) and the class that implements its behavior. The implementing class "realizes" the contract defined by the abstract class or the interface.
 
 - **Logic**: "Class A implements the functionality defined by Interface B."
 - **Visual**: A dashed line with a hollow triangle arrow pointing to the interface.
-- **Example**: A `Car` class realizing a `Vehicle` interface.
+- **Example**: A `Car` class realizing a the abstract class `Vehicle` .
+
+```{mermaid}
+classDiagram
+    direction LR
+    class Car
+    class Vehicle {
+        <<abstract>>
+    }
+    Vehicle <|.. Car
+```
+
+## Summary of relationship between classes
+
+| Relationship | Logic | Lifecycle Link | Visual Notation |
+| :--- | :--- | :--- | :--- |
+| **Association** | "Knows-a" | Independent | Solid Line |
+| **Aggregation** | "Has-a" | Independent | Hollow Diamond |
+| **Composition** | "Part-of" | Dependent | Filled Diamond |
+| **Dependency** | "Uses-a" | Temporary | Dashed Arrow |
+| **Inheritance** | "Is-a" | Parent-Child | Hollow Triangle (Solid Line) |
+| **Realization** | "Implements" | Contractual | Hollow Triangle (Dashed Line) |
     
 ## Regarding abstract class 
 
@@ -254,11 +322,117 @@ In UML, there are two primary ways to signify that a class is Abstract. Since ab
     The most common way to represent an abstract class is to write the class name in italics. If the class has abstract methods (methods with no implementation), those method names should also be italicized.
 
     **Visual**: _ClassName_
+
 - **The Explicit Notation: Stereotype**
 
     If italics aren't clear enough (especially in hand-drawn diagrams), you can use a stereotype. You place the word "abstract" inside guillemets (« ») above the class name.
 
     **Visual**: «abstract»
+
+    ```{mermaid}
+    classDiagram
+        direction LR
+        class Car
+        class Vehicle {
+            <<abstract>>
+        }
+        Vehicle <|.. Car
+    ```
+
+:::{.callout-tip}
+# How to note abstract class in paper exam
+In paper exam, we write `*ClassName*` with the double asterisks surrouding the `ClassName`.
+:::
+
+# Cardinality
+
+In UML, [**Cardinality**]{style="color:red"} (more formally known as [**Multiplicity**]{style="color:red./"}) defines the numerical relationship between two classes. It answers the question: "How many instances of Class A can be associated with one instance of Class B?"
+
+## Common Cardinality Notations
+
+| Notation | Meaning | Logical Description |
+| :--- | :--- | :--- |
+| **0..1** | Zero or one | Optional relationship (e.g., an Employee may have a Desk). |
+| **1** | Exactly one | Mandatory relationship (e.g., a Car has exactly one Motor). |
+| **0..*** | Zero or more | Optional collection (e.g., a Folder can contain zero or many Files). |
+| **1..*** | One or more | Mandatory collection (e.g., a Team must have at least one Player). |
+| ***** | Many | Short-hand for 0..* (e.g., a Member can join many Groups). |
+| **n** | Specific number | Fixed quantity (e.g., a Tricycle has exactly 3 Wheels). |
+| **m..n** | Numerical range | Bound quantity (e.g., a Jury has between 6 and 12 Members). |
+
+## Cardinality: Examples
+
+:::{.callout-note}
+It is fine if you want to write data type in front of attributes (data members).
+:::
+
+A `Car` has $4$ `Tire`s and $1$ `Engine`:
+
+```{mermaid}
+classDiagram
+    direction LR
+    class Car {
+        +String model
+        +start_enginer()
+    }
+    class Tire {
+        +int pressure
+    }
+    class Engine {
+        +int horse_power
+    }
+
+    %% The filled diamond represents Composition (strong ownership)
+    %% The numbers represent the Multiplicity/Cardinality
+    Car "1" *-- "4" Tire : has
+    Car "1" *-- "1" Engine : has
+```
+
+A `Library` can have many `Book`s and many `CD`s
+
+```{mermaid}
+classDiagram
+    direction BT
+    class Library {
+        +String branchName
+        +open()
+    }
+    class Book {
+        +String isbn
+        +String title
+    }
+    class CD {
+        +String artist
+        +int track_count
+    }
+
+    %% 'o--' represents Aggregation (hollow diamond)
+    %% '*' or '0..*' represents "many"
+    Library "1" o-- "*" Book : contains
+    Library "1" o-- "*" CD : contains
+```
+
+One `Doctor` can have/examine many `Patient`s and one `Patient` can visit many `Doctor`s
+
+```{mermaid}
+classDiagram
+    direction LR
+    class Doctor {
+        +String name
+        +String specialization
+        +schedule_appointment()
+    }
+    class Patient {
+        +String name
+        +Date dateOfBirth
+        +view_medical_history()
+    }
+
+    %% The "*" on both ends signifies a Many-to-Many relationship
+    Doctor "*" -- "*" Patient : treats
+```
+
+
 
 <!-- SubClass1 and SubClass2 are specializations of SuperClass.
 
@@ -299,13 +473,3 @@ classDiagram
     }
 ``` -->
 
-## Summary
-
-| Relationship | Logic | Lifecycle Link | Visual Notation |
-| :--- | :--- | :--- | :--- |
-| **Association** | "Knows-a" | Independent | Solid Line |
-| **Aggregation** | "Has-a" | Independent | Hollow Diamond |
-| **Composition** | "Part-of" | Dependent | Filled Diamond |
-| **Dependency** | "Uses-a" | Temporary | Dashed Arrow |
-| **Inheritance** | "Is-a" | Parent-Child | Hollow Triangle (Solid Line) |
-| **Realization** | "Implements" | Contractual | Hollow Triangle (Dashed Line) |
