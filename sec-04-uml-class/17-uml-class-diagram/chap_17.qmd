@@ -24,10 +24,16 @@ format:
         # margin-right: 0.5em
         css: style.css
         number-sections: true
-        number-depth: 3
+        number-depth: 2
         toc: true               # table of content
         toc-location: left      # table of content on the left
         toc-title: "Table of Content"   # table of content title
+        mermaid: 
+            theme: neutral
+            config:
+                class:
+                    rankSep: 100 # increase this number (default is usually 50)
+                    nodeSep: 80
     # pdf:
     #     # embed-resources: true
     #     mermaid-format: svg
@@ -87,18 +93,18 @@ classDiagram
 :::
 
 
-[**Class Name**]{style="color:royalblue"}
+&#9998;&nbsp; [**Class Name**]{style="color:royalblue"}
 
 - The name of the class appears in the first partition.
 
-[**Class Attributes**]{style="color:crimson"}
+&#9998;&nbsp; [**Class Attributes**]{style="color:royalblue"}
 
 - **Partitioning:** Attributes are listed in the second partition of the class box.
 - **Typing:** The attribute type is shown after a colon (e.g., `-length : int`).
 - **Implementation:** Attributes map directly onto **member variables** (data members) in source code.
 
 
-[Class Operations (Methods)]{style="color:crimson"}
+&#9998;&nbsp; [**Class Operations (Methods)**]{style="color:royalblue"}
 
 - **Partitioning:** Operations are shown in the third partition. They represent the services or behaviors the class provides.
 - **Return Types:** The return type of a method is shown after a colon at the end of the method signature (e.g., `+get_length() : int`).
@@ -153,7 +159,6 @@ A diagram can be interpreted from various perspectives:
 
 UML is not just about pretty pictures. If used correctly, UML precisely conveys how code should be implemented from diagrams. If precisely interpreted, the implemented code will correctly reflect the intent of the designer.
 
-![](./figures/07-relationships-between-classes.png)
 
 [**What we have learned so far**]{style="color:royalblue"}
 
@@ -166,14 +171,18 @@ We have learned the following concepts:
 - Realization
 - Dependiencies
 
-This is just another diagram you can find online
+These are the diagrams that you can find online:
 
+<!-- ![A UML Class Diagram Online](./figures/07-relationships-between-classes.png){width="30%"}
+![](./figures/class-diagram-relationship.png){width="69%"} -->
+![A UML Class Diagram Online](./figures/07-relationships-between-classes.png)
 ![](./figures/class-diagram-relationship.png)
 
-Diagram using `mermaid` in Quarto.
+Diagram using `mermaid` in Quarto. [Please see the code in the source file `chap_17.qmd`]{style="color:navy"}
 
 ```{mermaid}
 classDiagram
+direction BT
 classA --|> classB : Inheritance
 classC --* classD : Composition
 classE --o classF : Aggregation
@@ -272,29 +281,18 @@ classDiagram
 
 - **Logic**: "Class A implements the functionality defined by Interface B."
 - **Visual**: A dashed line with a hollow triangle arrow pointing to the interface.
-- **Example**: A `Car` class realizing a the abstract class `Vehicle` .
+- **Example**: A `Tiger` class realizing a the abstract class `Animal` .
 
 ```{mermaid}
 classDiagram
     direction LR
-    class Car
-    class Vehicle {
+    class Tiger
+    class Animal {
         <<abstract>>
     }
-    Vehicle <|.. Car
+    Animal <|.. Tiger
 ```
 
-## Summary of relationship between classes
-
-| Relationship | Logic | Lifecycle Link | Visual Notation |
-| :--- | :--- | :--- | :--- |
-| **Association** | "Knows-a" | Independent | Solid Line |
-| **Aggregation** | "Has-a" | Independent | Hollow Diamond |
-| **Composition** | "Part-of" | Dependent | Filled Diamond |
-| **Dependency** | "Uses-a" | Temporary | Dashed Arrow |
-| **Inheritance** | "Is-a" | Parent-Child | Hollow Triangle (Solid Line) |
-| **Realization** | "Implements" | Contractual | Hollow Triangle (Dashed Line) |
-    
 ## Regarding abstract class 
 
 In UML, there are two primary ways to signify that a class is Abstract. Since abstract classes are designed to be inherited rather than instantiated, the visual notation needs to distinguish them from "concrete" classes.
@@ -323,8 +321,23 @@ In UML, there are two primary ways to signify that a class is Abstract. Since ab
 
 :::{.callout-tip}
 # How to note abstract class in paper exam
-In paper exam, we write `*ClassName*` with the double asterisks surrouding the `ClassName`.
+There are two ways to signify abstract class or interface in paper exam:
+
+- We can write `*ClassName*` with the double asterisks surrouding the `ClassName`.
+- We can write `<<abstract>>` above or below the `ClassName`.
 :::
+
+## Summary of relationship between classes
+
+| Relationship | Human Logic | Programming Logic | Lifecycle Link | Visual Notation |
+| :--- | :--- | :--- | :--- | :--------------- |
+| **Association** | "Knows-a" | General | Independent | Solid Line (──) |
+| **Aggregation** | "Has-a" | Whole-Part | Independent | Hollow Diamond (◇─) |
+| **Composition** | "Part-of" | Whole-Part | Dependent | Filled Diamond (◆─) |
+| **Dependency** | "Uses-a" | Temporary Use | Temporary | Dashed Arrow (- ->) |
+| **Inheritance** | "Is-a" | Parent-Child | Parent-Child | Hollow Triangle (Solid Line) (─▷) |
+| **Realization** | "Implements" | AbstractParent-Child | Contractual | Hollow Triangle (Dashed Line) (- -▷)|
+    
 
 # Cardinality
 
@@ -390,8 +403,8 @@ classDiagram
 
     %% 'o--' represents Aggregation (hollow diamond)
     %% '*' or '0..*' represents "many"
-    Library "1" o-- "*" Book : contains
-    Library "1" o-- "*" CD : contains
+    Library "1" o-- "0..*" Book : contains
+    Library "1" o-- "0..*" CD : contains
 ```
 
 One `Doctor` can have/examine many `Patient`s and one `Patient` can visit many `Doctor`s

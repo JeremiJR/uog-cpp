@@ -36,6 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="chap_17_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="chap_17_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="chap_17_files/libs/bootstrap/bootstrap-b87272d9800740e7bada56b571600860.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="mermaid-theme" content="neutral">
 <script src="chap_17_files/libs/quarto-diagram/mermaid.min.js"></script>
 <script src="chap_17_files/libs/quarto-diagram/mermaid-init.js"></script>
 <link href="chap_17_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
@@ -96,8 +97,8 @@ window.Quarto = {
   <li><a href="#dependency-uses-a" id="toc-dependency-uses-a" class="nav-link" data-scroll-target="#dependency-uses-a"><span class="header-section-number">3.4</span> Dependency (“Uses-a”)</a></li>
   <li><a href="#inheritance-generalization---is-a" id="toc-inheritance-generalization---is-a" class="nav-link" data-scroll-target="#inheritance-generalization---is-a"><span class="header-section-number">3.5</span> Inheritance (Generalization - “Is-a”)</a></li>
   <li><a href="#realization-implementation" id="toc-realization-implementation" class="nav-link" data-scroll-target="#realization-implementation"><span class="header-section-number">3.6</span> Realization (Implementation)</a></li>
-  <li><a href="#summary-of-relationship-between-classes" id="toc-summary-of-relationship-between-classes" class="nav-link" data-scroll-target="#summary-of-relationship-between-classes"><span class="header-section-number">3.7</span> Summary of relationship between classes</a></li>
-  <li><a href="#regarding-abstract-class" id="toc-regarding-abstract-class" class="nav-link" data-scroll-target="#regarding-abstract-class"><span class="header-section-number">3.8</span> Regarding abstract class</a></li>
+  <li><a href="#regarding-abstract-class" id="toc-regarding-abstract-class" class="nav-link" data-scroll-target="#regarding-abstract-class"><span class="header-section-number">3.7</span> Regarding abstract class</a></li>
+  <li><a href="#summary-of-relationship-between-classes" id="toc-summary-of-relationship-between-classes" class="nav-link" data-scroll-target="#summary-of-relationship-between-classes"><span class="header-section-number">3.8</span> Summary of relationship between classes</a></li>
   </ul></li>
   <li><a href="#cardinality" id="toc-cardinality" class="nav-link" data-scroll-target="#cardinality"><span class="header-section-number">4</span> Cardinality</a>
   <ul class="collapse">
@@ -209,17 +210,17 @@ Figure&nbsp;1
 </figcaption>
 </figure>
 </div>
-<p><span style="color:royalblue"><strong>Class Name</strong></span></p>
+<p>✎&nbsp; <span style="color:royalblue"><strong>Class Name</strong></span></p>
 <ul>
 <li>The name of the class appears in the first partition.</li>
 </ul>
-<p><span style="color:crimson"><strong>Class Attributes</strong></span></p>
+<p>✎&nbsp; <span style="color:royalblue"><strong>Class Attributes</strong></span></p>
 <ul>
 <li><strong>Partitioning:</strong> Attributes are listed in the second partition of the class box.</li>
 <li><strong>Typing:</strong> The attribute type is shown after a colon (e.g., <code>-length : int</code>).</li>
 <li><strong>Implementation:</strong> Attributes map directly onto <strong>member variables</strong> (data members) in source code.</li>
 </ul>
-<p><span style="color:crimson">Class Operations (Methods)</span></p>
+<p>✎&nbsp; <span style="color:royalblue"><strong>Class Operations (Methods)</strong></span></p>
 <ul>
 <li><strong>Partitioning:</strong> Operations are shown in the third partition. They represent the services or behaviors the class provides.</li>
 <li><strong>Return Types:</strong> The return type of a method is shown after a colon at the end of the method signature (e.g., <code>+get_length() : int</code>).</li>
@@ -325,7 +326,6 @@ Figure&nbsp;1
 <section id="relationships-between-classes" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Relationships between classes</h1>
 <p>UML is not just about pretty pictures. If used correctly, UML precisely conveys how code should be implemented from diagrams. If precisely interpreted, the implemented code will correctly reflect the intent of the designer.</p>
-<p><img src="./figures/07-relationships-between-classes.png" class="img-fluid"></p>
 <p><span style="color:royalblue"><strong>What we have learned so far</strong></span></p>
 <p>We have learned the following concepts:</p>
 <ul>
@@ -336,15 +336,18 @@ Figure&nbsp;1
 <li>Realization</li>
 <li>Dependiencies</li>
 </ul>
-<p>This is just another diagram you can find online</p>
-<p><img src="./figures/class-diagram-relationship.png" class="img-fluid"></p>
-<p>Diagram using <code>mermaid</code> in Quarto.</p>
+<p>These are the diagrams that you can find online:</p>
+<!-- ![A UML Class Diagram Online](./figures/07-relationships-between-classes.png){width="30%"}
+![](./figures/class-diagram-relationship.png){width="69%"} -->
+<p><img src="./figures/07-relationships-between-classes.png" class="img-fluid" alt="A UML Class Diagram Online"> <img src="./figures/class-diagram-relationship.png" class="img-fluid"></p>
+<p>Diagram using <code>mermaid</code> in Quarto. <span style="color:navy">Please see the code in the source file <code>chap_17.qmd</code></span></p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">classDiagram
+direction BT
 classA --|&gt; classB : Inheritance
 classC --* classD : Composition
 classE --o classF : Aggregation
@@ -491,7 +494,7 @@ classM ..|&gt; classN : Realization
 <ul>
 <li><strong>Logic</strong>: “Class A implements the functionality defined by Interface B.”</li>
 <li><strong>Visual</strong>: A dashed line with a hollow triangle arrow pointing to the interface.</li>
-<li><strong>Example</strong>: A <code>Car</code> class realizing a the abstract class <code>Vehicle</code> .</li>
+<li><strong>Example</strong>: A <code>Tiger</code> class realizing a the abstract class <code>Animal</code> .</li>
 </ul>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
@@ -500,11 +503,11 @@ classM ..|&gt; classN : Realization
 <div>
 <pre class="mermaid mermaid-js">classDiagram
     direction LR
-    class Car
-    class Vehicle {
+    class Tiger
+    class Animal {
         &lt;&lt;abstract&gt;&gt;
     }
-    Vehicle &lt;|.. Car
+    Animal &lt;|.. Tiger
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -512,65 +515,8 @@ classM ..|&gt; classN : Realization
 </div>
 </div>
 </section>
-<section id="summary-of-relationship-between-classes" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="summary-of-relationship-between-classes"><span class="header-section-number">3.7</span> Summary of relationship between classes</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Relationship</th>
-<th style="text-align: left;">Logic</th>
-<th style="text-align: left;">Lifecycle Link</th>
-<th style="text-align: left;">Visual Notation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>Association</strong></td>
-<td style="text-align: left;">“Knows-a”</td>
-<td style="text-align: left;">Independent</td>
-<td style="text-align: left;">Solid Line</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Aggregation</strong></td>
-<td style="text-align: left;">“Has-a”</td>
-<td style="text-align: left;">Independent</td>
-<td style="text-align: left;">Hollow Diamond</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Composition</strong></td>
-<td style="text-align: left;">“Part-of”</td>
-<td style="text-align: left;">Dependent</td>
-<td style="text-align: left;">Filled Diamond</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Dependency</strong></td>
-<td style="text-align: left;">“Uses-a”</td>
-<td style="text-align: left;">Temporary</td>
-<td style="text-align: left;">Dashed Arrow</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Inheritance</strong></td>
-<td style="text-align: left;">“Is-a”</td>
-<td style="text-align: left;">Parent-Child</td>
-<td style="text-align: left;">Hollow Triangle (Solid Line)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Realization</strong></td>
-<td style="text-align: left;">“Implements”</td>
-<td style="text-align: left;">Contractual</td>
-<td style="text-align: left;">Hollow Triangle (Dashed Line)</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="regarding-abstract-class" class="level2" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="regarding-abstract-class"><span class="header-section-number">3.8</span> Regarding abstract class</h2>
+<section id="regarding-abstract-class" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="regarding-abstract-class"><span class="header-section-number">3.7</span> Regarding abstract class</h2>
 <p>In UML, there are two primary ways to signify that a class is Abstract. Since abstract classes are designed to be inherited rather than instantiated, the visual notation needs to distinguish them from “concrete” classes.</p>
 <ul>
 <li><p><strong>The Standard Notation: Italics</strong></p>
@@ -608,9 +554,78 @@ classM ..|&gt; classN : Realization
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In paper exam, we write <code>*ClassName*</code> with the double asterisks surrouding the <code>ClassName</code>.</p>
+<p>There are two ways to signify abstract class or interface in paper exam:</p>
+<ul>
+<li>We can write <code>*ClassName*</code> with the double asterisks surrouding the <code>ClassName</code>.</li>
+<li>We can write <code>&lt;&lt;abstract&gt;&gt;</code> above or below the <code>ClassName</code>.</li>
+</ul>
 </div>
 </div>
+</section>
+<section id="summary-of-relationship-between-classes" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="summary-of-relationship-between-classes"><span class="header-section-number">3.8</span> Summary of relationship between classes</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Relationship</th>
+<th style="text-align: left;">Human Logic</th>
+<th style="text-align: left;">Programming Logic</th>
+<th style="text-align: left;">Lifecycle Link</th>
+<th style="text-align: left;">Visual Notation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Association</strong></td>
+<td style="text-align: left;">“Knows-a”</td>
+<td style="text-align: left;">General</td>
+<td style="text-align: left;">Independent</td>
+<td style="text-align: left;">Solid Line (──)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Aggregation</strong></td>
+<td style="text-align: left;">“Has-a”</td>
+<td style="text-align: left;">Whole-Part</td>
+<td style="text-align: left;">Independent</td>
+<td style="text-align: left;">Hollow Diamond (◇─)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Composition</strong></td>
+<td style="text-align: left;">“Part-of”</td>
+<td style="text-align: left;">Whole-Part</td>
+<td style="text-align: left;">Dependent</td>
+<td style="text-align: left;">Filled Diamond (◆─)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Dependency</strong></td>
+<td style="text-align: left;">“Uses-a”</td>
+<td style="text-align: left;">Temporary Use</td>
+<td style="text-align: left;">Temporary</td>
+<td style="text-align: left;">Dashed Arrow (- -&gt;)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Inheritance</strong></td>
+<td style="text-align: left;">“Is-a”</td>
+<td style="text-align: left;">Parent-Child</td>
+<td style="text-align: left;">Parent-Child</td>
+<td style="text-align: left;">Hollow Triangle (Solid Line) (─▷)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Realization</strong></td>
+<td style="text-align: left;">“Implements”</td>
+<td style="text-align: left;">AbstractParent-Child</td>
+<td style="text-align: left;">Contractual</td>
+<td style="text-align: left;">Hollow Triangle (Dashed Line) (- -▷)</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="cardinality" class="level1" data-number="4">
@@ -737,8 +752,8 @@ Note
 
     %% 'o--' represents Aggregation (hollow diamond)
     %% '*' or '0..*' represents "many"
-    Library "1" o-- "*" Book : contains
-    Library "1" o-- "*" CD : contains
+    Library "1" o-- "0..*" Book : contains
+    Library "1" o-- "0..*" CD : contains
 </pre>
 </div>
 <p></p></figure><p></p>
