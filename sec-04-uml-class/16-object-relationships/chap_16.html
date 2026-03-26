@@ -6,8 +6,8 @@
 <script src="chap_16_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="chap_16_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="chap_16_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="chap_16_files/libs/quarto-html/quarto-syntax-highlighting-3f230b53dc93e4a04bf4a3505d77a42a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.35">
+<link href="chap_16_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Lecturer in Multiscale Materials">
   <title>Object relationships</title>
@@ -17,9 +17,6 @@
   <link rel="stylesheet" href="chap_16_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="chap_16_files/libs/revealjs/dist/reveal.css">
   <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -98,7 +95,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="chap_16_files/libs/revealjs/dist/theme/quarto-4533105bd53bf86ac6c6eba8d14a6d13.css">
+  <link rel="stylesheet" href="chap_16_files/libs/revealjs/dist/theme/quarto-cd0dc4f2d43adb95807902f0fa75376a.css">
   <link rel="stylesheet" href="simple.css">
   <link href="chap_16_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="chap_16_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -210,6 +207,7 @@
 <li><a href="#/object-composition" id="/toc-object-composition">Object composition</a></li>
 <li><a href="#/aggregation" id="/toc-aggregation">Aggregation</a></li>
 <li><a href="#/association" id="/toc-association">Association</a></li>
+<li><a href="#/dependencies" id="/toc-dependencies">Dependencies</a></li>
 </ul>
 </nav>
 </section>
@@ -448,7 +446,7 @@
 </section>
 <section id="association-1" class="slide level2">
 <h2>Association</h2>
-<p>To qualify as an association, an object and another object have the following relationship:</p>
+<p>To qualify as an <span style="color:red"><strong>association</strong></span>, an object and another object have the following relationship:</p>
 <ul>
 <li>The associated object (member) is otherwise unrelated to the object (class)</li>
 <li>The associated object (member) can belong to more than one object (class) at a time</li>
@@ -474,6 +472,32 @@
 <li>Most often, associations are implemented using pointers, where the object points at the associated object.</li>
 </ul>
 <p>➥&nbsp; Have a quick look at <code>doctor_patient.cpp</code></p>
+</section></section>
+<section>
+<section id="dependencies" class="title-slide slide level1 center">
+<h1>Dependencies</h1>
+<p>We have explored 3 types of relationships: composition, aggregation, and association. We’ve saved the simplest one for last: dependencies.</p>
+</section>
+<section id="dependencies-1" class="slide level2">
+<h2>Dependencies</h2>
+<p>➥&nbsp; In casual conversation, we use the term dependency to indicate that an object is reliant upon another object for a given task.</p>
+<p>➥&nbsp; A <span style="color:red"><strong>dependency</strong></span> occurs when one object invokes another object’s functionality in order to accomplish some specific task.</p>
+<p>A good example of a dependency that we have already seen many times is <code>std::ostream</code>. Our classes that use <code>std::ostream</code> use it in order to accomplish the task of printing something to the console, but not otherwise.</p>
+</section>
+<section id="dependencies-versus-association-in-c" class="slide level2">
+<h2>Dependencies versus Association in C++</h2>
+<p>➥&nbsp; There’s typically some confusion about what differentiates a dependency from an association.</p>
+<ul>
+<li>Associations are a relationship where one class keeps a direct or indirect “link” to the associated class as a member.
+<ul>
+<li>a Doctor class has an array of pointers to its Patients as a member. You can always ask the Doctor who its patients are.</li>
+</ul></li>
+<li>Dependencies typically are not members.
+<ul>
+<li>the object being depended on is typically instantiated as needed (like opening a file to write data to)</li>
+<li>assed into a function as a parameter (like std::ostream in the overloaded <code>operator&lt;&lt;</code>)</li>
+</ul></li>
+</ul>
 
 </section></section>
     </div>
