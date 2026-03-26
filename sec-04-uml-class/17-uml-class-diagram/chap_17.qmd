@@ -46,6 +46,15 @@ format:
     #     number-sections: true
     #     number-depth: 2
     #     colorlinks: true
+    #     toc: true               # table of content
+    #     toc-location: left      # table of content on the left
+    #     toc-title: "Table of Content"   # table of content title
+    #     mermaid: 
+    #         theme: neutral
+    #         config:
+    #             class:
+    #                 rankSep: 100 # increase this number (default is usually 50)
+    #                 nodeSep: 80
 ---
 
 <!-- 
@@ -346,7 +355,7 @@ In UML, [**Cardinality**]{style="color:red"} (more formally known as [**Multipli
 ## Common Cardinality Notations
 
 | Notation | Meaning | Logical Description |
-| :--- | :--- | :--- |
+| :----- | :---------- | :--------------------------------- |
 | **0..1** | Zero or one | Optional relationship (e.g., an Employee may have a Desk). |
 | **1** | Exactly one | Mandatory relationship (e.g., a Car has exactly one Motor). |
 | **0..*** | Zero or more | Optional collection (e.g., a Folder can contain zero or many Files). |
@@ -361,7 +370,7 @@ In UML, [**Cardinality**]{style="color:red"} (more formally known as [**Multipli
 It is fine if you want to write data type in front of attributes (data members).
 :::
 
-A `Car` has $4$ `Tire`s and $1$ `Engine`:
+&#10149;&nbsp; [**Example 1**]{style="color:crimson"}: A `Car` has $4$ `Tire`s and $1$ `Engine`:
 
 ```{mermaid}
 classDiagram
@@ -383,7 +392,7 @@ classDiagram
     Car "1" *-- "1" Engine : has
 ```
 
-A `Library` can have many `Book`s and many `CD`s
+&#10149;&nbsp; [**Example 2**]{style="color:crimson"}: A `Library` can have many `Book`s and many `CD`s
 
 ```{mermaid}
 classDiagram
@@ -407,7 +416,7 @@ classDiagram
     Library "1" o-- "0..*" CD : contains
 ```
 
-One `Doctor` can have/examine many `Patient`s and one `Patient` can visit many `Doctor`s
+&#10149;&nbsp; [**Example 3**]{style="color:crimson"}: One `Doctor` can have/examine many `Patient`s and one `Patient` can visit many `Doctor`s
 
 ```{mermaid}
 classDiagram
@@ -424,5 +433,5 @@ classDiagram
     }
 
     %% The "*" on both ends signifies a Many-to-Many relationship
-    Doctor "*" -- "*" Patient : treats
+    Doctor "0..*" -- "0..*" Patient : treats
 ```

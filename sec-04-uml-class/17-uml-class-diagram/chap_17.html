@@ -635,9 +635,9 @@ classM ..|&gt; classN : Realization
 <h2 data-number="4.1" class="anchored" data-anchor-id="common-cardinality-notations"><span class="header-section-number">4.1</span> Common Cardinality Notations</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 11%">
+<col style="width: 21%">
+<col style="width: 66%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -700,7 +700,7 @@ Note
 <p>It is fine if you want to write data type in front of attributes (data members).</p>
 </div>
 </div>
-<p>A <code>Car</code> has <span class="math inline">\(4\)</span> <code>Tire</code>s and <span class="math inline">\(1\)</span> <code>Engine</code>:</p>
+<p>➥&nbsp; <span style="color:crimson"><strong>Example 1</strong></span>: A <code>Car</code> has <span class="math inline">\(4\)</span> <code>Tire</code>s and <span class="math inline">\(1\)</span> <code>Engine</code>:</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -729,7 +729,7 @@ Note
 </div>
 </div>
 </div>
-<p>A <code>Library</code> can have many <code>Book</code>s and many <code>CD</code>s</p>
+<p>➥&nbsp; <span style="color:crimson"><strong>Example 2</strong></span>: A <code>Library</code> can have many <code>Book</code>s and many <code>CD</code>s</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -760,7 +760,7 @@ Note
 </div>
 </div>
 </div>
-<p>One <code>Doctor</code> can have/examine many <code>Patient</code>s and one <code>Patient</code> can visit many <code>Doctor</code>s</p>
+<p>➥&nbsp; <span style="color:crimson"><strong>Example 3</strong></span>: One <code>Doctor</code> can have/examine many <code>Patient</code>s and one <code>Patient</code> can visit many <code>Doctor</code>s</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -780,7 +780,7 @@ Note
     }
 
     %% The "*" on both ends signifies a Many-to-Many relationship
-    Doctor "*" -- "*" Patient : treats
+    Doctor "0..*" -- "0..*" Patient : treats
 </pre>
 </div>
 <p></p></figure><p></p>
