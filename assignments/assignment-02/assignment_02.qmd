@@ -19,9 +19,7 @@ format:
         # page-layout: full
         # margin-left: 0.5em
         # margin-right: 0.5em
-        # page-layout: full
-        # margin-left: 0.5em
-        # margin-right: 0.5em
+       
         css: style.css
         number-sections: true
         number-depth: 3
