@@ -11,30 +11,29 @@
 /////////////////////////////////////////////////////////
 
 
-// This function just does the maths step. Called by g()
+// This function does the maths step. Called by g(), only return to maximise line efficiency.
 double g(double y) 
 {
     return 0.5 * (y + 5.0 / y);
 }
 
 /* 
-This is the main void,
-it returns the 'cout' line,
-it has the loop function with a check if the value is to go over the tolerance.
-The input is the initial guess.
+The initial guess is called here,
+this loop checks if the new value is within the tolerance,
+a low tolerance is used to get a more accurate result.
 */
 double iter(double x0)
 {
-    // Defining values and data types
+    /* Defining values and data types at the start for clarity*/
      double tol = 1e-6;
      int n = 100;
      int nc = 0;
      double xold = x0;
      for (int k = 0; k < n; k++) 
      {    
-        // Running through function
+        // Function call to calculate the new value and checks if the new value is within the tolerance.
         double xnew = g(xold);
-        if (abs(xnew - xold) < tol) { // This check's if the abs value is smaller than tolerance, if it is it breaks the loop and ends the loop with a break.
+        if (std::fabs(xnew - xold) < tol) { // Fabs is used to get the absolute value instead of abs, as its a double.
             std::cout << "done at " << nc + 1 << " iterations. Root: " << xnew;
             break;
         }
@@ -42,7 +41,6 @@ double iter(double x0)
         xold = xnew;
         // Resetting value
         nc++;
-        // Increment.
      }
     return 0;
 }
@@ -53,12 +51,12 @@ double iter(double x0)
 /////////////////////////////////////////////////////////
 
 
-// This function does the maths step. Called by f().
+// This function does the maths step. Called by f(), only return to maximise line efficiency.
 double f(double l) 
 {
     return exp(-0.1 * l) * sin(2 * l);   
 }
-// This function does the maths differential step. Called by df().
+// This function does the maths differential step. Called by df(), only return to maximise line efficiency.
 double df(double l) 
 {
     return exp(-0.1 * l) * (2 * cos(2*l) - (0.1 * sin(2*l)));
@@ -68,7 +66,7 @@ to find the root of a nonlinear equation.
 The input is the initial guess.*/
 double newt(double x0) 
 {   
-    // Defining values and data types
+    /* Defining values and data types at the start for clarity*/
     double tol = 1e-6;
     int n = 10000;
     int nc = 0;
@@ -80,7 +78,7 @@ double newt(double x0)
         double fval = f(xold);
         double dfval = df(xold);
         // Checks if the derivative is zero.
-        if (abs(dfval) < 1e-15) 
+        if (std::fabs(dfval) < 1e-15) 
         {
             // If condition met, it breaks and spits out the divergence message.
             std::cout << "Divergence: Derivative is zero at" << xold << "at iteration" << nc;
@@ -89,8 +87,8 @@ double newt(double x0)
         // Main Newton-Raphson step, calculates the new value.
         double xnew = xold - fval/dfval; 
         /*Checks if the new value is within the tolerance.
-        If it is, breaks and spits out the result.*/
-        if (abs(xnew - xold) < tol) 
+        If met, breaks and spits out the result.*/
+        if (std::fabs(xnew - xold) < tol) 
         {
             std::cout << "done at " << nc + 1 << " iterations. Root: " << xnew;
             break;
@@ -109,16 +107,12 @@ double newt(double x0)
 int main() 
 {
     double I = 10;
-    double N = 1.5;
-    std::cout << "Set the value set at " << I << "and" << iter(I) << std::endl;
-    std::cout << "Set the value set at " << N << "and" << newt(1) << std::endl;
+    std::cout << "Set the value at " << I << " and " << iter(I) << std::endl;
+    /*This loop calls the Newton-Raphson method for different initial guesses, ranging from 0-10
+    to display how it runs over different initial values. */
+    for (int k = 0; k < 11; k++) 
+    {
+         std::cout << "Set the value at " << k << " and " << newt(k) << std::endl;
+    }
     return 0;
 }
-
-
-// Defintely not the most amazing translation but seems to be very similar to python one, does make sense as its just following basic operations.
-// Most of this code worked, i ended up using gemini to help me figure out the increment loop(felt stupid when i read it), then some basic debugging(spacing and wrong equation input things.)
-
-
-
-

@@ -29,7 +29,7 @@ def newton_raphson(func, dfunc, x0, niters=100, tol=1e-6):
 
     print(f"Divergence: Root not found within the defined number of iterations and tolerance")
 
-xsol = newton_raphson(func=f, dfunc=df, x0=1.5*8)
+xsol = newton_raphson(func=f, dfunc=df, x0=150)
 print(xsol)
 
 x = np.linspace(0, 10, 1000)
