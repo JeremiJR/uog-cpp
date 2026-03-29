@@ -130,12 +130,14 @@ double add(double x, double y) {// floating point version
 ## Introduction to function overloading
 
 ::: {#lst-func-overloading lst-cap="Overload the function `add` &ndash; Filename: `function_overloading.cpp`"}
+
 ```{ .cpp}
 {{< include ./cpp/function_overloading.cpp >}}
 ```
 :::
 
 ## Intro to overload resolution
+
 **Overload resolution**. 
 
 When a function call is made to a function that has been overloaded, the compiler will try to match the function call to the appropriate overload based on the arguments used in the function call. This is called **overload reasolution**
@@ -143,7 +145,9 @@ When a function call is made to a function that has been overloaded, the compile
 Let us look at more complicated example.
 
 ## Intro to overload resolution
+
 ::: {#lst-overload-resolution lst-cap="An example on overload resolution &ndash; Filename: `overload_resolution.cpp`"}
+
 ```{.cpp}
 {{< include ./cpp/overload_resolution.cpp >}}
 ```
@@ -151,7 +155,7 @@ Let us look at more complicated example.
 
 ## Making it compile
 
-In order for a program using overloaded functions to compile, two things have to be true &mdash; Just common sense:
+In order for a program using overloaded functions to compile, two things have to be true. Just common sense:
 
 1. Each overloaded function has to be differentiated from the others.  
     We discuss how functions can be differentiated next slide.
@@ -294,7 +298,8 @@ Let's ssume we do not think it makes sense to call `print_int()` with a value of
 
 ## Deleting a function using `= delete` specifier
 
-::: {#lst-delete-function lst-cap="Delete a function using `= delete` specifier &mdash Filename: `delete_function.cpp`"}
+::: {#lst-delete-function lst-cap="Delete a function using `= delete` specifier. Filename: `delete_function.cpp`"}
+
 ```{.cpp}
 {{< include ./cpp/delete_function.cpp >}}
 ```
@@ -307,7 +312,7 @@ Let's ssume we do not think it makes sense to call `print_int()` with a value of
 - A **default argument** is a default value provided for a function parameter.
 - Default arguments are inserted by the compiler at site of the function call.
 
-::: {#lst-default-argument lst-cap="An example on default argument &mdash Filename: `default_argument.cpp`"}
+::: {#lst-default-argument lst-cap="An example on default argument. Filename: `default_argument.cpp`"}
 ```{.cpp}
 {{< include ./cpp/default_argument.cpp >}}
 ```
@@ -315,7 +320,7 @@ Let's ssume we do not think it makes sense to call `print_int()` with a value of
 
 ## Multiple default arguments
 
-::: {#lst-multiple-default-arguments lst-cap="An example on multiple default arguments &mdash Filename: `multiple_default_arguments.cpp`"}
+::: {#lst-multiple-default-arguments lst-cap="An example on multiple default arguments. Filename: `multiple_default_arguments.cpp`"}
 ```{.cpp}
 {{< include ./cpp/multiple_default_arguments.cpp >}}
 ```
@@ -332,7 +337,7 @@ print( , , 3)
 
 **Consequences from this** -- actually common sense if you think about these carefully:
 
-- In a function call, any explicitly provided arguments must be the leftmost arguments &mdash; That is, arguments with defaults cannot be skipped.
+- In a function call, any explicitly provided arguments must be the leftmost arguments. That is, arguments with defaults cannot be skipped.
   
     ```{.cpp}
     void print(std::string_view sv="Hello", double d=10.0);
@@ -343,7 +348,7 @@ print( , , 3)
         return 0;
     }
     ```
-- If a parameter is given a default argument, all subsequent parameters (to the right) must also be given default arguments. &mdash; Recall what you learned in Python.
+- If a parameter is given a default argument, all subsequent parameters (to the right) must also be given default arguments. Recall what you learned in Python.
 
     ```{.cpp}
     void print(int x=10, int y); // not allowed
@@ -355,6 +360,7 @@ print( , , 3)
 For a function with a forward declaration and a function definition, the default argument can be declared in either the forward declaration or the function definition, but not both.
 
 ::: {#lst-cannot-be-redeclared lst-cap="A default argument cannot be redeclared."}
+
 ```{.cpp}
 #include <iostream>
 
@@ -373,6 +379,7 @@ void print(int x, int y=4) // compile error: redefinition of default argument
 The default argument must also be declared in the translation unit before it can be used.
 
 ::: {#lst-must-be-declared-before-use lst-cap="Default argument must be declared before it can be used."}
+
 ```{.cpp}
 #include <iostream>
 
@@ -395,46 +402,47 @@ void print(int x, int y=4)
 
 
 
-## Default arguments cannot be redeclared; must be declared before
+## Default arguments cannot be redeclared. They must be declared before
 
 - Declare the default argument in the forward declaration and not in the function definition.
 - The forward declaration is more likely to be seen by other files and included before use (particularly if it's in a header file).
-- 
+
 ::: {#lst-forward-declaration-default-arguments lst-cap="Declare the default argument in the forward declaration and not in the function definition."}
+
 ```{.cpp}
 {{< include ./cpp/forward_declaration_default_arguments.cpp >}}
 ```
 :::
 
-## Default arguments cannot be redeclared: must be declared before
+## Default arguments cannot be redeclared. They must be declared before
 
-:::{.columns}
+::::{.columns}
 ::: {.column}
-- In the header file `print.h`:
+In the header file `print.h`:
   
-    ```{.cpp}
-    {{< include ./cpp/multiple-files/print.h >}}
-    ```
+```{.cpp}
+{{< include ./cpp/multiple-files/print.h >}}
+```
 :::
 ::: {.column}
-- In the file `main.cpp`:
+In the file `main.cpp`:
 
-    ```{.cpp}
-    #include "print.h"
-    #include <iostream>
-    void print(int x, int y)
-    {
-        std::cout << "x: " << x << '\n';
-        std::cout << "y: " << y << '\n';
-    }
-    int main()
-    {
-        print(5);
-        return 0;
-    }
-    ```
+```{.cpp}
+#include "print.h"
+#include <iostream>
+void print(int x, int y)
+{
+    std::cout << "x: " << x << '\n';
+    std::cout << "y: " << y << '\n';
+}
+int main()
+{
+    print(5);
+    return 0;
+}
+```
 :::
-:::
+::::
 
 ## Default arguments cannot be redeclared: must be declared before
 **Best practice** 
@@ -447,7 +455,7 @@ void print(int x, int y=4)
 
 Functions with default arguments may be overloaded.
 
-::: {#lst-default-argument-overloaded lst-cap="Overload a function with default argument &mdash; Filename: `default_argument.overloaded.cpp`"}
+::: {#lst-default-argument-overloaded lst-cap="Overload a function with default argument. Filename: `default_argument.overloaded.cpp`"}
 ```{.cpp}
 {{< include ./cpp/default_argument_overloaded.cpp >}}
 ```
@@ -463,8 +471,3 @@ void print(int x, double y = 20.5); // signature print(int, double)
 ```
 
 Default values are not part of a function's signature, so these function declarations are differentiated overloads.
-
-
-
-
-

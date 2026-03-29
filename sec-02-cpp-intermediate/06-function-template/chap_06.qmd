@@ -10,7 +10,7 @@ author-meta: "Lecturer in Multiscale Materials"
 format: 
     revealjs:
         output-file: "chap_06_slide.html"
-        embed-source: true
+        embed-resources: true
         theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
         mouse-wheel: true
         highlight-style: github
@@ -33,7 +33,7 @@ format:
             body-width: 1600px
             margin-width: 300px
             sidebar-width: 350px
-        embed-source: true
+        embed-resources: true
         theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
         mouse-wheel: true
         highlight-style: github
@@ -53,7 +53,7 @@ format:
         css: style.css
     pdf:
         output-file: "chap_06.pdf"
-        embed-source: true
+        embed-resources: true
         
         theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
         geometry:
