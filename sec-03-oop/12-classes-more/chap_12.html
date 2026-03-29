@@ -6,8 +6,8 @@
 <script src="chap_12_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="chap_12_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="chap_12_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="chap_12_files/libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.25">
+<link href="chap_12_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Lecturer in Multiscale Materials">
   <title>More on classes</title>
@@ -882,24 +882,27 @@ Listing&nbsp;11: A non-member function can access data members of a class by bei
 <span id="cb25-9"><a href=""></a>    <span class="dt">void</span> add<span class="op">(</span><span class="dt">double</span> value<span class="op">)</span> <span class="op">{</span> <span class="kw">this</span><span class="op">-&gt;</span>value <span class="op">+=</span> value<span class="op">;</span> <span class="op">}</span></span>
 <span id="cb25-10"><a href=""></a>    <span class="co">// Here is the friend declaration that makes non-member function </span></span>
 <span id="cb25-11"><a href=""></a>    <span class="co">// void print(const Accumulator&amp; accumulator) a friend of Accumulator</span></span>
-<span id="cb25-12"><a href=""></a>    <span class="kw">friend</span> <span class="dt">void</span> print<span class="op">(</span><span class="at">const</span> Accumulator<span class="op">&amp;</span> accumulator<span class="op">);</span></span>
-<span id="cb25-13"><a href=""></a><span class="op">};</span></span>
-<span id="cb25-14"><a href=""></a></span>
-<span id="cb25-15"><a href=""></a><span class="dt">void</span> print<span class="op">(</span><span class="at">const</span> Accumulator<span class="op">&amp;</span> accumulator<span class="op">)</span></span>
-<span id="cb25-16"><a href=""></a><span class="op">{</span></span>
-<span id="cb25-17"><a href=""></a>    <span class="co">// Because print() is a friend of Accumulator</span></span>
-<span id="cb25-18"><a href=""></a>    <span class="co">// it can access the private members of Accumulator</span></span>
-<span id="cb25-19"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> accumulator<span class="op">.</span>value<span class="op">;</span></span>
-<span id="cb25-20"><a href=""></a><span class="op">}</span></span>
-<span id="cb25-21"><a href=""></a></span>
-<span id="cb25-22"><a href=""></a><span class="dt">int</span> main<span class="op">()</span></span>
-<span id="cb25-23"><a href=""></a><span class="op">{</span></span>
-<span id="cb25-24"><a href=""></a>    Accumulator acc<span class="op">{};</span></span>
-<span id="cb25-25"><a href=""></a>    acc<span class="op">.</span>add<span class="op">(</span><span class="dv">42</span><span class="op">);</span>    <span class="co">// add 42 to the accumulator</span></span>
-<span id="cb25-26"><a href=""></a>    print<span class="op">(</span>acc<span class="op">);</span>     <span class="co">// call the print() non-member function</span></span>
-<span id="cb25-27"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
-<span id="cb25-28"><a href=""></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb25-29"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb25-12"><a href=""></a>    <span class="co">// friend void print(const Accumulator&amp; accumulator);</span></span>
+<span id="cb25-13"><a href=""></a>    <span class="dt">double</span> get_value<span class="op">()</span> <span class="at">const</span> </span>
+<span id="cb25-14"><a href=""></a>    <span class="op">{</span> <span class="cf">return</span> value<span class="op">;</span>     <span class="op">}</span></span>
+<span id="cb25-15"><a href=""></a><span class="op">};</span></span>
+<span id="cb25-16"><a href=""></a></span>
+<span id="cb25-17"><a href=""></a><span class="dt">void</span> print<span class="op">(</span><span class="at">const</span> Accumulator<span class="op">&amp;</span> accumulator<span class="op">)</span></span>
+<span id="cb25-18"><a href=""></a><span class="op">{</span></span>
+<span id="cb25-19"><a href=""></a>    <span class="co">// Because print() is a friend of Accumulator</span></span>
+<span id="cb25-20"><a href=""></a>    <span class="co">// it can access the private members of Accumulator</span></span>
+<span id="cb25-21"><a href=""></a>    <span class="co">// std::cout &lt;&lt; accumulator.value;</span></span>
+<span id="cb25-22"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> accumulator<span class="op">.</span>get_value<span class="op">();</span></span>
+<span id="cb25-23"><a href=""></a><span class="op">}</span></span>
+<span id="cb25-24"><a href=""></a></span>
+<span id="cb25-25"><a href=""></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb25-26"><a href=""></a><span class="op">{</span></span>
+<span id="cb25-27"><a href=""></a>    Accumulator acc<span class="op">{};</span></span>
+<span id="cb25-28"><a href=""></a>    acc<span class="op">.</span>add<span class="op">(</span><span class="dv">42</span><span class="op">);</span>    <span class="co">// add 42 to the accumulator</span></span>
+<span id="cb25-29"><a href=""></a>    print<span class="op">(</span>acc<span class="op">);</span>     <span class="co">// call the print() non-member function</span></span>
+<span id="cb25-30"><a href=""></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb25-31"><a href=""></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb25-32"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </figure>
 </div>
@@ -938,7 +941,7 @@ Listing&nbsp;12: Because <code>print()</code> is defined as a <code>friend</code
 <span id="cb26-23"><a href=""></a>    acc<span class="op">.</span>add<span class="op">(</span><span class="dv">5</span><span class="op">);</span> <span class="co">// add 5 to the accumulator</span></span>
 <span id="cb26-24"><a href=""></a></span>
 <span id="cb26-25"><a href=""></a>    print<span class="op">(</span>acc<span class="op">);</span> <span class="co">// call the print() non-member function</span></span>
-<span id="cb26-26"><a href=""></a></span>
+<span id="cb26-26"><a href=""></a>    </span>
 <span id="cb26-27"><a href=""></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb26-28"><a href=""></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
