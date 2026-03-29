@@ -23,10 +23,10 @@ format:
         # code-block-border-left: false # optional: remove left border
         # highlight-style: monokai      # good for dark images
         toc: true
-        toc-depth: 1
+        toc-depth: 3
         toc-title: Contents
         # chalkboard: true
-        css: simple.css
+        css: slide.css
     html:
         output-file: "chap_08.html"
         grid:
@@ -34,7 +34,8 @@ format:
             margin-width: 300px
             sidebar-width: 350px
         embed-resources: true
-        theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
+        theme: style.css   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
+        css: style.css
         mouse-wheel: true
         highlight-style: github
         slide-number: true
@@ -50,22 +51,20 @@ format:
         toc-depth: 1
         toc-title: Contents
         # chalkboard: true
-        css: style.css
+        
     pdf:
         output-file: "chap_08.pdf"
         embed-resources: true
-        
         theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
+        css: style.css
         geometry:
             - top=24px
             - bottom=24px
             - left=36px
             - right=36px
-        css: style.css
+        
         # mouse-wheel: true
         # highlight-style: github
-        slide-number: true
-        title-slide-style: pandoc
         echo: true
         code-overflow: wrap
         code-line-numbers: true

@@ -6,8 +6,8 @@
 <script src="chap_13_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="chap_13_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="chap_13_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="chap_13_files/libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.25">
+<link href="chap_13_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Lecturer in Multiscale Materials">
   <title>Overloading operators</title>
@@ -224,7 +224,7 @@
 <section id="a-revisit-to-defining-operators-in-python" class="slide level2">
 <h2>A revisit to defining operators in Python</h2>
 <p>➥&nbsp; Look at this example</p>
-<div id="aaf24bee" class="cell" data-execution_count="1">
+<div id="f030310c" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="kw">class</span> ComplexNumber:</span>
 <span id="cb1-2"><a href=""></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, real<span class="op">=</span><span class="dv">0</span>, imag<span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb1-3"><a href=""></a>        <span class="va">self</span>.real <span class="op">=</span> real</span>
@@ -236,14 +236,14 @@
 <span id="cb1-9"><a href=""></a><span class="bu">print</span>(b)</span>
 <span id="cb1-10"><a href=""></a><span class="bu">print</span>(a <span class="op">+</span> b)    <span class="co"># of course we want Python understands a + b</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;__main__.ComplexNumber object at 0x71ab8865a660&gt;
-&lt;__main__.ComplexNumber object at 0x71ab57772d50&gt;</code></pre>
+<pre><code>&lt;__main__.ComplexNumber object at 0x749b4e0fd550&gt;
+&lt;__main__.ComplexNumber object at 0x749b4e189450&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-error">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[10]</span><span class="ansi-green-fg">, line 10</span>
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[1]</span><span class="ansi-green-fg">, line 10</span>
 <span class="ansi-green-fg">      8</span> <span style="color:rgb(0,135,0)">print</span>(a)        <span style="font-style:italic;color:rgb(95,135,135)"># of course we want it to print a meaningful expression</span>
 <span class="ansi-green-fg">      9</span> <span style="color:rgb(0,135,0)">print</span>(b)
 <span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">10</span> <span style="color:rgb(0,135,0)">print</span>(<span class="ansi-yellow-bg">a</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">+</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">b</span>)    <span style="font-style:italic;color:rgb(95,135,135)"># of course we want Python understands a + b</span>
@@ -256,7 +256,7 @@
 <section id="a-revisit-to-defining-operators-in-python-1" class="slide level2">
 <h2>A revisit to defining operators in Python</h2>
 <p>➥&nbsp; We have learned these wishes are granted by defining the special functions (sepcial methods)</p>
-<div id="313c3dcc" class="cell" data-execution_count="2">
+<div id="c27083ae" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="kw">class</span> ComplexNumber:</span>
 <span id="cb3-2"><a href=""></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, real<span class="op">=</span><span class="dv">0</span>, imag<span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb3-3"><a href=""></a>        <span class="va">self</span>.real <span class="op">=</span> real</span>
@@ -812,7 +812,7 @@ Listing&nbsp;9: <code>main</code> file using the objects of Pennies type. Filena
 <section id="overloading-the-io-operators-teaser" class="slide level2">
 <h2>Overloading the I/O operators: Teaser</h2>
 <p>✎&nbsp; In Python, we can write</p>
-<div id="ee705fe4" class="cell" data-execution_count="3">
+<div id="7b6880e9" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a><span class="kw">class</span> Point:</span>
 <span id="cb23-2"><a href=""></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x:<span class="bu">float</span><span class="op">=</span><span class="dv">0</span>, y:<span class="bu">float</span><span class="op">=</span><span class="dv">0</span>, z:<span class="bu">float</span><span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb23-3"><a href=""></a>        <span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.z <span class="op">=</span> x, y, z    <span class="co"># packing tuple and unpacking tuple</span></span>

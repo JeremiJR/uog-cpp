@@ -26,7 +26,7 @@ format:
         toc-depth: 1
         toc-title: Contents
         # chalkboard: true
-        css: simple.css
+        css: slide.css
     html:
         output-file: "chap_06.html"
         grid:

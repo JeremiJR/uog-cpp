@@ -14,14 +14,15 @@ format:
         title-slide-style: pandoc
         echo: true
         code-overflow: wrap
-        code-line-numbers: true
+        code-line-numbers: true  
         code-block-bg: false          # <-- remove white background in code blocks
         # code-block-border-left: false # optional: remove left border
         # highlight-style: monokai      # good for dark images
         toc: true
         toc-depth: 1
         toc-title: Presentation Outline
-        chalkboard: true
+        # chalkboard: true
+        embed-resources: true
         css: simple.css
     pdf:
         embed-source: true
@@ -45,7 +46,7 @@ format:
         toc: true
         toc-depth: 3
         toc-title: Table of Conents
-        chalkboard: true
+        # chalkboard: true
 ---
 
 # Why Object-Oriented Programming

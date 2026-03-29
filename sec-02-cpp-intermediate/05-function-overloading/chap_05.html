@@ -70,7 +70,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="chap_05_files/libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="chap_05_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="chap_05_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="chap_05_files/libs/bootstrap/bootstrap-9896b4e2fd8d23a7aac05305f4dbf36b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="chap_05_files/libs/bootstrap/bootstrap-30d77e05b287effee6d87b7bcf0f9008.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -102,7 +102,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="doc.css">
 </head>
 
 <body class="quarto-light">
@@ -113,9 +113,41 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#introduction-to-function-overloading" id="toc-introduction-to-function-overloading" class="nav-link active" data-scroll-target="#introduction-to-function-overloading">Introduction to function overloading</a></li>
-  <li><a href="#function-overload-differentiation" id="toc-function-overload-differentiation" class="nav-link" data-scroll-target="#function-overload-differentiation">Function overload differentiation</a></li>
-  <li><a href="#default-arguments" id="toc-default-arguments" class="nav-link" data-scroll-target="#default-arguments">Default arguments</a></li>
+  <li><a href="#introduction-to-function-overloading" id="toc-introduction-to-function-overloading" class="nav-link active" data-scroll-target="#introduction-to-function-overloading">Introduction to function overloading</a>
+  <ul class="collapse">
+  <li><a href="#intro-to-function-overloading-rationale" id="toc-intro-to-function-overloading-rationale" class="nav-link" data-scroll-target="#intro-to-function-overloading-rationale">Intro to function overloading: Rationale</a></li>
+  <li><a href="#intro-to-function-overloading-rationale-1" id="toc-intro-to-function-overloading-rationale-1" class="nav-link" data-scroll-target="#intro-to-function-overloading-rationale-1">Intro to function overloading: Rationale</a></li>
+  <li><a href="#introduction-to-function-overloading-1" id="toc-introduction-to-function-overloading-1" class="nav-link" data-scroll-target="#introduction-to-function-overloading-1">Introduction to function overloading</a></li>
+  <li><a href="#introduction-to-function-overloading-2" id="toc-introduction-to-function-overloading-2" class="nav-link" data-scroll-target="#introduction-to-function-overloading-2">Introduction to function overloading</a></li>
+  <li><a href="#intro-to-overload-resolution" id="toc-intro-to-overload-resolution" class="nav-link" data-scroll-target="#intro-to-overload-resolution">Intro to overload resolution</a></li>
+  <li><a href="#intro-to-overload-resolution-1" id="toc-intro-to-overload-resolution-1" class="nav-link" data-scroll-target="#intro-to-overload-resolution-1">Intro to overload resolution</a></li>
+  <li><a href="#making-it-compile" id="toc-making-it-compile" class="nav-link" data-scroll-target="#making-it-compile">Making it compile</a></li>
+  </ul></li>
+  <li><a href="#function-overload-differentiation" id="toc-function-overload-differentiation" class="nav-link" data-scroll-target="#function-overload-differentiation">Function overload differentiation</a>
+  <ul class="collapse">
+  <li><a href="#how-overloaded-functions-are-differentiated" id="toc-how-overloaded-functions-are-differentiated" class="nav-link" data-scroll-target="#how-overloaded-functions-are-differentiated">How overloaded functions are differentiated</a></li>
+  <li><a href="#overloading-based-on-number-of-parameters" id="toc-overloading-based-on-number-of-parameters" class="nav-link" data-scroll-target="#overloading-based-on-number-of-parameters">Overloading based on number of parameters</a></li>
+  <li><a href="#overloading-based-on-type-of-parameters" id="toc-overloading-based-on-type-of-parameters" class="nav-link" data-scroll-target="#overloading-based-on-type-of-parameters">Overloading based on type of parameters</a></li>
+  <li><a href="#overloading-based-on-type-of-parameters-1" id="toc-overloading-based-on-type-of-parameters-1" class="nav-link" data-scroll-target="#overloading-based-on-type-of-parameters-1">Overloading based on type of parameters</a></li>
+  <li><a href="#the-return-type-of-a-function-is-not-considered-for-differentiation" id="toc-the-return-type-of-a-function-is-not-considered-for-differentiation" class="nav-link" data-scroll-target="#the-return-type-of-a-function-is-not-considered-for-differentiation">The return type of a function is not considered for differentiation</a></li>
+  <li><a href="#type-signature" id="toc-type-signature" class="nav-link" data-scroll-target="#type-signature">Type signature</a></li>
+  <li><a href="#function-overload-resolution-and-ambiguous-matches" id="toc-function-overload-resolution-and-ambiguous-matches" class="nav-link" data-scroll-target="#function-overload-resolution-and-ambiguous-matches">Function overload resolution and ambiguous matches</a></li>
+  <li><a href="#deleting-functions" id="toc-deleting-functions" class="nav-link" data-scroll-target="#deleting-functions">Deleting functions</a></li>
+  <li><a href="#deleting-a-function-using-delete-specifier" id="toc-deleting-a-function-using-delete-specifier" class="nav-link" data-scroll-target="#deleting-a-function-using-delete-specifier">Deleting a function using <code>= delete</code> specifier</a></li>
+  </ul></li>
+  <li><a href="#default-arguments" id="toc-default-arguments" class="nav-link" data-scroll-target="#default-arguments">Default arguments</a>
+  <ul class="collapse">
+  <li><a href="#default-arguments-1" id="toc-default-arguments-1" class="nav-link" data-scroll-target="#default-arguments-1">Default arguments</a></li>
+  <li><a href="#multiple-default-arguments" id="toc-multiple-default-arguments" class="nav-link" data-scroll-target="#multiple-default-arguments">Multiple default arguments</a></li>
+  <li><a href="#multiple-default-arguments-more-on-this" id="toc-multiple-default-arguments-more-on-this" class="nav-link" data-scroll-target="#multiple-default-arguments-more-on-this">Multiple default arguments: More on this</a></li>
+  <li><a href="#default-arguments-can-not-be-redeclared" id="toc-default-arguments-can-not-be-redeclared" class="nav-link" data-scroll-target="#default-arguments-can-not-be-redeclared">Default arguments can not be redeclared</a></li>
+  <li><a href="#default-arguments-must-be-declared-before-use" id="toc-default-arguments-must-be-declared-before-use" class="nav-link" data-scroll-target="#default-arguments-must-be-declared-before-use">Default arguments must be declared before use</a></li>
+  <li><a href="#default-arguments-cannot-be-redeclared.-they-must-be-declared-before" id="toc-default-arguments-cannot-be-redeclared.-they-must-be-declared-before" class="nav-link" data-scroll-target="#default-arguments-cannot-be-redeclared.-they-must-be-declared-before">Default arguments cannot be redeclared. They must be declared before</a></li>
+  <li><a href="#default-arguments-cannot-be-redeclared.-they-must-be-declared-before-1" id="toc-default-arguments-cannot-be-redeclared.-they-must-be-declared-before-1" class="nav-link" data-scroll-target="#default-arguments-cannot-be-redeclared.-they-must-be-declared-before-1">Default arguments cannot be redeclared. They must be declared before</a></li>
+  <li><a href="#default-arguments-cannot-be-redeclared-must-be-declared-before" id="toc-default-arguments-cannot-be-redeclared-must-be-declared-before" class="nav-link" data-scroll-target="#default-arguments-cannot-be-redeclared-must-be-declared-before">Default arguments cannot be redeclared: must be declared before</a></li>
+  <li><a href="#default-arguments-and-function-overloading" id="toc-default-arguments-and-function-overloading" class="nav-link" data-scroll-target="#default-arguments-and-function-overloading">Default arguments and function overloading</a></li>
+  <li><a href="#default-arguments-and-function-overloading-1" id="toc-default-arguments-and-function-overloading-1" class="nav-link" data-scroll-target="#default-arguments-and-function-overloading-1">Default arguments and function overloading</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="chap_05_slide.html"><i class="bi bi-file-slides"></i>RevealJS</a></li><li><a href="../chap_05.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
@@ -199,7 +231,7 @@ window.Quarto = {
 <div id="lst-func-overloading" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-func-overloading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;1: Overload the function <code>add</code> – Filename: <code>function_overloading.cpp</code>
+Listing&nbsp;1: Overload the function <code>add</code> – <strong>Filename</strong>: <code>function_overloading.cpp</code>
 </figcaption>
 <div aria-describedby="lst-func-overloading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -235,7 +267,7 @@ Listing&nbsp;1: Overload the function <code>add</code> – Filename: <code>funct
 <div id="lst-overload-resolution" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-overload-resolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;2: An example on overload resolution – Filename: <code>overload_resolution.cpp</code>
+Listing&nbsp;2: An example on overload resolution – <strong>Filename</strong>: <code>overload_resolution.cpp</code>
 </figcaption>
 <div aria-describedby="lst-overload-resolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -409,7 +441,7 @@ A function’s return type is not used to differentiate overloaded functions.</p
 <div id="lst-delete-function" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-delete-function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;3: Delete a function using <code>= delete</code> specifier. Filename: <code>delete_function.cpp</code>
+Listing&nbsp;3: Delete a function using <code>= delete</code> specifier. <strong>Filename</strong>: <code>delete_function.cpp</code>
 </figcaption>
 <div aria-describedby="lst-delete-function-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -449,7 +481,7 @@ Listing&nbsp;3: Delete a function using <code>= delete</code> specifier. Filenam
 <div id="lst-default-argument" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-default-argument-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;4: An example on default argument. Filename: <code>default_argument.cpp</code>
+Listing&nbsp;4: An example on default argument. <strong>Filename</strong>: <code>default_argument.cpp</code>
 </figcaption>
 <div aria-describedby="lst-default-argument-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -476,7 +508,7 @@ Listing&nbsp;4: An example on default argument. Filename: <code>default_argument
 <div id="lst-multiple-default-arguments" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-multiple-default-arguments-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;5: An example on multiple default arguments. Filename: <code>multiple_default_arguments.cpp</code>
+Listing&nbsp;5: An example on multiple default arguments. <strong>Filename</strong>: <code>multiple_default_arguments.cpp</code>
 </figcaption>
 <div aria-describedby="lst-multiple-default-arguments-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -604,13 +636,13 @@ Listing&nbsp;8: Declare the default argument in the forward declaration and not 
 <section id="default-arguments-cannot-be-redeclared.-they-must-be-declared-before-1" class="level2">
 <h2 class="anchored" data-anchor-id="default-arguments-cannot-be-redeclared.-they-must-be-declared-before-1">Default arguments cannot be redeclared. They must be declared before</h2>
 <div class="columns">
-<div class="column">
+<div class="column" style="width:45%;">
 <p>In the header file <code>print.h</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1"></a><span class="pp">#ifndef PRINT_H</span></span>
 <span id="cb21-2"><a href="#cb21-2"></a><span class="pp">#define PRINT_H</span></span>
 <span id="cb21-3"><a href="#cb21-3"></a><span class="dt">void</span> print<span class="op">(</span><span class="dt">int</span> x<span class="op">,</span> <span class="dt">int</span> y<span class="op">=</span><span class="dv">4</span><span class="op">);</span></span>
 <span id="cb21-4"><a href="#cb21-4"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column">
+</div><div class="column" style="width:54%;">
 <p>In the file <code>main.cpp</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1"></a><span class="pp">#include </span><span class="im">"print.h"</span></span>
 <span id="cb22-2"><a href="#cb22-2"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
@@ -641,7 +673,7 @@ Listing&nbsp;8: Declare the default argument in the forward declaration and not 
 <div id="lst-default-argument-overloaded" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-default-argument-overloaded-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Listing&nbsp;9: Overload a function with default argument. Filename: <code>default_argument.overloaded.cpp</code>
+Listing&nbsp;9: Overload a function with default argument. <strong>Filename</strong>: <code>default_argument.overloaded.cpp</code>
 </figcaption>
 <div aria-describedby="lst-default-argument-overloaded-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a href="#cb23-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>

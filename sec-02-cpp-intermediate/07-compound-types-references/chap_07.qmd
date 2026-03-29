@@ -54,14 +54,13 @@ format:
     pdf:
         output-file: "chap_07.pdf"
         embed-resources: true
-        
+        css: style.css
         theme: simple   # other themes: beige, blood, dark, dracula, league, moon, night, serif, simple, sky, solarized
         geometry:
             - top=24px
             - bottom=24px
             - left=36px
             - right=36px
-        css: style.css
         # mouse-wheel: true
         # highlight-style: github
         slide-number: true
