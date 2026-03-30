@@ -1,60 +1,59 @@
 ---
-title: "Assignment 02"
-subtitle: "C++ Object-oriented Programming"
-author:
-    Khiem Nguyen 
-    <br> Lecturer in Multiscale Materials
-    <br> <khiem.nguyen@glasgow.ac.uk>
+title: "Chapter 17: UML Class Diagram"
+author: Khiem Nguyen -- <khiem.nguyen@glasgow.ac.uk>
+    # <br>Lecturer in Multiscale Materials
+    # <br><khiem.nguyen@glasgow.ac.uk>
 author-meta: "Lecturer in Multiscale Materials"
-jupyter: false
-execute: 
-  eval: true
+
 format: 
+    # other themes: 
+    #   beige, blood, dark, dracula, league, moon, 
+    #   night, serif, simple, sky, solarized
+    # highlight-style: monokai      # good for dark images
     html:
-        # embed-resources: true
+        output-file: "chap_17.html"
         grid:
-            body-width: 1400px
-            margin-width: 20px
-            sidebar-width: 200px
-        # page-layout: full
-        # margin-left: 0.5em
-        # margin-right: 0.5em
-        # page-layout: full
-        # margin-left: 0.5em
-        # margin-right: 0.5em
-        css: style.css
+            body-width: 1600px
+            margin-width: 300px
+            sidebar-width: 350px
+        embed-resources: true
+        theme: simple
+        highlight-style: github
+        css: doc.css
         number-sections: true
-        number-depth: 2
-        toc: true               # table of content
-        toc-location: left      # table of content on the left
-        toc-title: "Table of Content"   # table of content title
-        mermaid: 
-            theme: neutral
-            config:
-                class:
-                    rankSep: 100 # increase this number (default is usually 50)
-                    nodeSep: 80
+        number-depth: 3
+        mouse-wheel: true
+        title-slide-style: pandoc
+        echo: true
+        code-overflow: wrap
+        code-line-numbers: true
+        code-block-bg: true     # <-- remove white background in code blocks
+        code-block-border-left: false
+        toc: true
+        toc-depth: 3
+        toc-title: Contents
     # pdf:
-    #     # embed-resources: true
-    #     mermaid-format: svg
+    #     output-file: "chap_17.pdf"
+    #     embed-resources: true
+    #     theme: simple
+    #     highlight-style: github      # good for dark images
+    #     css: doc.css
+    #     number-sections: true
+    #     number-depth: 3
     #     geometry:
     #         - top=24px
     #         - bottom=24px
     #         - left=36px
     #         - right=36px
-    #     css: style.css
-    #     number-sections: true
-    #     number-depth: 2
-    #     colorlinks: true
-    #     toc: true               # table of content
-    #     toc-location: left      # table of content on the left
-    #     toc-title: "Table of Content"   # table of content title
-    #     mermaid: 
-    #         theme: neutral
-    #         config:
-    #             class:
-    #                 rankSep: 100 # increase this number (default is usually 50)
-    #                 nodeSep: 80
+    #     echo: true
+    #     code-overflow: wrap
+    #     code-line-numbers: true
+    #     code-block-bg: true # <-- remove white background in code blocks
+    #     code-block-border-left: false
+    #     toc: true
+    #     toc-depth: 3
+    #     toc-title: Contents
+
 ---
 
 <!-- 
