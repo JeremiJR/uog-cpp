@@ -454,6 +454,9 @@ In this section, we study:
 - Gradient of loss function
   
 
+## Problem description
+
+The problem description for a classification problem is quite similar to the description of a regression problem in terms of the given dataset and the ultimate goal prediction, except that the label $y$ is not continous value. Instead, the label $y$ is a discrete value that represents the class membership of the data point. For example, in a binary classification problem, the label $y$ can take values $0$ or $1$, where $0$ represents one class and $1$ represents the other class. The dataset $\mathcal{D}$ is given by @eq-dataset again, but with the understanding that $y^{(i)}$ is a discrete value representing the class label of the $i$-th data point $\mathbf{x}^{(i)}$. The goal of a classification problem is to build a model that can predict the class label of a new data point $\mathbf{x}$, which means we want to construct a function $f = f(\mathbf{x})$ that maps input features to class labels.
 
 **Simple example and reasoning for logistic regression**
 
@@ -526,14 +529,163 @@ plt.tight_layout()
 plt.show()
 ```
 
-:::{.callout-note}
+::: {.callout-tip}
 
 At this point, you may be wondering why we don't just change the threshold for linear regression to make it work better for classification problems. But we want a model that can make prediction on the unseen data. If we change the threshold and the new data points are added, we must constantly change the threshold, which is not a good solution. This is completely unlogical and not practical. We need a model that can learn from the data and make predictions without us having to manually adjust thresholds.
 
 However, the main reason is that linear regression can produce predicted values outside the range of $0$ and $1$, which does not make sense for probabilities. Logistic regression, on the other hand, uses the logistic function to ensure that the predicted probabilities are always between 0 and 1, making it more suitable for classification tasks.
 :::
 
+## Logistic regression model for binary classification
 
+The genius idea of logistic regression is to use the logistic function (also known as the sigmoid function) to model the probability of the positive class (class 1) as a function of the input features. The sigmoid function is defined as follows:
+$$
+\sigma(z) = \frac{1}{1 + e^{-z}}
+$$
+It maps any real-valued number into the (0, 1) interval, which can be interpreted as a probability. The logistic regression model for binary classification combines the linear regression model with the sigmoid function to model the probability of class membership. That is, we first compute a linear combination of the input features and then apply the sigmoid function to this linear combination to get the predicted probability of class $1$.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+x = np.linspace(-10, 10, 100)
+plt.figure(figsize=(5, 3))
+plt.plot(x, sigmoid(x), label='Sigmoid Function')
+plt.axhline(0.5, color='gray', linestyle='--', label='Threshold (0.5)')
+plt.xlabel('$z$')
+plt.ylabel('$\\sigma(z)$')
+plt.title('Sigmoid Function')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+[**Mathematical formulation**]{style="color:royalblue"}
+
+First, we compute the linear combination of the input features:
+$$
+z = \mathbf{w} \cdot \mathbf{x} + b
+$$
+where $\mathbf{w}$ is the weight vector, $\mathbf{x}$ is the input feature vector, and $b$ is the bias term. Then, we apply the sigmoid function to this linear combination to get the predicted probability of class $1$:
+$$
+\widehat{y} = \sigma(z) = \frac{1}{1 + e^{-z}} = \frac{1}{1 + e^{-(\mathbf{w} \cdot \mathbf{x} + b)}}
+$$
+
+## Loss function for training the logistic regression model
+
+We now have a model that can predict the probability of class membership for any given input $\mathbf{x}$. The next step is to define a loss function that we can use to train the logistic regression model by finding the optimal parameters $\mathbf{w}$ and $b$.
+
+We cannot use the mean squared error loss function for logistic regression because it is not suitable for classification problems. Instead, we use the cross-entropy loss function. For one data point, the cross-entropy loss is defined as follows:   
+$$
+\mathcal{L}(\widehat{y}, y) = \begin{cases}
+-\log(\widehat{y}) & \text{if } y = 1 \\
+-\log(1 - \widehat{y}) & \text{if } y = 0
+\end{cases}
+$$
+
+Let us analyse the behavior of this loss function. When $y = 1$, the loss is $-\log(\widehat{y})$. As $\widehat{y}$ approaches $1$, the loss approaches $0$, which is desirable because we want the predicted probability to be close to the true label. However, as $\widehat{y}$ approaches $0$, the loss approaches infinity, which penalizes incorrect predictions heavily. Similarly, when $y = 0$, the loss is $-\log(1 - \widehat{y})$. As $\widehat{y}$ approaches $0$, the loss approaches $0$, and as $\widehat{y}$ approaches $1$, the loss approaches infinity. This behavior encourages the model to make predictions that are close to the true labels.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+y = np.linspace(-10, 10, 100)
+plt.plot(y, -np.log(sigmoid(y)), label='Loss when $y=1$', linewidth=2)
+plt.plot(y, -np.log(1 - sigmoid(y)), label='Loss when $y=0$', linewidth=2)
+plt.axhline(0, color='gray', linestyle='--')
+plt.xlabel('$y$')
+plt.ylabel('Loss')
+plt.title('Cross-Entropy Loss for Logistic Regression')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+We can unify the loss function for both cases ($y=0$ and $y=1$) into a single expression:
+$$
+\mathcal{L}(\widehat{y}, y) = -\left[ y \log(\widehat{y}) + (1 - y) \log(1 - \widehat{y}) \right]
+$$
+
+
+For a dataset with $m$ samples, we can define the average loss over the entire dataset as follows:
+$$
+\begin{aligned}
+\mathcal{L}(\mathbf{w}, b) &= \frac{1}{m} \sum_{i=1}^{m} \mathcal{L}(\widehat{y}^{(i)}, y^{(i)}) \\[3pt]
+&= -\frac{1}{m} \sum_{i=1}^{m} \left[ y^{(i)} \log(\widehat{y}^{(i)}) + (1 - y^{(i)}) \log(1 - \widehat{y}^{(i)}) \right] \\[3pt]
+&= -\frac{1}{m} \sum_{i=1}^{m} \left[ y^{(i)} \log\left(\frac{1}{1 + e^{-(\mathbf{w} \cdot \mathbf{x}^{(i)} + b)}}\right) + (1 - y^{(i)}) \log\left(1 - \frac{1}{1 + e^{-(\mathbf{w} \cdot \mathbf{x}^{(i)} + b)}}\right) \right]
+\end{aligned}
+$$
+
+## Gradient of loss function
+
+As mentioned in the previous section, we can train the logistic regression model by finding the optimal parameters $\mathbf{w}$ and $b$ that minimize the loss function $\mathcal{L}(\mathbf{w}, b)$. To do this, we can use gradient descent, which requires us to compute the gradient of the loss function with respect to the parameters.
+
+The gradient of the loss function with respect to the parameters $\mathbf{w}$ and $b$ can be computed as follows:
+$$
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial w_j} &= \frac{1}{m} \sum_{i=1}^{m} \left(\widehat{y}^{(i)} - y^{(i)}\right) x_j^{(i)} \quad \text{for } j = 1, 2, \ldots, n \\[3pt]
+\frac{\partial \mathcal{L}}{\partial b} &= \frac{1}{m} \sum_{i=1}^{m} \left(\widehat{y}^{(i)} - y^{(i)}\right)  \cdot 1
+\end{aligned}
+$$
+
+As compared to the gradient of the loss function for linear regression, the gradient for logistic regression has a similar form, but with the predicted value $\widehat{y}^{(i)}$ being the output of the sigmoid function rather than a linear combination of the input features. This is because the loss function for logistic regression is based on the predicted probabilities, which are obtained by applying the sigmoid function to the linear combination of the input features. For interested readers, you can derive the above expressions for the gradient of the loss function by applying the chain rule of calculus to the loss function $\mathcal{L}(\mathbf{w}, b)$. Detailed derivation can be found in `derivation.html` in the `assignment-02` folder.
+
+[**Update rule for gradient descent**]{style="color:royalblue"}
+
+Once we have the gradient of the loss function, we can update the parameters $\mathbf{w}$ and $b$ using the following update rule for gradient descent:
+$$\begin{aligned}
+w_j^{[t+1]} &:= w_j^{[t]} - \alpha \frac{\partial \mathcal{L}}{\partial w_j} (\mathbf{w}^{[t]}, b^{[t]}) \quad \text{for } j = 1  , 2, \ldots, n \\[3pt]
+b^{[t+1]} &:= b^{[t]} - \alpha \frac{\partial \mathcal{L}}{\partial b} (\mathbf{w}^{[t]}, b^{[t]})
+\end{aligned}$$
+
+## Numerical example of logistic regression
+
+Let us come back to the simple example of students' study hours and their pass/fail status. We can apply logistic regression to this dataset to model the probability of passing as a function of hours studied. The logistic regression model will learn the parameters $\mathbf{w}$ and $b$ that best fit the data, and we can use these parameters to make predictions on new data points. We shall compute the loss function and its gradient for this dataset, and then use gradient descent to find the optimal parameters for the logistic regression model. We will also visualize the decision boundary learned by the logistic regression model.
+
+First, the loss function for this dataset can be computed using the formula for the cross-entropy loss. The predicted probabilities $\widehat{y}^{(i)}$ can be computed using the logistic regression model, and then we can substitute these predicted probabilities and the true labels $y^{(i)}$ into the loss function to compute the total loss over the dataset. We can then compute the gradient of the loss function with respect to the parameters $\mathbf{w}$ and $b$, and use this gradient to update the parameters using gradient descent. Finally, we can visualize the decision boundary learned by the logistic regression model to see how well it separates the two classes in the feature space.
+
+$$
+\begin{aligned}
+\mathcal{L} &= -\frac{1}{8} \sum_{i=1}^{8} \left[ y^{(i)} \log(\widehat{y}^{(i)}) + (1 - y^{(i)}) \log(1 - \widehat{y}^{(i)}) \right] \\[3pt]
+&= -\frac{1}{8} \left[ 0 \cdot \log(\widehat{y}^{(1)}) + 0 \cdot \log(\widehat{y}^{(2)}) + 0 \cdot \log(\widehat{y}^{(3)}) + 0 \cdot \log(\widehat{y}^{(4)}) + 1 \cdot \log(\widehat{y}^{(5)}) + 1 \cdot \log(\widehat{y}^{(6)}) + 1 \cdot \log(\widehat{y}^{(7)}) + 1 \cdot \log(\widehat{y}^{(8)}) \right] \\[3pt]
+&\quad + (1 - 0) \cdot \log(1 - \widehat{y}^{(1)}) + (1 - 0) \cdot \log(1 - \widehat{y}^{(2)}) + (1 - 0) \cdot \log(1 - \widehat{y}^{(3)}) + (1 - 0) \cdot \log(1 - \widehat{y}^{(4)}) \\[3pt]
+&\quad + (1 - 1) \cdot \log(1 - \widehat{y}^{(5)}) + (1 - 1) \cdot \log(1 - \widehat{y}^{(6)}) + (1 - 1) \cdot \log(1 - \widehat{y}^{(7)}) + (1 - 1) \cdot \log(1 - \widehat{y}^{(8)}) \\[3pt]
+&= -\frac{1}{8} \left[ \log(\widehat{y}^{(5)}) + \log(\widehat{y}^{(6)}) + \log(\widehat{y}^{(7)}) + \log(\widehat{y}^{(8)}) + \log(1 - \widehat{y}^{(1)}) + \log(1 - \widehat{y}^{(2)}) + \log(1 - \widehat{y}^{(3)}) + \log(1 - \widehat{y}^{(4)}) \right] \\[3pt]
+&= -\frac{1}{8} \left[ \sum_{i=5}^{8} \log(\widehat{y}^{(i)}) + \sum_{i=1}^{4} \log(1 - \widehat{y}^{(i)}) \right]
+\end{aligned}
+$$
+
+### Python implementation for loss function and gradient computation using symbolic computation
+
+```{python}
+import sympy as sp
+# Define symbols
+w, b = sp.symbols('w b')
+# Define the dataset (hours studied, pass/fail)
+data = [(17, 0), (18, 0), (19, 0), (20, 0), (21, 1), (22, 1), (23, 1), (24, 1)]
+def sigmoid(z):
+    return 1 / (1 + sp.exp(-z))
+def model(x):
+    return sigmoid(w * x + b)
+# Compute the loss function
+loss_terms = []
+for x_val, y_val in data:
+    pred = model(x_val)
+    loss_term = - (y_val * sp.log(pred) + (1 - y_val) * sp.log(1 - pred))
+    loss_terms.append(loss_term)
+n_samples = len(data)
+loss_function = sum(loss_terms) / n_samples 
+# Compute the gradients     
+gradients = [sp.diff(loss_function, var) for var in [w, b]]
+# Display results
+def prettify(text: str, n_dashes=30, char="="):
+    long_dash = n_dashes*char
+    print("\n" + long_dash + "\n" + text + "\n" + long_dash)
+prettify("Symbolic Loss Function")
+sp.pprint(loss_function)
+prettify("Gradient of the Loss Function")
+for var, grad in zip(['dw', 'db'], gradients):
+    print(f"{var} = {grad}")
+```
 
 ## Problem description
 
