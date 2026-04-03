@@ -28,27 +28,33 @@ format:
         toc-location: left      # table of content on the left
         toc-title: "Table of Content"   # table of content title
 
-    pdf:
-        embed-resources: true
-        geometry:
-            - top=24px
-            - bottom=24px
-            - left=36px
-            - right=36px
-        css: style.css
-        number-sections: true
-        number-depth: 3
-        colorlinks: true
+    # pdf:
+    #     embed-resources: true
+    #     geometry:
+    #         - top=24px
+    #         - bottom=24px
+    #         - left=36px
+    #         - right=36px
+    #     css: style.css
+    #     number-sections: true
+    #     number-depth: 3
+    #     colorlinks: true
 ---
 
 **Equations from main file `assignment_02.html`**
 
 **General Dataset**
+
+We are given a dataset $\mathcal{D}$ with $m$ samples and each sample has $n$ input features $\mathbf{x}^{(i)} = (x_1^{(i)}, \ldots, x_n^{(i)}) \in \mathbb{R}^{n}$ and one output label $y \in \mathbb{R}^{n}$.
+
 $$
 \mathcal{D} = \Big\{ \big( \mathbf{x}^{(1)}, y^{(1)} \big), \big( \mathbf{x}^{(2)}, y^{(2)} \big), \ldots, \big( \mathbf{x}^{(m)}, y^{(m)} \big) \Big\}
 $$ {#eq-dataset}
 
 **Gradient Descent Update Formla**
+
+The gradient descent method is given by the following iteration formula. The variable $\Theta$ corresponds to the model parameters, which are the learnable parameters of the model. The learning rate $\alpha$ is a positive scalar hyperparameter that controls the step size of each iteration.
+
 $$
 \Theta^{[t+1]} := \Theta^{[t]} - \alpha \nabla \mathcal{L}(\Theta^{[t]}),\quad \forall t= 0, 1, 2, \ldots
 $${#eq-gradient-descent-update-formula}
@@ -224,17 +230,17 @@ $${#eq-optimality-condition}
 
 We can easily derive
 $$
-\frac{\partial \mathcal{L}}{\partial w_1} = \frac{1}{2} \left[ (w_1 + b - 2) + (w_1 + w_2 + b - v) \right], \qquad \frac{\partial \mathcal{L}}{\partial w_2} = \frac{1}{2} \left[ (w_2 + b - 1) + (w_1 + w_2 + b - v) \right], \qquad \frac{\partial \mathcal{L}}{\partial b} = \frac{1}{2} \left[ (b - 1.5) + (w_1 + b - 2) + (w_2 + b - 1) + (w_1 + w_2 + b - v) \right]
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial w_1} &= \frac{1}{2} \left[ (w_1 + b - 2) + (w_1 + w_2 + b - v) \right], \\[3pt]
+\frac{\partial \mathcal{L}}{\partial w_2} &= \frac{1}{2} \left[ (w_2 + b - 1) + (w_1 + w_2 + b - v) \right], \\[3pt]
+\frac{\partial \mathcal{L}}{\partial b} &= \frac{1}{2} \left[ (b - 1.5) + (w_1 + b - 2) + (w_2 + b - 1) + (w_1 + w_2 + b - v) \right]
+\end{aligned}
 $$
 
 Then, we obtain a system of $3$ equations for $3$ **learnable parameters** $w_1, w_2, b$. The three equations given by the optimality condition @eq-optimality-condition have one single solution:
 
 $$
-\begin{aligned}
-w_1 &= \frac{2v - 1}{4} \\
-w_2 &= \frac{2v - 5}{4} \\
-b &= \frac{15 - 2v}{8}
-\end{aligned}
+w_1 = \frac{2v - 1}{4}, \quad w_2 = \frac{2v - 5}{4}, \quad b = \frac{15 - 2v}{8}
 $${#eq-minimal-point-linear-regression-example-model}
 
 [**Discussion on the loss function**]{style="color:royalblue"}
@@ -343,8 +349,6 @@ In fact, I used the results obtained by Python to write down the hand-written co
 :::
 
 ```{python}
-
-
 # Compute the gradients
 grad_w1 = sp.diff(loss_function, w1)
 grad_w2 = sp.diff(loss_function, w2)
@@ -440,7 +444,7 @@ plt.show()
 
 
 
-# Logistic Regression with multiple features
+# Logistic regression for binary classification
 
 In this section, we study:
 
@@ -449,6 +453,88 @@ In this section, we study:
 - Loss function for training the logistic regression model
 - Gradient of loss function
   
+
+
+**Simple example and reasoning for logistic regression**
+
+Asume we have a dataset of students' study hours and their pass/fail status in a semester. The dataset is given by the following table
+
+| Hours Studied | Pass/Fail (0/1) |
+|:--|:--|
+| 17 | 0 |
+| 18 | 0 |
+| 19 | 0 |
+| 20 | 0 |
+| 21 | 1 |
+| 22 | 1 |
+| 23 | 1 |
+| 24 | 1 |
+
+By looking at the dataset, we can see that there is a clear threshold around 20-21 hours of study. Students who studied less than 21 hours failed (label 0), while those who studied 21 hours or more passed (label 1). If we were to apply linear regression to this dataset, we get a linear line and the decision boundary (where the predicted value is 0.5) would be around 20.5 hours. However, this does not capture the sharp transition from fail to pass that occurs at around 21 hours.
+
+Now, if we introduce outliers: the students who studied 30, 31, 32, and 34 hours and they passed the course with the label 1, the linear regression line would shift significantly, and the decision boundary would move to around 22 hours. This is clearly not desirable as it does not reflect the true nature of the data. Although we call them outliers, they are actually just values that can occur in real life, and thus we need a model that can handle such scenarios without being overly influenced by them. This is where logistic regression comes into play, as it can model the probability of passing as a function of hours studied, and it is less sensitive to outliers compared to linear regression.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# 1. Dataset
+X = np.array([17, 18, 19, 20, 21, 22, 24, 26]).reshape(-1, 1)
+y = np.array([0, 0, 0, 0, 1, 1, 1, 1])
+
+# Outliers
+outliers = np.array([30, 31, 32, 34]).reshape(-1, 1)
+X_with_outlier = np.vstack([X, outliers])
+y_with_outlier = np.concatenate([y, [1, 1, 1, 1]])
+
+# 2. Train Models
+model_orig = LinearRegression().fit(X, y)
+model_outlier = LinearRegression().fit(X_with_outlier, y_with_outlier)
+
+# Calculate X where Y = Threshold (0.5)
+# x = (threshold - intercept) / slope
+threshold = 0.5
+x_bound_orig = (threshold - model_orig.intercept_) / model_orig.coef_[0]
+x_bound_outlier = (threshold - model_outlier.intercept_) / model_outlier.coef_[0]
+
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Points
+plt.scatter(X[y == 0], y[y == 0], color='blue', label='Class 0 (Fail)', marker='o', s=80)
+plt.scatter(X[y == 1], y[y == 1], color='red', label='Class 1 (Pass)', marker='x', s=100, linewidths=2)
+plt.scatter(outliers, [1, 1, 1, 1], color='magenta', label='Outlier (30 hrs)', marker='x', s=150, linewidths=3)
+
+# Regression Lines
+x_range = np.linspace(0, 32, 100).reshape(-1, 1)
+plt.plot(x_range, model_orig.predict(x_range), color='blue', linestyle='--', alpha=0.5, label='LR (Original)')
+plt.plot(x_range, model_outlier.predict(x_range), color='red', linestyle='-', label='LR (With Outlier)')
+
+# Threshold and Vertical Decision Boundaries
+plt.axhline(0.5, color='gray', linestyle=':', label='Threshold (y=0.5)')
+plt.axvline(x_bound_orig, color='green', linestyle='--', label=f'Orig Boundary: {x_bound_orig:.2f}')
+plt.axvline(x_bound_outlier, color='magenta', linestyle='-', label=f'Outlier Boundary: {x_bound_outlier:.2f}')
+
+plt.xlabel('Hours Studied')
+plt.ylabel('Predicted Value')
+plt.title('The Shifted Decision Boundary')
+plt.ylim(-0.2, 1.2)
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+
+:::{.callout-note}
+
+At this point, you may be wondering why we don't just change the threshold for linear regression to make it work better for classification problems. But we want a model that can make prediction on the unseen data. If we change the threshold and the new data points are added, we must constantly change the threshold, which is not a good solution. This is completely unlogical and not practical. We need a model that can learn from the data and make predictions without us having to manually adjust thresholds.
+
+However, the main reason is that linear regression can produce predicted values outside the range of $0$ and $1$, which does not make sense for probabilities. Logistic regression, on the other hand, uses the logistic function to ensure that the predicted probabilities are always between 0 and 1, making it more suitable for classification tasks.
+:::
+
+
+
 ## Problem description
 
 The problem description for a classification problem is quite similar to the description of a regression problem in terms of the given dataset and the ultimate goal prediction, except that the label $y$ is not continous value. For a $K$-category classification problem, the label $y$ can take one of the $K$ finite values $\{0, \ldots, K-1\}$. Examples are:
