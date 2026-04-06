@@ -11,7 +11,7 @@ execute:
   eval: true
 format: 
     html:
-        output-file: "maths.html"
+        output-file: "03-maths.html"
         embed-resources: true
         grid:
             body-width: 1600px
@@ -29,6 +29,7 @@ format:
         toc-title: "Table of Content"   # table of content title
 
     pdf:
+        output-file: "03-maths.pdf"
         embed-resources: true
         geometry:
             - top=24px
