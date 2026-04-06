@@ -626,7 +626,6 @@ First, we define the logistic regression model and the loss function using symbo
 ```{python}
 import sympy as sp
 import numpy as np
-import plotly.graph_objects as go
 
 w, b, x = sp.symbols('w b x')
 data = [(17, 0), (18, 0), (21, 1), (22, 1)]
@@ -761,6 +760,11 @@ w_j^{[t+1]} &:= w_j^{[t]} - \alpha \frac{\partial \mathcal{L}_{\text{reg}}}{\par
 b^{[t+1]} &:= b^{[t]} - \alpha \frac{\partial \mathcal{L}_{\text{reg}}}{\partial b} (\mathbf{w}^{[t]}, b^{[t]})
 \end{aligned}
 $$
+
+::: {.callout-note}
+
+Although the summation involves $y^{(i)} \log(\widehat{y}^{(i)}) + (1 - y^{(i)}) \log(1 - \widehat{y}^{(i)})$, the values of $y^{(i)}$ and $(1 - y^{(i)})$ are just either $0$ or $1$. For this reason, 
+:::
 
 :::{.callout-warning}
 For your assignment, you are required to implement the above update rule for gradient descent to [**train the logistic regression model with regularization**]{style="color:crimson"} on the given dataset. You will need to compute the predicted probabilities $\widehat{y}^{(i)}$ using the logistic regression model, compute the loss function and its gradient, and then update the parameters iteratively until convergence. You can also experiment with different learning rates $\alpha$ and regularization strengths $\lambda$ to see how they affect the training process and the final performance of the model.
