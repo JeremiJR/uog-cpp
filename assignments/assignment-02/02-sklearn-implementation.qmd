@@ -9,8 +9,10 @@ author-meta: "Lecturer in Multiscale Materials"
 jupyter: false
 execute: 
   eval: true
-format: 
+format:
+    
     html:
+        output-file: "02-sklearn-implementation.html"
         embed-resources: true
         grid:
             body-width: 1400px
@@ -29,6 +31,7 @@ format:
         toc-location: left      # table of content on the left
         toc-title: "Table of Content"   # table of content title
     pdf:
+        output-file: "02-sklearn-implementation.pdf"
         embed-resources: true
         geometry:
             - top=24px
@@ -58,6 +61,7 @@ We shall study two applications of `LinearRegression`
 First, we need to load data using the library Pandas and then convert the data into `ndarray`.
 
 ```{python}
+#| label: load-concrete-data
 import pandas as pd
 import numpy as np
 df = pd.read_csv("./data/concrete.csv") # concrete_data is a DataFrame object
@@ -68,6 +72,7 @@ print(f"First 5 rows of this concrete dataset:\n {df.head()}")
 This is a pretty sizable dataset. Both input features $\mathbf{x}^{(i)}$ and output label $y^{(i)}$ are stored in one single variable `data`. The first $8$ columns correspond to the input $\mathbf{x}$ and the last column to the output $y$. We extract `X` and `y` from this variable `data`:
 
 ```{python}
+#| label: extract-X-y-concrete
 X = data[:,:-1]     # all rows, all columns from the first to the second last
 y = data[:,-1]      # all rows, last column
 ```
@@ -77,6 +82,7 @@ y = data[:,-1]      # all rows, last column
 You will learn that we need to test whether our prediction model is good or not. However, all the data we have are only avaliable in the `csv` file. For this reason, machine learning practioners normally split the dataset into two sets: [**training set**]{style="color:brown"} and [**test set**]{style="color:brown"}. The training set is used to train the machine learning model, which means seeking the model parameters $\mathbf{w}$ and $b$ explained in Assignment 1. In our project, we don't have to training-test split when we build the library. I just want to explain the point.
 
 ```{python}
+#| label: train-test-split-concrete
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score    # to evaluate how good the model is later
@@ -87,6 +93,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random
 Training the model by using class [`LinearRegression`](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html) from **scikit-learn** is ridiculously easy as all the power-lifting has been done by the library.
 
 ```{python}
+#| label: train-linear-regression-concrete
 model = LinearRegression()  # define a LinearRegression model
 model.fit(X_train, y_train) # training happens here -- look for model parameters w, b
 ```
@@ -121,6 +128,7 @@ The $R^2$ score being close to $1$ means the model predicts extremely well, the 
 
 
 ```{python}
+#| label: r2-score-concrete
 r2_score_train = r2_score(y_true=y_train, y_pred=model.predict(X_train))
 r2_score_test = r2_score(y_true=y_test, y_pred=model.predict(X_test))
 print(f"Training set: R2-score: {r2_score_train:.4f}")
@@ -150,6 +158,7 @@ You should see that the application and steps laid out here can be generalized t
 As a starting point, we generate synthesized data with noise based on the cubic polynomial @eq-cubic-polynomial. 
 
 ```{python}
+#| label: generate-cubic-polynomial-sythesized-data
 import numpy as np
 import matplotlib.pyplot as plt
 np.random.seed(42)
@@ -185,12 +194,14 @@ You should see immediately from @eq-cubic-regression-model that "[Wait a minute]
 
 It is easy to form polynomial features in NumPy:
 ```{python}
+#| label: generate-polynomial-features-numpy
 X_poly_np = np.vstack((x_data, x_data**2, x_data**3)).transpose()
 ```
 
 Fortunately, **scikit-learn** gives us a tool to do this too. In the following code, the feature $x^{0} = 1$ is also added to the matrix `X_poly`.
 
 ```{python}
+#| label: generate-polynomial-features-sklearn
 from sklearn.preprocessing import PolynomialFeatures
 poly_features = PolynomialFeatures(degree=3)
 X_data = x_data.reshape((-1, 1))
@@ -201,6 +212,7 @@ print(f"X_poly.shape = {X_poly.shape}")
 Since we don't need the bias feature $x^{0}$, let us redo this step without this bias feature
 
 ```{python}
+#| label: generate-polynomial-features-sklearn-no-bias
 poly_features = PolynomialFeatures(degree=3, include_bias=False)
 X_poly = poly_features.fit_transform(X_data)
 print(f"X_poly =\n{X_poly[:4]}") # print the first 4 samples
@@ -209,6 +221,7 @@ print(f"X_poly.shape = {X_poly.shape}")
 
 We can easily check whether `X_poly_np` created above agress with `X_poly` created by using `PolynomialFeatures`.
 ```{python}
+#| label: check-polynomial-features-agreement
 # X_poly_np created above and this X_poly should be identical
 print(f"X_poly[:4] - X_poly_np[:4] =\n{X_poly[:4] - X_poly_np[:4]}")
 print(f"X_poly is close to X_poly_np = {np.allclose(X_poly, X_poly_np)}")
@@ -219,6 +232,7 @@ print(f"X_poly is close to X_poly_np = {np.allclose(X_poly, X_poly_np)}")
 The synthetical dataset is ready. We can now proceed to build the linear regression as in the last application. Note that we don't split the dataset into the training dataset and the test dataset because we don't want to verify the model against the test data. Instead, we just plot the polynomial regression model.
 
 ```{python}
+#| label: train-polynomial-regression-sklearn
 from sklearn.linear_model import LinearRegression
 model = LinearRegression()
 model.fit(X_poly, y_data)
@@ -230,6 +244,7 @@ model.fit(X_poly, y_data)
 If you think about this whole process "long enough", you will see that the linear regression model we have just built is nothing but just a function of multiple variable. That is, given a vector $\mathbf{x} = (x_1, x_2, x_3)$ this model gives me the value $\widehat{y} = f_\mathbf{w}, b(\mathbf{x})$. That's it. Therefore, to justify the prediction power of this model, let us try to visualize it. Hopefully, it should agree well with the original polynomial $p(x) = x(x-1)(x+1)$. However, as just explained, this model is a function of three variables. To visualize it, we must provide the input the inform $(x, x^{2}, x^{3})$. This is exactly what we will achieve in the following code.
 
 ```{python}
+#| label: plot-polynomial-regression-model
 xx = np.linspace(-1.5, 1.5, 500)
 XX = poly_features.fit_transform(xx.reshape(-1, 1))
 plt.figure(figsize=(5, 3.5))
@@ -261,6 +276,7 @@ $$
 **Generate data with polynomial features**
 
 ```{python}
+#| label: generate-polynomial-features-concrete
 df = pd.read_csv("./data/concrete.csv")
 data = df.to_numpy()
 X, y = data[:,:-1], data[:,-1]
@@ -275,6 +291,7 @@ print(f"X_poly.shape = {X_poly.shape}")
 **Train the model**
 
 ```{python}
+#| label: train-polynomial-regression-concrete
 X_train, X_test, y_train, y_test = train_test_split(X_poly, y, test_size=0.2, random_state=42)
 
 model = LinearRegression()
@@ -284,6 +301,7 @@ model.fit(X_train, y_train)
 **Assess the model**
 
 ```{python}
+#| label: r2-score-polynomial-regression-concrete
 r2_score_train = r2_score(y_true=y_train, y_pred=model.predict(X_train))
 r2_score_test = r2_score(y_true=y_test, y_pred=model.predict(X_test))
 print(f"Training dataset -- R2-score: {r2_score_train}")
@@ -312,6 +330,7 @@ In our ECG example, the label values are interpreted according to
 - label equal to $0$: **abnormal** -- the patient is **not fine**
 
 ```{python}
+#| label: load-ecg-data
 import pandas as pd
 df = pd.read_csv("./data/ecg.csv")  # df is a dataframe
 data = df.to_numpy()    # convert dataframe into numpy array
@@ -330,6 +349,7 @@ print(f"number of labels = 1: {np.sum(y == 1)}")
 
 We now plot some data samples and their corresponding label (either $0$ (abnormal) or $1$ (normal)).
 ```{python}
+#| label: plot-ecg-data
 import matplotlib.pyplot as plt
 import numpy as np
 # Plot some of the data for better understanding
@@ -351,6 +371,7 @@ plt.tight_layout()
 
 Next, we split the original dataset into two sets: training set and test set. We can use any splitting proportion we want. Here, we split $80\% - 20\%$ as above.
 ```{python}
+#| label: train-test-split-ecg-data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 n_samples_train, n_samples_test, n_samples = X_train.shape[0], X_test.shape[0], X.shape[0]
 ratio = (n_samples_train/n_samples, n_samples_test/n_samples)
@@ -362,6 +383,7 @@ print(f"Split ratio = {ratio[0]:.4f}, {ratio[1]:.4f}")
 
 Now, we define a `LogisticRegression` model object and perform the training
 ```{python}
+#| label: train-logistic-regression-ecg-data
 from sklearn.linear_model import LogisticRegression
 log_reg = LogisticRegression()
 log_reg.fit(X_train, y_train)
@@ -370,6 +392,7 @@ log_reg.fit(X_train, y_train)
 Unlike regression problems in which we can measure how well the model is by using $R^2$ score, we cannot use this score to measure how well the model performs on classification problem. Instead, we use the `accuracy_score` to measure how accurate the model can classify the samples into the right category. In our case, we measure how well the model can predict the samples in the test set. The score is just simply the number of correct predictions divided by the total number of predictions made.
 
 ```{python}
+#| label: accuracy-score-logistic-regression-ecg-data
 from sklearn.metrics import accuracy_score
 y_pred = log_reg.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
@@ -378,6 +401,7 @@ print(f"Model accuracy: {accuracy: .4f}")
 
 The model can make prediction fantastically, almost $99\%$ correctly. Now, we plot some data in the test set and show both the prediction as well as the ground truth label (the labels that are given by the data).
 ```{python}
+#| label: plot-ecg-data-prediction
 nrows, ncols = 2, 3
 plt.figure(figsize=(6, 4))
 np.random.seed(seed=42)         # just for reproducibility purpose
@@ -409,11 +433,12 @@ In this application, given an image of hand-written digit, we predict which numb
 First, we fetch the data online. This dataset has been used for benchmarking many machine learning models. The original dataset has $70000$ gray-scale image, all images have the same size $28 \times 28$. If we "unroll" the matrix of size $28\times 28$ into a single vector, this vector has size $28\cdot 28 = 784$. So, one single sample has $784$ features.
 
 ```{python}
+#| label: fetch-mnist-data
 import pandas as pd
 from sklearn.datasets import fetch_openml
 
 print("Fetching full MNIST dataset (this step takes some time)...")
-mnist = fetch_openml('mnist_784', version=1, as_frame=True) # mnist is a Bunch object
+mnist = fetch_openml('mnist_784', version=1, as_frame=True, parser='auto') # mnist is a Bunch object
 df = mnist.frame    # attribute frame is a dataframe
 print(f"type(mnist) = {type(mnist)}")
 print(f"type(df) = {type(df)}")
@@ -424,6 +449,7 @@ print(f"type(df) = {type(df)}")
 To make computing easy with `double` values in C++, I decide to scale the data into the `float64` (in Python) in the range $[0, 1]$.
 
 ```{python}
+#| label: scale-mnist-data
 pixel_columns = df.columns.drop('class')
 df[pixel_columns] = df[pixel_columns].astype('float64') / 255.0
 ```
@@ -442,24 +468,45 @@ The subset can be used to benchmark your implementation. Instead of training the
 
 First we create a `./data/mnist_full.csv` file using all $70000$ images in the original dataset.
 ```{python}
-print("Saving full dataset to 'mnist_full.csv'...")
-df.to_csv('./data/mnist_full.csv', index=False, header=False)
+#| label: save-full-mnist-csv
+from pathlib import Path
+file_path = Path("./data/mnist_full.csv")
+if file_path.exists():
+    print(f"File '{file_path}' already exists. Skipping saving full dataset.")
+else:   
+    print("Saving full dataset to 'mnist_full.csv'...")
+    df.to_csv(file_path, index=False, header=False)
 ```
 
 Next, we create two files `./data/mnist_mini.csv` ($10000$ images) and `./data/mnist_micro.csv` ($3000$ images).
 ```{python}
-def generate_distribute(n_value):
-    distribute = lambda x: x.sample(n=n_value, random_state=42) 
-    return distribute   # distribute is a function object
+#| label: generate-subset-csv
+def generate_mnist_csv(df, n_per_digit, output_filename):
+    
+    file_path = Path(output_filename)
+    if file_path.exists():
+        print(f"File '{file_path}' already exists. Skipping generation of subset.")
+        return
 
-n_values = [1000, 300]
-filenames = ["./data/mnist_mini.csv", "./data/mnist_micro.csv"]
-for i in range(len(n_values)):
-    print(f"Creating balanced {filenames[i]} with {10 * n_values[i]} images...")
-    distribute = generate_distribute(n_value=n_values[i])
-    df_subset = df.groupby('class').apply(distribute).reset_index(drop=True)
-    print(f"df_subset.shape = {df_subset.shape}")
-    df_subset.to_csv(filenames[i], index=False, header=False)
+    # If the file does not exist, we proceed to generate the subset
+    subsets = []
+    print(f"--- Sampling {n_per_digit} images per digit ---")
+    for digit in range(10):
+        # Filter for the specific digit
+        digit_df = df[df['class'].astype(int) == digit]
+        # Randomly sample the required number
+        sample = digit_df.sample(n=n_per_digit, random_state=42)
+        subsets.append(sample)
+    
+    # Combine and save (keeping them grouped initially for structure)
+    final_df = pd.concat(subsets).reset_index(drop=True)
+    final_df.to_csv(output_filename, index=False, header=False)
+    print(f"File '{output_filename}' saved with shape: {final_df.shape}")
+
+n_per_digit = [1000, 300]  # number of images per digit for the two subsets
+output_filenames = ['./data/mnist_mini.csv', './data/mnist_micro.csv']
+for n, output_filename in zip(n_per_digit, output_filenames):
+    generate_mnist_csv(df, n, output_filename)
 ```
 
 All the steps described above are given in one single python file `generate_mnist_csv.py`.
@@ -470,6 +517,7 @@ Let us read the `.csv` file and visualize the data by showing a few samples in i
 
 First, we read the `.csv` file into a `DataFrame` object, and then convert the data in this dataframe into `ndarray` objects.
 ```{python}
+#| label: read-mnist-csv-and-visualize
 import pandas as pd
 import matplotlib.pyplot as plt
 df = pd.read_csv('./data/mnist_micro.csv', header=None)
@@ -492,6 +540,7 @@ print(f"y.shape = {y.shape}")
 Now that we show $12$ images in the a grid of $3\times 4$ subplots.
 
 ```{python}
+#| label: visualize-mnist-sample-images
 fig, axes = plt.subplots(3, 4, figsize=(8, 6))
 fig.suptitle("Shuffled Sample Images from Micro MNIST dataset", fontsize=14)
 for i, ax in enumerate(axes.flatten()):
@@ -517,12 +566,12 @@ Training the Logistic Regressio from **scikit-learn**, namely `LogisticRegressio
 
 
 ```{python}
-# We don't need to split the dataset into training set and test set. 
-# We just use all the given data here. We use max_iter=1000 to ensure
-# convergence on the given dataset
+#| label: train-logistic-regression-mnist
+# For this example, We don't need to split the dataset into training 
+# set and test set. We just use all the given data here. We use 
+# max_iter=1000 to ensure convergence on the given dataset
 model = LogisticRegression(max_iter=1000) 
 model.fit(X, y)
-
 # Make prediction on the entire set of images
 y_predict = model.predict(X)
 ```
@@ -532,6 +581,7 @@ y_predict = model.predict(X)
 We visualize some images in the dataset and show the actual label as well as he predicted label. The code is very similar to the code snippet above for visualization of images in the dataset. The key difference is we need to compute the label predictions and show them in the figure.
 
 ```{python}
+#| label: visualize-mnist-sample-images-with-predictionex
 fig, axes = plt.subplots(3, 4, figsize=(8, 6))
 fig.suptitle("Images and Predictions", fontsize=14)
 
@@ -548,9 +598,3 @@ for i, ax in enumerate(axes.flatten()):
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.show()
 ```
-
-
-
-
-
-

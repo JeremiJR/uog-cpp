@@ -11,6 +11,7 @@ execute:
   eval: true
 format: 
     html:
+        output-file: "01-description.html"
         embed-resources: true
         grid:
             body-width: 1600px
@@ -28,6 +29,7 @@ format:
         toc-title: "Table of Content"   # table of content title
 
     pdf:
+        output-file: "01-description.pdf"
         embed-resources: true
         geometry:
             - top=24px
@@ -53,6 +55,16 @@ Earth Tones: sienna, peru, chocolate, goldenrod.
 It is a shame that we have only one semester to learn so much new knowledge but we don't have a real opportunity to really develop a meaningful and serious project.
 
 You might feel "What the heck! The assignment is so long." Trust me bro! [_The solution for this project is much much shorter than the description itself. It is also mostly based on what you have done in Assignment 01._]{style="color:red"} The long description is to help you to understand the project better and deeper. A short description will leave you pretty confused.
+
+## Reading this description
+
+In order to understand the project better, I suggest you to read the description in the following order:
+1. Read the whole description once to get a general idea about the project. Filename `01-description.html` and `01-description.pdf` are provided for this purpose. You don't have to understand everything in the first reading. Just try to get a general idea about the project.
+2. Read the implementation using scikit-learn in Python. This will give you the idea about how to use the two regression models in Python and what are the expected results. The C++ implementation will mimic the Python implementation, so it is important to understand the Python implementation first. Filename `02-sklearn-implementation.html` and `02-sklearn-implementation.pdf` are provided for this purpose.
+3. Read the mathematics behind the scene to understand the mathematical formulation of the two regression models and the gradient descent method. This will help you to understand how to implement the two regression models in C++. Filename `03-maths.html` and `03-maths.pdf` are provided for this purpose.
+4. Then, you should revisit the task description `01-description.qmd` to understand what you need to do for the assignment.
+
+
 
 ## Ultimate goal
 
@@ -117,6 +129,7 @@ $$ {#eq-dataset}
 In [**regression problem**]{style="color:royalblue"} the label $y^{(i)}$ is a real number: $y^{(i)} \in \mathbb{R}$. An example is given in the dataset `concrete.csv`.
 
 ```{python}
+#| label: load-concrete-dataset
 import pandas as pd
 concrete_data = pd.read_csv("./data/concrete.csv")
 n_samples = len(concrete_data)
@@ -132,6 +145,7 @@ In this dataset, we use $8$ input features are used to make prediction, that is 
 
 In [**classification problem**]{style="color:royalblue"} the label $y^{(i)}$ is an integral number (integer type) and it takes only finite number of values. If the problem involves classification of samples into $K$ categories, the value of $y^{(i)}$ can take only $K$ possibilities: $y^{(i)}\in \{0, \ldots K - 1\}$. Apparently, it does not matter how you set the value for $y^{(i)}$ as long as there are only $K$ possible values. However, it is conventional to start from $0$ and then increase by $1$. The mathematics stay the same; just formality of how you name things. An example is given in the dataset `ecg.csv`
 ```{python}
+#| label: load-ecg-dataset
 import numpy as np
 data = np.loadtxt('./data/ecg.csv', delimiter=',')
 X = data[:,:-1] # take all the rows, all the column from the first to the second last
@@ -143,6 +157,7 @@ print(f"n_classes = {n_classes}")
 ```
 As this is the ECG diagram, let us draw them and show the label as on the figure title as well.
 ```{python}
+#| label: visualize-ecg-sample-images
 import matplotlib.pyplot as plt
 nrows, ncols = 3, 3
 plt.figure(figsize=(9, 6))
@@ -159,8 +174,13 @@ plt.tight_layout()
 ```
 
 
-
 # Mathematics behind the scene
+
+:::{.callout-note}
+# Read 03-maths.html for further details on the mathematics behind the scene.
+It is important to understand the mathematics behind the scene before we can implement the two regression models in C++. The mathematics is not difficult at all. It is just a bit of calculus and linear algebra. You have already learned the mathematics behind linear regression in Assignment 01. We will revisit it and then proceed to logistic regression. You will quickly recognize that although the mathematical formulation behind the logistic regression model is slightly different from that of linear regression model, the gradient descent iteration algorithm shares exactly the same formulation. For this reason, a large portion of what you have done for linear regression can easily carried over to logistic regression.
+:::
+
 
 Since we want to implement these models in C++ from scratch, we need to understand the mathematics behind the scene. This is the topic of this Section. Note that you have learned the maths behind `LinearRegression` in the **Assignment 01**. We shall revisit it and proceed to logistic regression.
 

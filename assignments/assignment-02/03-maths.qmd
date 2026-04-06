@@ -28,17 +28,17 @@ format:
         toc-location: left      # table of content on the left
         toc-title: "Table of Content"   # table of content title
 
-    # pdf:
-    #     embed-resources: true
-    #     geometry:
-    #         - top=24px
-    #         - bottom=24px
-    #         - left=36px
-    #         - right=36px
-    #     css: style.css
-    #     number-sections: true
-    #     number-depth: 3
-    #     colorlinks: true
+    pdf:
+        embed-resources: true
+        geometry:
+            - top=24px
+            - bottom=24px
+            - left=36px
+            - right=36px
+        css: style.css
+        number-sections: true
+        number-depth: 3
+        colorlinks: true
 ---
 
 **Equations from main file `assignment_02.html`**
@@ -82,12 +82,12 @@ x_1^{(1)} & x_{2}^{(1)} & \ldots & x_{n}^{(1)} \\[3pt]
 x_1^{(2)} & x_{2}^{(2)} & \ldots & x_{n}^{(2)} \\[3pt]
 \vdots & \vdots & \ddots & \vdots & \\[3pt]
 x_1^{(m)} & x_{2}^{(m)} & \ldots & x_{n}^{(m)}
-\end{bmatrix}, \qquad 
+\end{bmatrix} \in \mathbb{R}^{m \times n}, \qquad 
 \mathbf{y} = \begin{bmatrix} y_{\phantom{1}}^{(1)} \\[3pt]
 y_{\phantom{1}}^{(2)} \\[3pt]
 \vdots \\[3pt]
 y_{\phantom{1}}^{(m)}
-\end{bmatrix}
+\end{bmatrix} \in \mathbb{R}^m
 $$ {#eq-dataset-matrix-presentation}
 
 Our task is to build a model, which is actually just a function or a mapping, to predict a new output $\widehat{y}$ given a new sample (data point) $\mathbf{x}$. That is we need to construct the function $f = f(\mathbf{x})$ so that it fits the data very well. If the model can be visualized, we expect the graph $y = f(\mathbf{x})$ should fit the data points in the high-dimensional space $\mathbf{R}^{n + 1}$ very well. Now, we go through three steps mentioned in section "Build and Train ML models"
@@ -359,6 +359,7 @@ for param, expr in solution.items():
 By direct substitution of the solution obtained above into the loss function `loss`, we can compute the minimum of the loss function
 
 ```{python}
+#| label: symbolic-minimum-loss-function-linear-regression
 # Substitute the solution for w1, w2, b into loss function
 min_loss = loss_function.subs(solution)
 min_loss_simplified = sp.simplify(min_loss)
@@ -567,6 +568,20 @@ $$
 \widehat{y} = \sigma(z) = \frac{1}{1 + e^{-z}} = \frac{1}{1 + e^{-(\mathbf{w} \cdot \mathbf{x} + b)}}
 $$
 
+[**Make prediction based on probability**]{style="color:royalblue"}
+
+To make prediction on an unseen data point $\mathbf{x}$, we compute the predicted probability $\widehat{y}$ using the logistic regression model. Then, we can apply a threshold to this predicted probability to determine the predicted class label. For example, if we use a threshold of $0.5$, we can predict class $1$ if $\widehat{y} \geq 0.5$ and predict class $0$ if $\widehat{y} < 0.5$. This way, we can make binary predictions based on the predicted probabilities from the logistic regression model. The Python code snippet below illustrates how to make predictions using the logistic regression model.
+```{python}
+#| label: predict-logistic-regression
+def predict_logistic_regression(x, w, b, threshold=0.5):
+    z = np.dot(w, x) + b
+    y_hat = sigmoid(z)
+    return 1 if y_hat >= threshold else 0
+```
+
+The code snippet is given as a guideline for how to implement the prediction function for logistic regression. Of course, we can also return the predicted probability $\widehat{y}$ instead of the predicted class label if we are interested in the probability of class membership rather than a binary prediction. This is often useful in practice, as it allows us to make more informed decisions based on the predicted probabilities rather than just the predicted class labels.
+
+
 ## Loss function for training the logistic regression model
 
 We now have a model that can predict the probability of class membership for any given input $\mathbf{x}$. The next step is to define a loss function that we can use to train the logistic regression model by finding the optimal parameters $\mathbf{w}$ and $b$.
@@ -584,6 +599,7 @@ Let us analyse the behavior of this loss function. When $y^{(i)} = 1$, the loss 
 The following plot illustrates the behavior of the cross-entropy loss function for both cases ($y=0$ and $y=1$) as a function of the predicted probability $\widehat{y}$.
 
 ```{python}
+#| label: cross-entropy-loss-plot
 import numpy as np
 import matplotlib.pyplot as plt
 y = np.linspace(-10, 10, 100)
@@ -624,6 +640,7 @@ Let us visualize the loss surface of logistic regression to see this phenomenon.
 
 First, we define the logistic regression model and the loss function using symbolic computation with `sympy`. Then, we can compute the gradient of the loss function and visualize the loss surface. Finally, we can try to solve $\nabla \mathcal{L} = 0$ with regularization to see if it helps us find a solution.
 ```{python}
+#| label: symbolic-loss-function-logistic-regression
 import sympy as sp
 import numpy as np
 
@@ -697,6 +714,7 @@ $$
 If we introduce the regularization term, we can compute the gradient of the regularized loss function and try to solve $\nabla \mathcal{L}_{\text{reg}} = 0$ to find the optimal parameters. The regularization term will help us find a solution that minimizes the loss function while keeping the parameters at reasonable values, and it can help us avoid the issue of having no solution at finite values of $w$ and $b$.
 
 ```{python}
+#| label: loss-surface-plot-regularized
 # Case B: With Regularization (L2 Penalty)
 lam = 0.01  # Strength of regularization
 reg_loss = base_loss + lam * (w**2 + b**2)
@@ -751,7 +769,7 @@ $$
 You should implement the regularized logistic regression model and compute the gradient of the regularized loss function as part of your assignment. This will involve adding the regularization term to the loss function and then computing the gradient with respect to the parameters $\mathbf{w}$ and $b$.
 :::
 
-[**Update rule for gradient descent**]{style="color:royalblue"}
+## Update rule for gradient descent
 
 Once we have the gradient of the loss function, we can update the parameters $\mathbf{w}$ and $b$ using the following update rule for gradient descent:
 $$
@@ -759,12 +777,7 @@ $$
 w_j^{[t+1]} &:= w_j^{[t]} - \alpha \frac{\partial \mathcal{L}_{\text{reg}}}{\partial w_j} (\mathbf{w}^{[t]}, b^{[t]}) \quad \text{for } j = 1  , 2, \ldots, n \\[3pt]
 b^{[t+1]} &:= b^{[t]} - \alpha \frac{\partial \mathcal{L}_{\text{reg}}}{\partial b} (\mathbf{w}^{[t]}, b^{[t]})
 \end{aligned}
-$$
-
-::: {.callout-note}
-
-Although the summation involves $y^{(i)} \log(\widehat{y}^{(i)}) + (1 - y^{(i)}) \log(1 - \widehat{y}^{(i)})$, the values of $y^{(i)}$ and $(1 - y^{(i)})$ are just either $0$ or $1$. For this reason, 
-:::
+$${#eq-update-rule-gradient-descent-logistic-regression}
 
 :::{.callout-warning}
 For your assignment, you are required to implement the above update rule for gradient descent to [**train the logistic regression model with regularization**]{style="color:crimson"} on the given dataset. You will need to compute the predicted probabilities $\widehat{y}^{(i)}$ using the logistic regression model, compute the loss function and its gradient, and then update the parameters iteratively until convergence. You can also experiment with different learning rates $\alpha$ and regularization strengths $\lambda$ to see how they affect the training process and the final performance of the model.
@@ -776,11 +789,156 @@ For your assignment, you are required to implement the above update rule for gra
 
 The problem description for a classification problem is quite similar to the description of a regression problem in terms of the given dataset and the ultimate goal prediction, except that the label $y$ is not continous value. For a $K$-category classification problem, the label $y$ can take one of the $K$ finite values $\{0, \ldots, K-1\}$. Examples are:
  
-- For binary classification problem of ECG data, we have $K = 1$ and the label can take value of either $0$ or $1$. 
-- For hand-written digit classification, we have $10$-category classification with $K = 9$ and the label can take one value of the $10$ finite values $\{0, \ldots, 9\}$
+- For classifying images of animals into $64$ categories (antelope, bear, beaver, bee, etc.), we have $64$-category classification with $K = 64$ and the label can take one value of the $64$ finite values $\{0, 1, 2, 3, 4, \ldots, 63\}$ where each value corresponds to a specific animal category. Look at the following datasets for intuitive understanding -- Note that you don't need to do any coding on these datasets, they are just for you to understand the problem description of multi-class classification.
+  - [Image classification 10 animal classes](https://www.kaggle.com/datasets/alessiocorrado99/animals10)
+  - [Image classification 64 animal classes](https://www.kaggle.com/datasets/anthonytherrien/image-classification-64-classes-animal)
+- For hand-written digit classification, we have $10$-category classification with $K = 10$ and the label can take one value of the $10$ finite values $\{0, \ldots, 9\}$
+For this reason, the dataset notation @eq-dataset-D and the matrix-presentation of this dataset @eq-dataset-matrix-presentation should be the same except that the label $y^{(i)}$ for all the samples can take only one value in the finite set $\{0, \ldots, K-1\}$ for the $K$-category classification problem. The goal of a classification problem is to build a model that can predict the class label of a new data point $\mathbf{x}$, which means we want to construct a function $f = f(\mathbf{x})$ that maps input features to class labels.
 
-For this reason, the dataset notation @eq-dataset-D and the matrix-presentation of this dataset @eq-dataset-matrix-presentation should be the same except that the label $y^{(i)}$ for all the samples can take only one value in the finite set $\{0, \ldots, K-1\}$ for the $K$-category classification problem.
 
-We shall study 
+## Logistic  regression model for multi-class classification 
 
-## Logistic regression for binary classification
+The logistic regression model for multi-class classification is an extension of the logistic regression model for binary classification. It is also known as softmax regression or multinomial logistic regression. The idea is to model the probability of each class using the softmax function, which generalizes the sigmoid function to multiple classes. 
+
+Unlike binary classification where we have only two classes and can use a single sigmoid function to model the probability of the positive class, in multi-class classification, we have $K$ classes and we need to model the probability of each class. The softmax function allows us to do this by taking a vector of real-valued scores (the linear combinations of the input features for each class) and transforming it into a probability distribution over the $K$ classes. For each class $j$, we compute a linear combination of the input features, and then we apply the softmax function to these linear combinations to get the predicted probabilities for each class. The predicted class label can then be determined by taking the class with the highest predicted probability.
+
+For each class $j$, we compute the linear combination of the input features as follows:
+$$
+z_j = \mathbf{w}_j \cdot \mathbf{x} + b_j
+$$
+where $\mathbf{w}_j$ is the weight vector for class $j$, $\mathbf{x}$ is the input feature vector, and $b_j$ is the bias term for class $j$. Then, we apply the softmax function to these linear combinations to get the predicted probabilities for each class:
+
+$$
+\begin{aligned}
+\widehat{y}_j &= \text{softmax}(z_j) = \frac{e^{z_j}}{\sum_{k=1}^{K} e^{z_k}} \\[3pt]
+&= \frac{e^{\mathbf{w}_j \cdot \mathbf{x} + b_j}}{\sum_{k=1}^{K} e^{\mathbf{w}_k \cdot \mathbf{x} + b_k}}
+\end{aligned}
+$$
+
+The predicted class label can then be determined by taking the class with the highest predicted probability:
+$$
+\widehat{y} = \arg\max_{j} \widehat{y}_j
+$$
+
+It is important to note that the softmax function ensures that the predicted probabilities for all classes sum to 1, which allows us to interpret them as probabilities of class membership. For the multi-class classification problem, we have $K$ weight vectors $\mathbf{w}_1, \mathbf{w}_2, \ldots, \mathbf{w}_K$ and $K$ bias terms $b_1, b_2, \ldots, b_K$, one for each class. Assume that the input feature vector $\mathbf{x}$ has $n$ features, then each weight vector $\mathbf{w}_j$ will have $n$ components, and the bias term $b_j$ is a scalar. Therefore, the total number of parameters in the logistic regression model for multi-class classification will be $K \times n$ for the weights and $K$ for the bias terms, resulting in a total of $K \times (n + 1)$ parameters to be learned during training.
+
+The matrix of dataset can be represented as follows -- see @eq-dataset-matrix-presentation for the matrix presentation of the dataset for regression problems. The only difference is that the label $y^{(i)}$ for all the samples can take only one value in the finite set $\{0, \ldots, K-1\}$ for the $K$-category classification problem.
+$$
+\mathbf{X} = \begin{bmatrix}
+x_1^{(1)} & x_2^{(1)} & \ldots & x_n^{(1)} \\
+x_1^{(2)} & x_2^{(2)} & \ldots & x_n^{(2)}\\
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+x_1^{(m)} & x_2^{(m)} & \ldots & x_n^{(m)}\\
+\end{bmatrix} \in \mathbb{R}^{m \times n}, \quad \mathbf{y} = \begin{bmatrix}y^{(1)} \\
+y^{(2)} \\
+\vdots \\
+y^{(m)}\end{bmatrix} \in \{0, 1, \ldots, K-1\}^m
+$$
+
+The model parameters can be represented as follows:
+$$\mathbf{W} = \begin{bmatrix}
+w_{11} & w_{12} & \ldots & w_{1n} \\
+w_{21} & w_{22} & \ldots & w_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+w_{K1} & w_{K2} & \ldots & w_{Kn} \\
+\end{bmatrix} \in \mathbb{R}^{K \times n}, \quad \mathbf{b} = \begin{bmatrix}b_1 \\
+b_2 \\
+\vdots \\
+b_K\end{bmatrix} \in \mathbb{R}^K
+$$
+
+[**The logistic regression model for multi-class classification can be trained using a similar approach as binary logistic regression**]{style="color:crimson"}, but with a different loss function that is suitable for multi-class classification, which we will discuss in the next section.
+
+## Loss function for training the logistic regression model for multi-class classification
+
+We now have the model for multi-class classification, which can predict the probability of class membership for each class. The next step is to define a loss function that we can use to train the logistic regression model by finding the optimal parameters $\mathbf{W}$ and $\mathbf{b}$. The loss function for multi-class classification is also based on the cross-entropy loss, but it is generalized to handle multiple classes. The cross-entropy loss for multi-class classification can be defined as follows:
+
+$$
+\begin{aligned}
+\mathcal{L}(\mathbf{W}, \mathbf{b}) &= -\frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{K} y_j^{(i)} \log(\widehat{y}_j^{(i)}) \\[3pt]
+&= -\frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{K} y_j^{(i)} \log\left(\frac{e^{\mathbf{w}_j \cdot \mathbf{x}^{(i)} + b_j}}{\sum_{k=1}^{K} e^{\mathbf{w}_k \cdot \mathbf{x}^{(i)} + b    _k}}\right)
+\end{aligned}
+$$
+
+To understand this loss function, we can break it down into its components. The term $y_j^{(i)}$ is an indicator variable that is equal to $1$ if the true class label for the $i$-th data point is class $j$, and $0$ otherwise. Therefore, for each data point, only one term in the inner summation will be non-zero, corresponding to the true class label. The term $\widehat{y}_j^{(i)}$ is the predicted probability of class $j$ for the $i$-th data point, which is obtained from the softmax function. The loss function essentially measures how well the predicted probabilities match the true class labels across all data points and all classes.
+
+[**Reduction to binary classification**]{style="color:royalblue"}
+
+It turns out this loss function for multi-class classification reduces to the loss function for binary classification when we have only two classes ($K=2$). In the case of binary classification, we can denote the two classes as class $0$ and class $1$. The predicted probabilities for these two classes can be expressed as follows:
+$$
+\begin{aligned}
+\widehat{y}_0 &= \frac{e^{\mathbf{w}_0 \cdot \mathbf{x} + b_0}}{e^{\mathbf{w}_0 \cdot \mathbf{x} + b_0} + e^{\mathbf{w}_1 \cdot \mathbf{x} + b_1}} \\[3pt]
+\widehat{y}_1 &= \frac{e^{\mathbf{w}_1 \cdot \mathbf{x} + b_1}}{e^{\mathbf{w}_0 \cdot \mathbf{x} + b_0} + e^{\mathbf{w}_1 \cdot \mathbf{x} + b_1}}
+\end{aligned}
+$$
+
+
+In binary classification, we can simplify the model by defining a single weight vector $\mathbf{w} = \mathbf{w}_1 - \mathbf{w}_0$ and a single bias term $b = b_1 - b_0$. With this simplification, the predicted probability for class $1$ can be expressed as:
+$$
+\widehat{y}_1 = \frac{e^{\mathbf{w} \cdot \mathbf{x} + b}}{1 + e^{\mathbf{w} \cdot \mathbf{x} + b}} = \sigma(\mathbf{w} \cdot \mathbf{x} + b)
+$$
+where $\sigma(z)$ is the sigmoid function. The predicted probability for class $0$ can be expressed as:
+$$
+\widehat{y}_0 = \frac{1}{1 + e^{\mathbf{w} \cdot \mathbf{x} + b}} = 1 - \sigma(\mathbf{w} \cdot \mathbf{x} + b)
+$$
+This is easily mathematically proven by substituting the definitions of $\mathbf{w}$ and $b$ into the expressions for $\widehat{y}_0$ and $\widehat{y}_1$. 
+
+Note that the summation from $k = 1$ to $k=2$ can be equivalently expressed as a summation from $k = 0$ to $1$, which is more consistent with the notation for binary classification. Therefore, the loss function for multi-class classification reduces to the loss function for binary classification when we have only two classes, and it can be expressed as follows:
+$$
+\begin{aligned}
+\mathcal{L}(\mathbf{w}, b) &= -\frac{1}{m} \sum_{i=1}^{m} \sum\limits_{k=0}^{1} \left[ y_k^{(i)} \log(\widehat{y}_k^{(i)}) \right] = =\frac{1}{m}\sum\limits_{i=1}^{m} \left[ y_{0}^{(i)} \log(\widehat{y}_0^{(i)}) + (y_{1}^{(i)}) \log(\widehat{y}_1^{(i)}) \right] \\[3pt]
+&= -\frac{1}{m} \sum_{i=1}^{m} \left[ \underbrace{y^{(i)}}_{y_{1}^{(i)}} \log(\underbrace{\widehat{y}^{(i)}}_{\widehat{y}_1^{(i)}}) + \underbrace{(1 - y^{(i)})}_{y_{0}^{(i)}} \log(\underbrace{1 - \widehat{y}^{(i)}}_{y_0^{(i)}}) \right]
+\end{aligned}
+$$
+
+## Loss function for regularized logistic regression for multi-class classification
+
+Again, it turns out that if we try to solve the equation $\nabla \mathcal{L} = 0$ for logistic regression for multi-class classification, we will find that there is no solution at finite values of $\mathbf{W}$ and $\mathbf{b}$ due to the same reason as in binary classification. The loss function for multi-class classification can also have a "plateau" where the gradient is zero, but the loss is not at its minimum. This may happen when the data is perfectly separable, meaning that there exists a hyperplane that can separate the classes without any misclassification. In this case, the loss function can approach zero as the parameters grow larger and larger, but it never actually reaches zero at finite values of $\mathbf{W}$ and $\mathbf{b}$. 
+
+
+For the above reason, we introduce regularization to the loss function for multi-class classification as well, which adds a penalty term to the loss function that discourages large values of the parameters. The regularized loss function for multi-class classification can be defined as follows:
+
+$$
+\begin{aligned}
+\mathcal{L}_{\text{reg}}(\mathbf{W}, \mathbf{b}) &= \mathcal{L}(\mathbf{W}, \mathbf{b}) + \lambda \sum_{j=1}^{K} \sum_{k=1}^{n} w_{jk}^2 + \lambda \sum_{j=1}^{K} b_j^2 \\[3pt]
+&= -\frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{K} y_j^{(i)} \log\left(\frac{e^{\mathbf{w}_j \cdot \mathbf{x}^{(i)} + b_j}}{\sum_{k=1}^{K} e^{\mathbf{w}_k \cdot \mathbf{x}^{(i)} + b_k}}\right) + \lambda \sum_{j=1}^{K} \sum_{k=1}^{n} w_{jk}^2 + \lambda \sum_{j=1}^{K} b_j^2
+\end{aligned}
+$$
+
+## Gradient of loss function for multi-class classification
+
+The gradient of the loss function for multi-class classification with respect to the parameters $\mathbf{W}$ and $\mathbf{b}$ can be computed as follows:
+$$
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial w_{jk}} &= \frac{1}{m} \sum_{i=1}^{m} \left(\widehat{y}_j^{(i)} - y_j^{(i)}\right) x_k^{(i)} \quad \text{for } j = 1, 2, \ldots, K \text{ and } k = 1, 2, \ldots, n \\[3pt]
+\frac{\partial \mathcal{L}}{\partial b_j} &= \frac{1}{m} \sum_{i=1}^{m} \left(\widehat{y}_j^{(i)} - y_j^{(i)}\right) \cdot 1 \quad \text{for } j = 1, 2, \ldots, K
+\end{aligned}
+$$
+
+If we include the regularization term in the loss function, the gradient of the regularized loss function with respect to the parameters $\mathbf{W}$ and $\mathbf{b}$ can be computed as follows:
+$$
+\begin{aligned}
+\frac{\partial \mathcal{L}_{\text{reg}}}{\partial w_{jk}} &= \frac{1}{m} \sum_{i=1}^{m} \left( \widehat{y}_j^{(i)} - y_j^{(i)} \right) x_k^{(i)} + 2\lambda w_{jk} \quad \text{for } j = 1, 2, \ldots, K \text{ and } k = 1, 2, \ldots, n \\[3pt]
+\frac{\partial \mathcal{L}_{\text{reg}}}{\partial b_j} &= \frac{1}{m} \sum_{i=1}^{m} \left( \widehat{y}_j^{(i)} - y_j^{(i)} \right) \cdot 1 + 2\lambda b_j \quad \text{for } j = 1, 2, \ldots, K
+\end{aligned}
+$$
+
+:::{.callout-warning}
+
+For this assignment, you are required to implement the above update rule for gradient descent to [**train the logistic regression model with regularization**]{style="color:crimson"} on the given dataset for multi-class classification.
+
+- You will need to compute the predicted probabilities $\widehat{y}_j^{(i)}$ using the logistic regression model, compute the loss function and its gradient, and then update the parameters iteratively until convergence. 
+- You can also experiment with different learning rates $\alpha$ and regularization strengths $\lambda$ to see how they affect the training process and the final performance of the model.
+:::
+
+## Update rule for gradient descent for multi-class classification
+
+Once we have the gradient of the loss function for multi-class classification, we can update the parameters $\mathbf{W}$ and $\mathbf{b}$ using the following update rule for gradient descent:
+$$
+\begin{aligned}
+w_{jk}^{[t+1]} &:= w_{jk}^{[t]} - \alpha \frac{\partial \mathcal{L}_{\text{reg}}}{\partial w_{jk}} (\mathbf{W}^{[t]}, \mathbf{b}^{[t]}) \quad \text{for } j = 1, 2, \ldots, K \text{ and } k = 1, 2, \ldots, n \\[3pt]
+b_j^{[t+1]} &:= b_j^{[t]} - \alpha \frac{\partial \mathcal{L}_{\text{reg}}}{\partial b_j} (\mathbf{W}^{[t]}, \mathbf{b}^{[t]}) \quad \text{for } j = 1, 2, \ldots, K
+\end{aligned}
+$$
+
+As you can see this update rule is a direct extension of the update rule for binary classification given by @eq-update-rule-gradient-descent-logistic-regression, where we now have separate updates for each class $j$ and each feature $k$.
