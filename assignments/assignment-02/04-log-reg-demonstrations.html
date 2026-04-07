@@ -8,7 +8,7 @@
 
 <meta name="author" content="Lecturer in Multiscale Materials">
 
-<title>Mathematics behind Linear Regression and Logistic Regression</title>
+<title>Python implementation of Logistic Regression from Scratch</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2376,15 +2376,14 @@ border: 1px solid #e0e0e0;
    
   <ul>
   <li><a href="#foreword" id="toc-foreword" class="nav-link active" data-scroll-target="#foreword"><span class="header-section-number">1</span> Foreword</a></li>
-  <li><a href="#implementation-of-logistic-regression-from-scratch-in-python" id="toc-implementation-of-logistic-regression-from-scratch-in-python" class="nav-link" data-scroll-target="#implementation-of-logistic-regression-from-scratch-in-python"><span class="header-section-number">2</span> Implementation of Logistic Regression from Scratch in Python</a>
+  <li><a href="#implementation-of-logistic-regression-from-scratch" id="toc-implementation-of-logistic-regression-from-scratch" class="nav-link" data-scroll-target="#implementation-of-logistic-regression-from-scratch"><span class="header-section-number">2</span> Implementation of Logistic Regression from Scratch</a>
   <ul class="collapse">
-  <li><a href="#quick-shoutout" id="toc-quick-shoutout" class="nav-link" data-scroll-target="#quick-shoutout"><span class="header-section-number">2.1</span> Quick shoutout</a></li>
-  <li><a href="#generating-a-synthetic-dataset" id="toc-generating-a-synthetic-dataset" class="nav-link" data-scroll-target="#generating-a-synthetic-dataset"><span class="header-section-number">2.2</span> Generating a synthetic dataset</a></li>
-  <li><a href="#implementing-the-logistic-regression-model" id="toc-implementing-the-logistic-regression-model" class="nav-link" data-scroll-target="#implementing-the-logistic-regression-model"><span class="header-section-number">2.3</span> Implementing the logistic regression model</a></li>
-  <li><a href="#training-the-model-using-gradient-descent" id="toc-training-the-model-using-gradient-descent" class="nav-link" data-scroll-target="#training-the-model-using-gradient-descent"><span class="header-section-number">2.4</span> Training the model using gradient descent</a></li>
-  <li><a href="#make-prediction-on-the-training-data" id="toc-make-prediction-on-the-training-data" class="nav-link" data-scroll-target="#make-prediction-on-the-training-data"><span class="header-section-number">2.5</span> Make prediction on the training data</a></li>
-  <li><a href="#make-prediction-on-unseen-data" id="toc-make-prediction-on-unseen-data" class="nav-link" data-scroll-target="#make-prediction-on-unseen-data"><span class="header-section-number">2.6</span> Make prediction on unseen data</a></li>
-  <li><a href="#full-python-code" id="toc-full-python-code" class="nav-link" data-scroll-target="#full-python-code"><span class="header-section-number">2.7</span> Full Python code</a></li>
+  <li><a href="#generating-a-synthetic-dataset" id="toc-generating-a-synthetic-dataset" class="nav-link" data-scroll-target="#generating-a-synthetic-dataset"><span class="header-section-number">2.1</span> Generating a synthetic dataset</a></li>
+  <li><a href="#implementing-the-logistic-regression-model" id="toc-implementing-the-logistic-regression-model" class="nav-link" data-scroll-target="#implementing-the-logistic-regression-model"><span class="header-section-number">2.2</span> Implementing the logistic regression model</a></li>
+  <li><a href="#training-the-model-using-gradient-descent" id="toc-training-the-model-using-gradient-descent" class="nav-link" data-scroll-target="#training-the-model-using-gradient-descent"><span class="header-section-number">2.3</span> Training the model using gradient descent</a></li>
+  <li><a href="#make-prediction-on-the-training-data" id="toc-make-prediction-on-the-training-data" class="nav-link" data-scroll-target="#make-prediction-on-the-training-data"><span class="header-section-number">2.4</span> Make prediction on the training data</a></li>
+  <li><a href="#make-prediction-on-unseen-data" id="toc-make-prediction-on-unseen-data" class="nav-link" data-scroll-target="#make-prediction-on-unseen-data"><span class="header-section-number">2.5</span> Make prediction on unseen data</a></li>
+  <li><a href="#full-python-code" id="toc-full-python-code" class="nav-link" data-scroll-target="#full-python-code"><span class="header-section-number">2.6</span> Full Python code</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="04-log-reg-demonstrations.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -2395,7 +2394,7 @@ border: 1px solid #e0e0e0;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Mathematics behind Linear Regression and Logistic Regression</h1>
+<h1 class="title">Python implementation of Logistic Regression from Scratch</h1>
 </div>
 
 
@@ -2420,22 +2419,34 @@ border: 1px solid #e0e0e0;
 
 <section id="foreword" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Foreword</h1>
-<p>This is the fourth and last part of the assignment. This file has been written with a lot of GenAI assistance. I have used GenAI to generate the code and the explanations in this file.</p>
-<p>The code is not perfect, but it serves the purpose of demonstrating how a logistc regresion model is implemented from scratch in Python. You can use this code as a reference for your C++ implementation. The code is not optimized for performance, but it is written in a way that is easy to understand and follow.</p>
+<p>This is the fourth and last part of the assignment. The code presented here has been written with GenAI assistance. I have used GenAI to generate the code. However, I have added some comments and explanations to make the code more readable and to explain the different parts of the code. The code is not perfect, but it serves the purpose of demonstrating how a logistic regression model is implemented from scratch in Python. You can use this code as a reference for your C++ implementation. The code is not optimized for performance, but it is written in a way that is easy to understand and follow.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>For interested students
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can visit my GitHub repository to learn more about Machine Learning and Deep Learning: <a href="https://github.com/khiemnguyen0407/uog-ml">GitHub: uog-ml</a>. I have implemented many machine learning algorithms from scratch in Python.</p>
+</div>
+</div>
 <p>Full code is given in <code>./src/logistic_regression_demo.py</code> and also at the end of this file. You can run this code to see how the logistic regression model is implemented on a simple and synthetic dataset.</p>
-<p>The following section will explain different parts of the code and the mathematical formulation behind the logistic regression model. You can read this section to understand how the mathematics behind the logistic regression model is implemented in the code. See the files <code>03-maths.html</code> and <code>03-maths.pdf</code> for the mathematical formulation of the logistic regression model and the gradient descent method.</p>
+<p><span style="color:crimson"><strong>Remark 01</strong></span></p>
+<p>Note that the code does not implement the logistic regression model with regularization. However, the assignment requests you to implement the logistic regression model with regularization.</p>
+<p><span style="color:crimson"><strong>Remark 02</strong></span></p>
+<p><span style="color:crimson"><strong>You can easily add the regularization term to the loss function and the gradient descent update rule.</strong></span> The mathematical formulation of the logistic regression model with regularization is given in the file <code>03-maths.html</code> and <code>03-maths.pdf</code>. You can refer to those files to understand how to implement the logistic regression model with regularization in C++.</p>
+<p><span style="color:crimson"><strong>Hint</strong></span> You should try to modify the Python code to include the regularization term in the loss function and the gradient descent update rule. This will give you a better understanding of how the regularization term affects the training process and the final model.</p>
 </section>
-<section id="implementation-of-logistic-regression-from-scratch-in-python" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Implementation of Logistic Regression from Scratch in Python</h1>
-<section id="quick-shoutout" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="quick-shoutout"><span class="header-section-number">2.1</span> Quick shoutout</h2>
-<p>Again, this code is mostly generated by GenAI. However, I have modified the code to make it more readable and add explanation on different parts of the code.</p>
-<p>Note that the code does not implement the logistic regression model with regularization. However, the assignment requests you to implement the logistic regression model with regularization. <span style="color:crimson"><strong>You can easily add the regularization term to the loss function and the gradient descent update rule.</strong></span> The mathematical formulation of the logistic regression model with regularization is given in the file <code>03-maths.html</code> and <code>03-maths.pdf</code>. You can refer to those files to understand how to implement the logistic regression model with regularization in C++.</p>
-</section>
-<section id="generating-a-synthetic-dataset" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="generating-a-synthetic-dataset"><span class="header-section-number">2.2</span> Generating a synthetic dataset</h2>
+<section id="implementation-of-logistic-regression-from-scratch" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Implementation of Logistic Regression from Scratch</h1>
+<p>This section will explain different parts of the code and the mathematical formulation behind the logistic regression model. You can read this section to understand how the mathematics behind the logistic regression model is implemented in the code. See the files <code>03-maths.html</code> and <code>03-maths.pdf</code> for the mathematical formulation of the logistic regression model and the gradient descent method.</p>
+<section id="generating-a-synthetic-dataset" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="generating-a-synthetic-dataset"><span class="header-section-number">2.1</span> Generating a synthetic dataset</h2>
 <p>First thing first, we import libraries that we need for the implementation.</p>
-<div id="cfdd03ed" class="cell" data-execution_count="1">
+<div id="ea145595" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2446,7 +2457,7 @@ border: 1px solid #e0e0e0;
 </details>
 </div>
 <p>Then, we generate a synthetic dataset with 5 classes and 3 points per class. The dataset is generated in such a way that the classes are not linearly separable. This is done by increasing the variance of the data points for each class, which creates overlap between the classes.</p>
-<div id="5019b6e2" class="cell" data-execution_count="2">
+<div id="b3fee723" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n_per_class <span class="op">=</span> <span class="dv">3</span></span>
@@ -2469,7 +2480,7 @@ border: 1px solid #e0e0e0;
 </details>
 </div>
 <p>Let us visualize the dataset to see how the classes are distributed in the feature space. We can use a scatter plot to visualize the data points and color them according to their class labels.</p>
-<div id="ec2a719c" class="cell" data-execution_count="3">
+<div id="ae882a5b" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
@@ -2490,10 +2501,10 @@ border: 1px solid #e0e0e0;
 </div>
 <p>Change the <code>variance</code> variable to see how the dataset changes. Also, feel free to change the number of points per class <code>n_per_class</code> to see how the dataset changes. You should see that as the variance increases, the classes become more and more overlapping, which makes it harder for the logistic regression model to classify the data points correctly.</p>
 </section>
-<section id="implementing-the-logistic-regression-model" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="implementing-the-logistic-regression-model"><span class="header-section-number">2.3</span> Implementing the logistic regression model</h2>
+<section id="implementing-the-logistic-regression-model" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="implementing-the-logistic-regression-model"><span class="header-section-number">2.2</span> Implementing the logistic regression model</h2>
 <p>The logistic regression model is implemented using the softmax function for multi-class classification. The forward propagation function computes the predicted probabilities for each class given the input features, weights, and biases.</p>
-<div id="ab8f83fa" class="cell" data-execution_count="4">
+<div id="d016f36b" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(z):</span>
@@ -2502,7 +2513,7 @@ border: 1px solid #e0e0e0;
 </details>
 </div>
 <p>Then, we compute the predicted probabilities for each class given the input features, weights, and biases.</p>
-<div id="71fae64a" class="cell" data-execution_count="5">
+<div id="548ab006" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_prob(X, W, b):</span>
@@ -2511,8 +2522,8 @@ border: 1px solid #e0e0e0;
 </details>
 </div>
 </section>
-<section id="training-the-model-using-gradient-descent" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="training-the-model-using-gradient-descent"><span class="header-section-number">2.4</span> Training the model using gradient descent</h2>
+<section id="training-the-model-using-gradient-descent" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="training-the-model-using-gradient-descent"><span class="header-section-number">2.3</span> Training the model using gradient descent</h2>
 <p>The training loop iteratively updates the weights and biases using gradient descent. The loss function used is the cross-entropy loss, and the gradients are computed based on the predicted probabilities and the true labels.</p>
 <p>We note that the output of the <code>forward_prob</code> function is a matrix of shape <code>(num_samples, num_classes)</code>, where each row contains the predicted probabilities for each class for a given sample. For this reason, in order to compute <span class="math display">\[
 \begin{aligned}
@@ -2521,8 +2532,8 @@ border: 1px solid #e0e0e0;
 \end{aligned}
 \]</span></p>
 <p>It is just useful to have the true labels in a one-hot encoded format, which is a binary matrix of shape <code>(num_samples, num_classes)</code>, where each row corresponds to a sample and each column corresponds to a class. The value is <code>1</code> if the sample belongs to that class and <code>0</code> otherwise.</p>
-<p>Let us explain this with an example. Suppose we have <span class="math inline">\(5\)</span> classes and a sample belongs to class <span class="math inline">\(y = 2\)</span>. The one-hot encoded label for this sample would be <span class="math display">\[
-\begin{bmatrix}
+<p>Let us explain this with an example. Suppose we have <span class="math inline">\(5\)</span> classes and a sample <span class="math inline">\(\mathbf{x}^{(i)}\)</span> belongs to class <span class="math inline">\(y = 2\)</span>, that is <span class="math inline">\(y^{(i)} = 2\)</span>. The one-hot encoded label for this sample would be <span class="math display">\[
+\mathbf{y}_\text{one-hot}^{(i)} = \begin{bmatrix}
 0 \\
 1 \\    
 0 \\
@@ -2543,7 +2554,7 @@ Note
 <p>Of course in C++ you can use a different data structure to store the one-hot encoded labels, or just simply write multiple loops iterating through the classes and data points. The one-hot encoding is just a convenient way to compute the loss and the gradients because it allows for vectorized operations, but it is not mandatory.</p>
 </div>
 </div>
-<div id="b0a543f9" class="cell" data-execution_count="6">
+<div id="1b894669" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>num_samples, num_features <span class="op">=</span> X.shape</span>
@@ -2568,46 +2579,74 @@ First 3 one-hot encoded labels:
 [0. 0. 0. 0. 1.]</code></pre>
 </div>
 </div>
-<p>Now, we can write the training loop to update the weights and biases using gradient descent. The gradients are computed based on the predicted probabilities and the true labels, and the weights and biases are updated accordingly.</p>
-<div id="2c3004ca" class="cell" data-execution_count="7">
+<p>Now, we can write the training loop to update the weights and biases using gradient descent. The gradients are computed based on the predicted probabilities and the true labels, and the weights and biases are updated accordingly. All of us have seen this training loop before when we write C++ code for training a linear regression model. The key difference here is that we are using the softmax function to compute the predicted probabilities for each class, and we are using the cross-entropy loss function to compute the loss and the gradients.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminology: Forward pass and Backward pass
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For those students who will proceed to study machine learning in the future, you will see that this training loop is very similar to the training loop used in more complex models such as neural networks. The main difference is that in neural networks, we have multiple layers of weights and biases, and we need to compute the gradients for each layer using backpropagation. However, the overall structure of the training loop remains the same, which is to compute the predicted probabilities, compute the loss, compute the gradients, and update the weights and biases.</p>
+<p>The terminology “forward pass” and “backward pass” is commonly used in the context of neural networks, but it can also be applied to logistic regression. The forward pass refers to the computation of the model’s output (predicted probabilities) given the input features and the current weights and biases. The backward pass refers to the computation of the gradients of the loss function with respect to the weights and biases, which is used to update the weights and biases during training. In logistic regression, we can think of the forward pass as computing the predicted probabilities using the softmax function, and the backward pass as computing the gradients based on the predicted probabilities and the true labels.</p>
+</div>
+</div>
+<div id="c5507798" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> <span class="fl">0.05</span>           <span class="co"># learning rate</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">500</span>       <span class="co"># number of iterations for training</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Forward pass: compute predicted probabilities</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    probs <span class="op">=</span> forward_prob(X, W, b)   </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the error between predicted probabilities and true labels</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> probs <span class="op">-</span> y_one_hot   <span class="co"># this is possible because both </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                                <span class="co"># `probs` and `y_one_hot` have the same </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                                <span class="co"># shape (num_samples, num_classes)</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute gradients for weights and biases: </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Just write down the maths to see how to compute the gradients.</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You will see that it is just a matter of matrix multiplication </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and summation and it reflects the mathematical formulation of </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the logistic regression model and the cross-entropy loss function</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># given in the file `03-maths.html` and `03-maths.pdf`.</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dW.shape = (num_features, num_classes)</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    dW <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.dot(X.T, error)  </span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># db.shape = (1, num_classes)</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    db <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.<span class="bu">sum</span>(error, axis<span class="op">=</span><span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update weights and biases using gradient descent</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    W <span class="op">-=</span> lr <span class="op">*</span> dW</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    b <span class="op">-=</span> lr <span class="op">*</span> db</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>convergence_threshold <span class="op">=</span> <span class="fl">1e-3</span>  <span class="co"># threshold for convergence</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Forward pass: compute predicted probabilities</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    probs <span class="op">=</span> forward_prob(X, W, b)   </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the error between predicted probabilities and true labels</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> probs <span class="op">-</span> y_one_hot   <span class="co"># this is possible because both </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                                <span class="co"># `probs` and `y_one_hot` have the same </span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                                <span class="co"># shape (num_samples, num_classes)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#----------------------------------------------------------------------</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Backward propagation: compute gradients and update weights and biases</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#----------------------------------------------------------------------</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Just write down the maths to see how to compute the gradients.</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You will see that it is just a matter of matrix multiplication </span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and summation and it reflects the mathematical formulation of </span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the logistic regression model and the cross-entropy loss function</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># given in the file `03-maths.html` and `03-maths.pdf`.</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dW.shape = (num_features, num_classes)</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    dW <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.dot(X.T, error)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># db.shape = (1, num_classes)</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    db <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.<span class="bu">sum</span>(error, axis<span class="op">=</span><span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We monitor the training process by printing the loss every 100 epochs</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the cross-entropy loss    </span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># We add the small value `1e-9` to the predicted probabilities </span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># to avoid taking the log of zero, which can happen if the model </span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># is very confident about a wrong prediction. This is a common </span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># practice to ensure numerical stability when computing the loss.</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> <span class="op">-</span>np.mean(np.<span class="bu">sum</span>(y_one_hot <span class="op">*</span> np.log(probs <span class="op">+</span> <span class="fl">1e-9</span>), axis<span class="op">=</span><span class="dv">1</span>))</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">: Loss </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>W_final, b_final <span class="op">=</span> W, b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update weights and biases using gradient descent</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    W <span class="op">-=</span> lr <span class="op">*</span> dW</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    b <span class="op">-=</span> lr <span class="op">*</span> db</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We monitor the training process by printing the loss every 100 epochs</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute the cross-entropy loss    </span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># We add the small value `1e-9` to the predicted probabilities </span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># to avoid taking the log of zero, which can happen if the model </span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># is very confident about a wrong prediction. This is a common </span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># practice to ensure numerical stability when computing the loss.</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>        loss_last_epoch <span class="op">=</span> loss <span class="cf">if</span> epoch <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> <span class="op">-</span>np.mean(np.<span class="bu">sum</span>(y_one_hot <span class="op">*</span> np.log(probs <span class="op">+</span> <span class="fl">1e-9</span>), axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">: Loss </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Convergence criterion: if the loss is very small, we can stop training.</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># This is just a simple convergence criterion, and you can use other </span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># criteria such as the change in loss or the change in weights and biases.</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> loss_last_epoch <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="op">\</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>            <span class="kw">and</span> <span class="bu">abs</span>(loss_last_epoch <span class="op">-</span> loss) <span class="op">&lt;</span> convergence_threshold:</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;Converged at epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>W_final, b_final <span class="op">=</span> W, b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 0: Loss 1.6066
@@ -2619,10 +2658,10 @@ Epoch 400: Loss 0.4399</code></pre>
 </div>
 <p>This is really the end of the training process. We have trained the logistic regression model and obtained the final weights and biases. We can now use these weights and biases to make predictions on new data points or to visualize the decision boundaries of the model.</p>
 </section>
-<section id="make-prediction-on-the-training-data" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="make-prediction-on-the-training-data"><span class="header-section-number">2.5</span> Make prediction on the training data</h2>
+<section id="make-prediction-on-the-training-data" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="make-prediction-on-the-training-data"><span class="header-section-number">2.4</span> Make prediction on the training data</h2>
 <p>Before we test our model on unseen data, let us first make a prediction on the training data to see how well the model has learned to classify the training data. We can use the <code>forward_prob</code> function to compute the predicted probabilities for each class given the input features, weights, and biases. We can then print the predicted probabilities and the predicted class for each data point in the training set.</p>
-<div id="612a22e0" class="cell" data-execution_count="8">
+<div id="33011877" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute predicted probabilities for each class for the training data</span></span>
@@ -2651,7 +2690,7 @@ Data point: [5.12098114 3.54335988], True label: 2, Predicted class: 2</code></p
 </div>
 </div>
 <p>Let us then compute the accuracy of the model on the training data to see how well the model has learned to classify the training data. The accuracy is computed as the number of correct predictions divided by the total number of predictions.</p>
-<div id="1cde5a71" class="cell" data-execution_count="9">
+<div id="5f97d577" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute predicted classes for the training data</span></span>
@@ -2666,10 +2705,10 @@ Data point: [5.12098114 3.54335988], True label: 2, Predicted class: 2</code></p
 </div>
 <p>Change the variance <code>variance</code>, the number of epochs to a larger value (e.g., <code>epochs = 2000</code>) and learning rate <code>lr</code> and see how the accuracy on the training data changes. You should see that the accuracy increases as the number of epochs increases, which indicates that the model is learning to classify the training data better.</p>
 </section>
-<section id="make-prediction-on-unseen-data" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="make-prediction-on-unseen-data"><span class="header-section-number">2.6</span> Make prediction on unseen data</h2>
+<section id="make-prediction-on-unseen-data" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="make-prediction-on-unseen-data"><span class="header-section-number">2.5</span> Make prediction on unseen data</h2>
 <p>Let us make a prediction on a new data point. We can use the <code>forward_prob</code> function to compute the predicted probabilities for each class given the input features, weights, and biases. Particularly, we shall compute the predicted probabilities for <span class="math inline">\(3\)</span> data points that are not in the training set. We can then print the predicted probabilities and the predicted class for each of these data points.</p>
-<div id="ff385b4a" class="cell" data-execution_count="10">
+<div id="bab81cc7" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate 3 new data points that are not in the training set</span></span>
@@ -2688,8 +2727,8 @@ Data point: [6 4], Predicted class: 4</code></pre>
 </div>
 </div>
 </section>
-<section id="full-python-code" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="full-python-code"><span class="header-section-number">2.7</span> Full Python code</h2>
+<section id="full-python-code" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="full-python-code"><span class="header-section-number">2.6</span> Full Python code</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2709,104 +2748,116 @@ Note
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils <span class="im">import</span> shuffle</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1. DATA GENERATION (With Overlap) ---</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_overlapping_data(n_per_class<span class="op">=</span><span class="dv">5</span>):</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Generates 5 classes with 5 points each. Increased variance creates overlap.&quot;&quot;&quot;</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> []</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    centers <span class="op">=</span> [(<span class="dv">2</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">7</span>), (<span class="dv">5</span>, <span class="fl">4.5</span>), (<span class="dv">8</span>, <span class="dv">2</span>), (<span class="dv">8</span>, <span class="dv">7</span>)]</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    variance <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Increased variance to create overlap</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    np.random.seed(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> class_id, (cx, cy) <span class="kw">in</span> <span class="bu">enumerate</span>(centers):</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_per_class):</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Increased scale (1.2) ensures points cross into other class territories</span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>            x1 <span class="op">=</span> np.random.normal(cx, variance)</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>            x2 <span class="op">=</span> np.random.normal(cy, variance)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>            data.append([x1, x2, class_id])</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(data, columns<span class="op">=</span>[<span class="st">&#39;feat1&#39;</span>, <span class="st">&#39;feat2&#39;</span>, <span class="st">&#39;label&#39;</span>])</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Shuffle so the model doesn&#39;t see classes in perfect blocks during training</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> shuffle(df, random_state<span class="op">=</span><span class="dv">42</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. MODEL MATH ---</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(z):</span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    exp_z <span class="op">=</span> np.exp(z <span class="op">-</span> np.<span class="bu">max</span>(z, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>))</span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> exp_z <span class="op">/</span> np.<span class="bu">sum</span>(exp_z, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_prop(X, W, b):</span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> np.dot(X, W) <span class="op">+</span> b</span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> softmax(z)</span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. TRAINING LOOP ---</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(X, y, lr<span class="op">=</span><span class="fl">0.05</span>, epochs<span class="op">=</span><span class="dv">2000</span>):</span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    num_samples, num_features <span class="op">=</span> X.shape</span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    num_classes <span class="op">=</span> <span class="bu">len</span>(np.unique(y))</span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initialization</span></span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> np.random.randn(num_features, num_classes) <span class="op">*</span> <span class="fl">0.01</span></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> np.zeros((<span class="dv">1</span>, num_classes))</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>    y_oh <span class="op">=</span> pd.get_dummies(y).values</span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Training on </span><span class="sc">{</span>num_samples<span class="sc">}</span><span class="ss"> points...&quot;</span>)</span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Forward</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>        probs <span class="op">=</span> forward_prop(X, W, b)</span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Gradient</span></span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>        error <span class="op">=</span> probs <span class="op">-</span> y_oh</span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>        dW <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.dot(X.T, error)</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.<span class="bu">sum</span>(error, axis<span class="op">=</span><span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update</span></span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>        W <span class="op">-=</span> lr <span class="op">*</span> dW</span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>        b <span class="op">-=</span> lr <span class="op">*</span> db</span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">500</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> <span class="op">-</span>np.mean(np.<span class="bu">sum</span>(y_oh <span class="op">*</span> np.log(probs <span class="op">+</span> <span class="fl">1e-9</span>), axis<span class="op">=</span><span class="dv">1</span>))</span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;Epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">: Loss </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> W, b</span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4. VISUALIZATION (Decision Boundaries) ---</span></span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_boundaries(X, y, W, b, filename):</span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a grid of points covering the feature space</span></span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>    x_min, x_max <span class="op">=</span> X[:, <span class="dv">0</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">0</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>    y_min, y_max <span class="op">=</span> X[:, <span class="dv">1</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">1</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>    xx, yy <span class="op">=</span> np.meshgrid(np.arange(x_min, x_max, <span class="fl">0.05</span>),</span>
-<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>                         np.arange(y_min, y_max, <span class="fl">0.05</span>))</span>
-<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predict for every point in the grid</span></span>
-<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>    grid_points <span class="op">=</span> np.c_[xx.ravel(), yy.ravel()]</span>
-<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>    probs <span class="op">=</span> forward_prop(grid_points, W, b)</span>
-<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> np.argmax(probs, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> predictions.reshape(xx.shape)</span>
-<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot background colors</span></span>
-<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>    plt.contourf(xx, yy, predictions, alpha<span class="op">=</span><span class="fl">0.3</span>, cmap<span class="op">=</span><span class="st">&#39;viridis&#39;</span>)</span>
-<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the original data points</span></span>
-<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>    scatter <span class="op">=</span> plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y, cmap<span class="op">=</span><span class="st">&#39;viridis&#39;</span>, edgecolors<span class="op">=</span><span class="st">&#39;k&#39;</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">&quot;Multinomial Logistic Regression: Decision Boundaries (Non-Separable)&quot;</span>)</span>
-<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&quot;Feature 1&quot;</span>)</span>
-<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&quot;Feature 2&quot;</span>)</span>
-<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>    plt.savefig(filename)</span>
-<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>    plt.close()</span>
-<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Boundary plot saved to </span><span class="sc">{</span>filename<span class="sc">}</span><span class="ss">&quot;</span>)</span>
-<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a><span class="co"># --- EXECUTION ---</span></span>
-<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>Path(<span class="st">&quot;./data&quot;</span>).mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> generate_overlapping_data(<span class="dv">50</span>)</span>
-<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> df[[<span class="st">&#39;feat1&#39;</span>, <span class="st">&#39;feat2&#39;</span>]].values</span>
-<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> df[<span class="st">&#39;label&#39;</span>].values</span>
-<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Training</span></span>
-<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>W_final, b_final <span class="op">=</span> train_model(X_train, y_train)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#===================</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. DATA GENERATION (using variance to create non-separable classes)</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#===================</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_overlapping_data(n_per_class<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Generates 5 classes with 5 points each. Increased variance creates overlap.&quot;&quot;&quot;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> []</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    centers <span class="op">=</span> [(<span class="dv">2</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">7</span>), (<span class="dv">5</span>, <span class="fl">4.5</span>), (<span class="dv">8</span>, <span class="dv">2</span>), (<span class="dv">8</span>, <span class="dv">7</span>)]</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    variance <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Increased variance to create overlap</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    np.random.seed(<span class="dv">42</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> class_id, (cx, cy) <span class="kw">in</span> <span class="bu">enumerate</span>(centers):</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_per_class):</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Increased scale (1.2) ensures points cross into other class territories</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>            x1 <span class="op">=</span> np.random.normal(cx, variance)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>            x2 <span class="op">=</span> np.random.normal(cy, variance)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>            data.append([x1, x2, class_id])</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(data, columns<span class="op">=</span>[<span class="st">&#39;feat1&#39;</span>, <span class="st">&#39;feat2&#39;</span>, <span class="st">&#39;label&#39;</span>])</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Shuffle so the model doesn&#39;t see classes in perfect blocks during training</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> shuffle(df, random_state<span class="op">=</span><span class="dv">42</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">#==============</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. MODEL MATH</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">#==============</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(z):</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># keepdims=True ensures that the output has the same shape as z, </span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># which is important for broadcasting during the division</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    exp_z <span class="op">=</span> np.exp(z <span class="op">-</span> np.<span class="bu">max</span>(z, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> exp_z <span class="op">/</span> np.<span class="bu">sum</span>(exp_z, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_prop(X, W, b):</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> np.dot(X, W) <span class="op">+</span> b</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> softmax(z)</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="co">#=================</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. TRAINING LOOP</span></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="co">#=================</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(X, y, lr<span class="op">=</span><span class="fl">0.05</span>, epochs<span class="op">=</span><span class="dv">2000</span>):</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    num_samples, num_features <span class="op">=</span> X.shape</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    num_classes <span class="op">=</span> <span class="bu">len</span>(np.unique(y))</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initialization</span></span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> np.random.randn(num_features, num_classes) <span class="op">*</span> <span class="fl">0.01</span></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> np.zeros((<span class="dv">1</span>, num_classes))</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    y_oh <span class="op">=</span> pd.get_dummies(y).values</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Training on </span><span class="sc">{</span>num_samples<span class="sc">}</span><span class="ss"> points...&quot;</span>)</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Forward pass: compute predicted probabilities</span></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>        probs <span class="op">=</span> forward_prop(X, W, b)       </span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Gradient of loss function w.r.t. weights and biases</span></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>        error <span class="op">=</span> probs <span class="op">-</span> y_oh</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>        dW <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.dot(X.T, error)</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>        db <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> num_samples) <span class="op">*</span> np.<span class="bu">sum</span>(error, axis<span class="op">=</span><span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>        W <span class="op">-=</span> lr <span class="op">*</span> dW</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>        b <span class="op">-=</span> lr <span class="op">*</span> db</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">500</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> <span class="op">-</span>np.mean(np.<span class="bu">sum</span>(y_oh <span class="op">*</span> np.log(probs <span class="op">+</span> <span class="fl">1e-9</span>), axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;Epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">: Loss </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> W, b</span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a><span class="co">#=========================================</span></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. VISUALIZATION (Decision Boundaries)</span></span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a><span class="co">#=========================================</span></span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_boundaries(X, y, W, b, filename):</span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a grid of points covering the feature space</span></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>    x_min, x_max <span class="op">=</span> X[:, <span class="dv">0</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">0</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>    y_min, y_max <span class="op">=</span> X[:, <span class="dv">1</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">1</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>    xx, yy <span class="op">=</span> np.meshgrid(np.arange(x_min, x_max, <span class="fl">0.05</span>),</span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>                         np.arange(y_min, y_max, <span class="fl">0.05</span>))</span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predict for every point in the grid</span></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>    grid_points <span class="op">=</span> np.c_[xx.ravel(), yy.ravel()]</span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>    probs <span class="op">=</span> forward_prop(grid_points, W, b)</span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> np.argmax(probs, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> predictions.reshape(xx.shape)</span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot background colors</span></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>    plt.contourf(xx, yy, predictions, alpha<span class="op">=</span><span class="fl">0.3</span>, cmap<span class="op">=</span><span class="st">&#39;viridis&#39;</span>)</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the original data points</span></span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>    scatter <span class="op">=</span> plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y, cmap<span class="op">=</span><span class="st">&#39;viridis&#39;</span>, edgecolors<span class="op">=</span><span class="st">&#39;k&#39;</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">&quot;Multinomial Logistic Regression: Decision Boundaries (Non-Separable)&quot;</span>)</span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">&quot;Feature 1&quot;</span>)</span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">&quot;Feature 2&quot;</span>)</span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a>    plt.savefig(filename)</span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>    plt.close()</span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Boundary plot saved to </span><span class="sc">{</span>filename<span class="sc">}</span><span class="ss">&quot;</span>)</span>
 <span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Visual</span></span>
-<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>plot_boundaries(X_train, y_train, W_final, b_final, <span class="st">&quot;./data/decision_boundaries.png&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a><span class="co">#==========</span></span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="co"># EXECUTION</span></span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a><span class="co">#==========</span></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>Path(<span class="st">&quot;./data&quot;</span>).mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> generate_overlapping_data(<span class="dv">50</span>)</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> df[[<span class="st">&#39;feat1&#39;</span>, <span class="st">&#39;feat2&#39;</span>]].values</span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> df[<span class="st">&#39;label&#39;</span>].values</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a><span class="co"># Run Training</span></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a>W_final, b_final <span class="op">=</span> train_model(X_train, y_train)</span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Visual</span></span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>plot_boundaries(X_train, y_train, W_final, b_final, <span class="st">&quot;./data/decision_boundaries.png&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 

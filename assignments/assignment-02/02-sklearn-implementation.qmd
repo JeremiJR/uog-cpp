@@ -490,7 +490,7 @@ def generate_mnist_csv(df, n_per_digit, output_filename):
 
     # If the file does not exist, we proceed to generate the subset
     subsets = []
-    print(f"--- Sampling {n_per_digit} images per digit ---")
+    print(f"Sampling {n_per_digit} images per digit for '{output_filename}'...")
     for digit in range(10):
         # Filter for the specific digit
         digit_df = df[df['class'].astype(int) == digit]
@@ -509,7 +509,7 @@ for n, output_filename in zip(n_per_digit, output_filenames):
     generate_mnist_csv(df, n, output_filename)
 ```
 
-All the steps described above are given in one single python file `generate_mnist_csv.py`.
+All the steps described above are given in one single python file `./src/generate_mnist_csv.py`.
 
 &#9998;&nbsp; [**Visualize data**{style="color:crimson"}]
 
