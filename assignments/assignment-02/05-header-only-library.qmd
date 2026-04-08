@@ -77,7 +77,7 @@ project/
 For your project assignment, you can create how many subfolders and header files as you like. The important thing is that all the code (declarations and implementations) should be in header files, and there should be no `.cpp` source files. The main files that demonstrate how to use the library can be in a separate folder (e.g., `examples`, or a different folder) or in the folder `project` itself. The main files should include the header files from the library and demonstrate how to use the classes and functions defined in the library. You can create as many main files as you like to demonstrate different functionalities of the library.
 :::
 
-## Header-only Logic
+## Header-only logic
 
 ### Include Guards
 
@@ -98,5 +98,18 @@ Using
 ```{cpp}
 #pragma once
 ```
-is a modern and efficient way to ensure that a header file is included only once during the compilation process, preventing "redefinition" errors. In this tutorial, I have mixed both ways of implementing safe guards: the traditional way with `#ifndef` - `#endif`, and the modern way with `#pragma once`.
+is a modern and efficient way to ensure that a header file is included only once during the compilation process, preventing "redefinition" errors. In this tutorial, I have mixed both ways of implementing safe guards: 
+- The traditional way with `#ifndef` - `#endif` is implemented in the file `complex_number.hpp`-
+- The modern way with `#pragma once` is implemented in the file `poly1d.hpp`
+
+Feel free to play around with the tutorial code.
+
+## The `inline` keyword
+
+This is the "_secret sauce_" of header-only libraries. Normally, if we define a function (not a class method) in a header and include it in two different `.cpp` files, the linker will complain about "_multiple definitions_".
+
+By marking functions as `inline`, we tell the compiler: "[**It is OKAY if you see this definition in multiple places; just pick one or integrate it directly.**]{style=color:tomato}"
+
+[**Comparison of definitions**]{style="color:red"}
+
 

@@ -2239,11 +2239,12 @@ border: 1px solid #e0e0e0;
   <li><a href="#header-only-library" id="toc-header-only-library" class="nav-link active" data-scroll-target="#header-only-library"><span class="header-section-number">1</span> Header-only Library</a>
   <ul class="collapse">
   <li><a href="#architecture-of-the-library" id="toc-architecture-of-the-library" class="nav-link" data-scroll-target="#architecture-of-the-library"><span class="header-section-number">1.1</span> Architecture of the Library</a></li>
-  <li><a href="#header-only-logic" id="toc-header-only-logic" class="nav-link" data-scroll-target="#header-only-logic"><span class="header-section-number">1.2</span> Header-only Logic</a>
+  <li><a href="#header-only-logic" id="toc-header-only-logic" class="nav-link" data-scroll-target="#header-only-logic"><span class="header-section-number">1.2</span> Header-only logic</a>
   <ul class="collapse">
   <li><a href="#include-guards" id="toc-include-guards" class="nav-link" data-scroll-target="#include-guards"><span class="header-section-number">1.2.1</span> Include Guards</a></li>
   <li><a href="#include-guards-modern-way" id="toc-include-guards-modern-way" class="nav-link" data-scroll-target="#include-guards-modern-way"><span class="header-section-number">1.2.2</span> Include Guards: modern way</a></li>
   </ul></li>
+  <li><a href="#the-inline-keyword" id="toc-the-inline-keyword" class="nav-link" data-scroll-target="#the-inline-keyword"><span class="header-section-number">1.3</span> The <code>inline</code> keyword</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -2308,7 +2309,7 @@ border: 1px solid #e0e0e0;
 </div>
 </section>
 <section id="header-only-logic" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="header-only-logic"><span class="header-section-number">1.2</span> Header-only Logic</h2>
+<h2 data-number="1.2" class="anchored" data-anchor-id="header-only-logic"><span class="header-section-number">1.2</span> Header-only logic</h2>
 <section id="include-guards" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="include-guards"><span class="header-section-number">1.2.1</span> Include Guards</h3>
 <p>When a project gets large, a header file might be included multiple times in different source files, which can lead to multiple definition errors (e.g., <code>main.cpp</code> includes <code>poly1d.hpp</code> and <code>complex_number.hpp</code>, but <code>poly1d.hpp</code> could also include <code>complex_number.hpp</code> for a polynomial with complex coefficients). To prevent this, we use include guards in our header files. An include guard is a preprocessor directive that ensures the contents of the header file are only included once during compilation. Without a “guard”, the compiler sees the same class definition twice and throws an error. For example, you see</p>
@@ -2322,8 +2323,15 @@ border: 1px solid #e0e0e0;
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="include-guards-modern-way"><span class="header-section-number">1.2.2</span> Include Guards: modern way</h3>
 <p>Using</p>
 <pre class="{cpp}"><code>#pragma once</code></pre>
-<p>is a modern and efficient way to ensure that a header file is included only once during the compilation process, preventing “redefinition” errors. In this tutorial, I have mixed both ways of implementing safe guards: the traditional way with <code>#ifndef</code> - <code>#endif</code>, and the modern way with <code>#pragma once</code>.</p>
+<p>is a modern and efficient way to ensure that a header file is included only once during the compilation process, preventing “redefinition” errors. In this tutorial, I have mixed both ways of implementing safe guards: - The traditional way with <code>#ifndef</code> - <code>#endif</code> is implemented in the file <code>complex_number.hpp</code>- - The modern way with <code>#pragma once</code> is implemented in the file <code>poly1d.hpp</code></p>
+<p>Feel free to play around with the tutorial code.</p>
 </section>
+</section>
+<section id="the-inline-keyword" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="the-inline-keyword"><span class="header-section-number">1.3</span> The <code>inline</code> keyword</h2>
+<p>This is the “<em>secret sauce</em>” of header-only libraries. Normally, if we define a function (not a class method) in a header and include it in two different <code>.cpp</code> files, the linker will complain about “<em>multiple definitions</em>”.</p>
+<p>By marking functions as <code>inline</code>, we tell the compiler: “<span style="color:tomato"><strong>It is OKAY if you see this definition in multiple places; just pick one or integrate it directly.</strong></span>”</p>
+<p><span style="color:red"><strong>Comparison of definitions</strong></span></p>
 </section>
 </section>
 
