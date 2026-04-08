@@ -81,5 +81,22 @@ For your project assignment, you can create how many subfolders and header files
 
 ### Include Guards
 
-When a project gets large, a header file might be included multiple times in different source files, which can lead to multiple definition errors (e.g., `main.cpp` includes `poly1d.hpp` and `complex_number.hpp`, but `poly1d.hpp` could also include `complex_number.hpp` for a polynomial with complex coefficients). To prevent this, we use include guards in our header files. An include guard is a preprocessor directive that ensures the contents of the header file are only included once during compilation.
+When a project gets large, a header file might be included multiple times in different source files, which can lead to multiple definition errors (e.g., `main.cpp` includes `poly1d.hpp` and `complex_number.hpp`, but `poly1d.hpp` could also include `complex_number.hpp` for a polynomial with complex coefficients). To prevent this, we use include guards in our header files. An include guard is a preprocessor directive that ensures the contents of the header file are only included once during compilation. Without a "guard", the compiler sees the same class definition twice and throws an error. For example, you see
+```{cpp}
+#ifndef COMPLEX_NUMBER_HPP
+#define COMPLEX_NUMBER_HPP
+```
+at the top of the file `complex_number.hpp` and
+```{cpp}
+#endif // COMPLEX_NUMBER_HPP
+```
+Just thinking about this for a few minutes, you will see that the meaning is straightforward. Since inclusion of files just implies copy/paste the entire code file into the other files, we end up repeating defintions. This process is done before the compilation process actually takes action. However, with this proprocessor directive, we are telling the compiler not to compile anything between the `#ifndef COMPLEX_NUMBER_HPP` and `#endif` when `COMPLEX_NUMBER_HPP` has been defined before. As a result, we avoid repetition of the definitions between these safe guards.
+
+### Include Guards: modern way
+
+Using 
+```{cpp}
+#pragma once
+```
+is a modern and efficient way to ensure that a header file is included only once during the compilation process, preventing "redefinition" errors. In this tutorial, I have mixed both ways of implementing safe guards: the traditional way with `#ifndef` - `#endif`, and the modern way with `#pragma once`.
 

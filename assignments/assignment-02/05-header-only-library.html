@@ -2242,6 +2242,7 @@ border: 1px solid #e0e0e0;
   <li><a href="#header-only-logic" id="toc-header-only-logic" class="nav-link" data-scroll-target="#header-only-logic"><span class="header-section-number">1.2</span> Header-only Logic</a>
   <ul class="collapse">
   <li><a href="#include-guards" id="toc-include-guards" class="nav-link" data-scroll-target="#include-guards"><span class="header-section-number">1.2.1</span> Include Guards</a></li>
+  <li><a href="#include-guards-modern-way" id="toc-include-guards-modern-way" class="nav-link" data-scroll-target="#include-guards-modern-way"><span class="header-section-number">1.2.2</span> Include Guards: modern way</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -2310,7 +2311,18 @@ border: 1px solid #e0e0e0;
 <h2 data-number="1.2" class="anchored" data-anchor-id="header-only-logic"><span class="header-section-number">1.2</span> Header-only Logic</h2>
 <section id="include-guards" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="include-guards"><span class="header-section-number">1.2.1</span> Include Guards</h3>
-<p>When a project gets large, a header file might be included multiple times in different source files, which can lead to multiple definition errors (e.g., <code>main.cpp</code> includes <code>poly1d.hpp</code> and <code>complex_number.hpp</code>, but <code>poly1d.hpp</code> could also include <code>complex_number.hpp</code> for a polynomial with complex coefficients). To prevent this, we use include guards in our header files. An include guard is a preprocessor directive that ensures the contents of the header file are only included once during compilation.</p>
+<p>When a project gets large, a header file might be included multiple times in different source files, which can lead to multiple definition errors (e.g., <code>main.cpp</code> includes <code>poly1d.hpp</code> and <code>complex_number.hpp</code>, but <code>poly1d.hpp</code> could also include <code>complex_number.hpp</code> for a polynomial with complex coefficients). To prevent this, we use include guards in our header files. An include guard is a preprocessor directive that ensures the contents of the header file are only included once during compilation. Without a “guard”, the compiler sees the same class definition twice and throws an error. For example, you see</p>
+<pre class="{cpp}"><code>#ifndef COMPLEX_NUMBER_HPP
+#define COMPLEX_NUMBER_HPP</code></pre>
+<p>at the top of the file <code>complex_number.hpp</code> and</p>
+<pre class="{cpp}"><code>#endif // COMPLEX_NUMBER_HPP</code></pre>
+<p>Just thinking about this for a few minutes, you will see that the meaning is straightforward. Since inclusion of files just implies copy/paste the entire code file into the other files, we end up repeating defintions. This process is done before the compilation process actually takes action. However, with this proprocessor directive, we are telling the compiler not to compile anything between the <code>#ifndef COMPLEX_NUMBER_HPP</code> and <code>#endif</code> when <code>COMPLEX_NUMBER_HPP</code> has been defined before. As a result, we avoid repetition of the definitions between these safe guards.</p>
+</section>
+<section id="include-guards-modern-way" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="include-guards-modern-way"><span class="header-section-number">1.2.2</span> Include Guards: modern way</h3>
+<p>Using</p>
+<pre class="{cpp}"><code>#pragma once</code></pre>
+<p>is a modern and efficient way to ensure that a header file is included only once during the compilation process, preventing “redefinition” errors. In this tutorial, I have mixed both ways of implementing safe guards: the traditional way with <code>#ifndef</code> - <code>#endif</code>, and the modern way with <code>#pragma once</code>.</p>
 </section>
 </section>
 </section>

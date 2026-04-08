@@ -35,6 +35,14 @@ namespace math
             );
         }
 
+        bool operator==(const ComplexNumber& other) const {
+            return (re == other.re && im == other.im);
+        }
+
+        bool operator!=(const ComplexNumber& other) const {
+            return !(*this == other);
+        }
+
         ComplexNumber pow(int n) const {
             ComplexNumber result(1.0, 0.0);
             for (int i = 0; i < n; ++i) {
