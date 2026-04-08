@@ -1,0 +1,85 @@
+---
+title: "Tutorial: Header-only Library"
+# subtitle: "C++ Object-oriented Programming"
+author:
+    Khiem Nguyen 
+    <br> Lecturer in Multiscale Materials
+    <br> <khiem.nguyen@glasgow.ac.uk>
+author-meta: "Lecturer in Multiscale Materials"
+jupyter: false
+execute: 
+  eval: true
+format: 
+    html:
+        output-file: "05-header-only-library.html"
+        embed-resources: true
+        grid:
+            body-width: 1600px
+            margin-width: 20px
+            sidebar-width: 200px
+        # page-layout: full
+        # margin-left: 0.5em
+        # margin-right: 0.5em
+        code-fold: true
+        css: style.css
+        number-sections: true
+        number-depth: 3
+        toc: true               # table of content
+        toc-location: left      # table of content on the left
+        toc-title: "Table of Content"   # table of content title
+
+    # pdf:
+    #     output-file: "05-header-only-library.pdf"
+    #     embed-resources: true
+    #     geometry:
+    #         - top=24px
+    #         - bottom=24px
+    #         - left=36px
+    #         - right=36px
+    #     css: style.css
+    #     number-sections: true
+    #     number-depth: 3
+    #     colorlinks: true
+    #     toc: true               # table of content
+    #     toc-location: left      # table of content on the left
+    #     toc-title: "Table of Content"   # table of content title
+---
+
+
+# Header-only Library
+
+Creating a header-only library is a common practice in C++ to provide reusable code without the need for separate compilation. This approach allows developers to include the library in their projects simply by including the header file, without worrying about linking against a compiled library. It simplies the installation process for the user. They just need to include the header file in their project, and they can start using the library's functionality immediately, without worrying about the pre-compiled compatilibility issues.
+
+In this tutorial, we will create a header-only library for complex numbers and one-dimensional polynomials. We will define a `ComplexNumber` and `Poly1D` class with various operations and utility functions, and we will demonstrate how to use this library in two separate main files.
+
+## Architecture of the Library
+
+In the header-only library, there are no `.cpp` source files that get compiled into binaries. Everything, bot the declarations and the implementation, lives in header files (with extension `.hpp` or `.h`). A yptical structure for a project might look like this
+
+```bash
+project/
+├── include/           <-- Users add this to their include path
+│   └── math/       <-- Namespace folder
+│       ├── complex_number.hpp
+│       └── poly1d.hpp
+└── examples/          <-- How to use the library
+    └── main.cpp
+```
+
+
+[**An example of a header-only library on GitHub**]{style="color:royalblue"}
+
+`xtensor` is an example of a header-only library. You can check out its [GitHub repository](https://github.com/xtensor-stack/xtensor). As you can see from the `include` folder, all the code is in multiple subfolders, and there are no `.cpp` files. Users can simply include the header files in their projects to use the library's functionality -- Look at [this folder](https://github.com/xtensor-stack/xtensor/tree/master/include/xtensor) for example. 
+
+:::{.callout-note}
+# For your project assignment
+
+For your project assignment, you can create how many subfolders and header files as you like. The important thing is that all the code (declarations and implementations) should be in header files, and there should be no `.cpp` source files. The main files that demonstrate how to use the library can be in a separate folder (e.g., `examples`, or a different folder) or in the folder `project` itself. The main files should include the header files from the library and demonstrate how to use the classes and functions defined in the library. You can create as many main files as you like to demonstrate different functionalities of the library.
+:::
+
+## Header-only Logic
+
+### Include Guards
+
+When a project gets large, a header file might be included multiple times in different source files, which can lead to multiple definition errors (e.g., `main.cpp` includes `poly1d.hpp` and `complex_number.hpp`, but `poly1d.hpp` could also include `complex_number.hpp` for a polynomial with complex coefficients). To prevent this, we use include guards in our header files. An include guard is a preprocessor directive that ensures the contents of the header file are only included once during compilation.
+
