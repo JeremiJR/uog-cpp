@@ -2446,7 +2446,7 @@ border: 1px solid #e0e0e0;
 <section id="generating-a-synthetic-dataset" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="generating-a-synthetic-dataset"><span class="header-section-number">2.1</span> Generating a synthetic dataset</h2>
 <p>First thing first, we import libraries that we need for the implementation.</p>
-<div id="ea145595" class="cell" data-execution_count="1">
+<div id="4f6c71e4" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2457,7 +2457,7 @@ border: 1px solid #e0e0e0;
 </details>
 </div>
 <p>Then, we generate a synthetic dataset with 5 classes and 3 points per class. The dataset is generated in such a way that the classes are not linearly separable. This is done by increasing the variance of the data points for each class, which creates overlap between the classes.</p>
-<div id="b3fee723" class="cell" data-execution_count="2">
+<div id="22a26b61" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n_per_class <span class="op">=</span> <span class="dv">3</span></span>
@@ -2480,7 +2480,7 @@ border: 1px solid #e0e0e0;
 </details>
 </div>
 <p>Let us visualize the dataset to see how the classes are distributed in the feature space. We can use a scatter plot to visualize the data points and color them according to their class labels.</p>
-<div id="ae882a5b" class="cell" data-execution_count="3">
+<div id="2439596f" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
@@ -2504,7 +2504,7 @@ border: 1px solid #e0e0e0;
 <section id="implementing-the-logistic-regression-model" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="implementing-the-logistic-regression-model"><span class="header-section-number">2.2</span> Implementing the logistic regression model</h2>
 <p>The logistic regression model is implemented using the softmax function for multi-class classification. The forward propagation function computes the predicted probabilities for each class given the input features, weights, and biases.</p>
-<div id="d016f36b" class="cell" data-execution_count="4">
+<div id="581f25a1" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(z):</span>
@@ -2513,7 +2513,7 @@ border: 1px solid #e0e0e0;
 </details>
 </div>
 <p>Then, we compute the predicted probabilities for each class given the input features, weights, and biases.</p>
-<div id="548ab006" class="cell" data-execution_count="5">
+<div id="03544d99" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_prob(X, W, b):</span>
@@ -2554,7 +2554,7 @@ Note
 <p>Of course in C++ you can use a different data structure to store the one-hot encoded labels, or just simply write multiple loops iterating through the classes and data points. The one-hot encoding is just a convenient way to compute the loss and the gradients because it allows for vectorized operations, but it is not mandatory.</p>
 </div>
 </div>
-<div id="1b894669" class="cell" data-execution_count="6">
+<div id="e5b44960" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>num_samples, num_features <span class="op">=</span> X.shape</span>
@@ -2594,7 +2594,7 @@ First 3 one-hot encoded labels:
 <p>The terminology “forward pass” and “backward pass” is commonly used in the context of neural networks, but it can also be applied to logistic regression. The forward pass refers to the computation of the model’s output (predicted probabilities) given the input features and the current weights and biases. The backward pass refers to the computation of the gradients of the loss function with respect to the weights and biases, which is used to update the weights and biases during training. In logistic regression, we can think of the forward pass as computing the predicted probabilities using the softmax function, and the backward pass as computing the gradients based on the predicted probabilities and the true labels.</p>
 </div>
 </div>
-<div id="c5507798" class="cell" data-execution_count="7">
+<div id="b248ea90" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> <span class="fl">0.05</span>           <span class="co"># learning rate</span></span>
@@ -2661,7 +2661,7 @@ Epoch 400: Loss 0.4399</code></pre>
 <section id="make-prediction-on-the-training-data" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="make-prediction-on-the-training-data"><span class="header-section-number">2.4</span> Make prediction on the training data</h2>
 <p>Before we test our model on unseen data, let us first make a prediction on the training data to see how well the model has learned to classify the training data. We can use the <code>forward_prob</code> function to compute the predicted probabilities for each class given the input features, weights, and biases. We can then print the predicted probabilities and the predicted class for each data point in the training set.</p>
-<div id="33011877" class="cell" data-execution_count="8">
+<div id="c1d493f4" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute predicted probabilities for each class for the training data</span></span>
@@ -2690,7 +2690,7 @@ Data point: [5.12098114 3.54335988], True label: 2, Predicted class: 2</code></p
 </div>
 </div>
 <p>Let us then compute the accuracy of the model on the training data to see how well the model has learned to classify the training data. The accuracy is computed as the number of correct predictions divided by the total number of predictions.</p>
-<div id="5f97d577" class="cell" data-execution_count="9">
+<div id="d4d90537" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute predicted classes for the training data</span></span>
@@ -2708,7 +2708,7 @@ Data point: [5.12098114 3.54335988], True label: 2, Predicted class: 2</code></p
 <section id="make-prediction-on-unseen-data" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="make-prediction-on-unseen-data"><span class="header-section-number">2.5</span> Make prediction on unseen data</h2>
 <p>Let us make a prediction on a new data point. We can use the <code>forward_prob</code> function to compute the predicted probabilities for each class given the input features, weights, and biases. Particularly, we shall compute the predicted probabilities for <span class="math inline">\(3\)</span> data points that are not in the training set. We can then print the predicted probabilities and the predicted class for each of these data points.</p>
-<div id="bab81cc7" class="cell" data-execution_count="10">
+<div id="3ef078e8" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate 3 new data points that are not in the training set</span></span>

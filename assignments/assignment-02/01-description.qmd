@@ -39,6 +39,9 @@ format:
         css: style.css
         number-sections: true
         number-depth: 2
+        toc: true               # table of content
+        toc-location: left      # table of content on the left
+        toc-title: "Table of Content"   # table of content title
         colorlinks: true
 ---
 
@@ -54,7 +57,9 @@ Earth Tones: sienna, peru, chocolate, goldenrod.
 
 It is a shame that we have only one semester to learn so much new knowledge but we don't have a real opportunity to really develop a meaningful and serious project.
 
+:::{.callout-important}
 You might feel "What the heck! The assignment is so long." Trust me bro! [**The solution for this project is much much shorter than the description itself. It is also mostly based on what you have done in Assignment 01.**]{style="color:red"} The long description is to help you to understand the project better and deeper. A short description will leave you pretty confused.
+:::
 
 ## Reading this description
 
@@ -64,8 +69,8 @@ In order to understand the project better, the students are encouraged to read t
 2. Read the implementation using **scikit-learn** in Python. This will give you the idea about how to use the two regression models in Python and what are the expected results. The C++ implementation will mimic the [**Python implementation interface**]{style="color:royalblue"}, so it is important to understand the Python implementation first. The files `02-sklearn-implementation.html` (`.pdf`) are provided for this purpose.
 3. Read the mathematics behind the scene to understand the mathematical formulation of the two regression models and the gradient descent method. This will help you to understand how to implement the two regression models in C++. The files `03-maths.html` (`.pdf`) are provided for this purpose.
 4. Read the demonstration of logistic regression in Python. This will give you a concrete example of how to implement the logistic regression model from scratch in Python. You can use this code as a reference for your C++ implementation. The code is not optimized for performance, but it is written in a way that is easy to understand and follow. The files `04-log-reg-demonstrations.html` (`.pdf`) are provided for this purpose.
-5. Then, you should revisit the task description `01-description.qmd` to understand what you need to do for the assignment.
-
+5. Read the tutorial on how to build a header-only library to understand the concepts behind header-only library and to know how to implement the header-only library. The files `05-header-only-library.html` (`.pdf`) are provided for this purpose. 
+6. Then, you should revisit the task description `01-description.qmd` to understand what you need to do for the assignment.
 
 
 ## Ultimate goal
@@ -306,9 +311,9 @@ Please feel free to ask me via email or in person if you have any questions abou
 
 
 1. Basic tasks: 80/100
-  - Good OOP program design: 15/100
-  - Build two classes and test them correctly: 40/100
-  - Main program to apply the two built classes to two applications: 15/100
+   - Good OOP program design: 15/100
+   - Build two classes and test them correctly: 40/100
+   - Main program to apply the two built classes to two applications: 15/100
 2. Build the header-only library: 10/100
 3. Comments and documentation: 20/100
   

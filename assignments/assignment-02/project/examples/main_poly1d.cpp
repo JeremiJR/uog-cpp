@@ -1,6 +1,16 @@
+/*
+If you use this to compile, then you don't need
+g++ -I /path/to/include/ main_complex.cpp
+
+#include "../include/math/poly1d.hpp"          // Path relative to this file
+#include "../include/math/complex_number.hpp"  // Path relative to this file
+*/
+
+
+#include "math/poly1d.hpp"
+#include "math/complex_number.hpp"  // Then you need to specify g++ -I /path/to/include
 #include <iostream>
-#include "math/poly1d.hpp" // Path relative to this file
-#include "math/complex_number.hpp" // Path relative to this file
+
 int main() {
     math::Poly1D<double> p({1, -6, 11, -6}); // Represents x^3 - 6x^2 + 11x - 6
     std::cout << "Polynomial p: " << p << std::endl;
@@ -37,3 +47,11 @@ int main() {
     std::cout << "Complex Polynomial cp: " << cp << std::endl;
     return 0;
 }
+
+/* Compile this file by using the command line:
+
+(1) If your working directory is project/examples
+    g++ -I ../include/ main_poly1d.cpp -o poly.out
+(2) If your working directory is project
+    g++ -I ./include main_poly1.cpp -o poly.out
+*/

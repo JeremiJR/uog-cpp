@@ -2455,7 +2455,19 @@ Earth Tones: sienna, peru, chocolate, goldenrod.
 <section id="foreword" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Foreword</h1>
 <p>It is a shame that we have only one semester to learn so much new knowledge but we don’t have a real opportunity to really develop a meaningful and serious project.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>You might feel “What the heck! The assignment is so long.” Trust me bro! <span style="color:red"><strong>The solution for this project is much much shorter than the description itself. It is also mostly based on what you have done in Assignment 01.</strong></span> The long description is to help you to understand the project better and deeper. A short description will leave you pretty confused.</p>
+</div>
+</div>
 <section id="reading-this-description" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="reading-this-description"><span class="header-section-number">1.1</span> Reading this description</h2>
 <p>In order to understand the project better, the students are encouraged to read the description in the following order – the <code>pdf</code> and <code>html</code> files are equivalent, and provided for each step:</p>
@@ -2464,6 +2476,7 @@ Earth Tones: sienna, peru, chocolate, goldenrod.
 <li>Read the implementation using <strong>scikit-learn</strong> in Python. This will give you the idea about how to use the two regression models in Python and what are the expected results. The C++ implementation will mimic the <span style="color:royalblue"><strong>Python implementation interface</strong></span>, so it is important to understand the Python implementation first. The files <code>02-sklearn-implementation.html</code> (<code>.pdf</code>) are provided for this purpose.</li>
 <li>Read the mathematics behind the scene to understand the mathematical formulation of the two regression models and the gradient descent method. This will help you to understand how to implement the two regression models in C++. The files <code>03-maths.html</code> (<code>.pdf</code>) are provided for this purpose.</li>
 <li>Read the demonstration of logistic regression in Python. This will give you a concrete example of how to implement the logistic regression model from scratch in Python. You can use this code as a reference for your C++ implementation. The code is not optimized for performance, but it is written in a way that is easy to understand and follow. The files <code>04-log-reg-demonstrations.html</code> (<code>.pdf</code>) are provided for this purpose.</li>
+<li>Read the tutorial on how to build a header-only library to understand the concepts behind header-only library and to know how to implement the header-only library. The files <code>05-header-only-library.html</code> (<code>.pdf</code>) are provided for this purpose.</li>
 <li>Then, you should revisit the task description <code>01-description.qmd</code> to understand what you need to do for the assignment.</li>
 </ol>
 </section>
@@ -2544,7 +2557,7 @@ Earth Tones: sienna, peru, chocolate, goldenrod.
 <div class="cell-output cell-output-stdout">
 <pre><code>Number of samples = 1030</code></pre>
 </div>
-<div id="load-concrete-dataset" class="cell-output cell-output-display" data-execution_count="118">
+<div id="load-concrete-dataset" class="cell-output cell-output-display" data-execution_count="19">
 <div>
 
 
@@ -2796,14 +2809,12 @@ n_classes = 2</code></pre>
 <section id="marking-scheme" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Marking scheme</h1>
 <ol type="1">
-<li>Basic tasks: 80/100</li>
-</ol>
+<li><p>Basic tasks: 80/100</p>
 <ul>
 <li>Good OOP program design: 15/100</li>
 <li>Build two classes and test them correctly: 40/100</li>
 <li>Main program to apply the two built classes to two applications: 15/100</li>
-</ul>
-<ol start="2" type="1">
+</ul></li>
 <li><p>Build the header-only library: 10/100</p></li>
 <li><p>Comments and documentation: 20/100</p>
 <p>There will be no report for this assignment. You just need to write comments in your code to explain how you implement the code and how you read the <code>.csv</code> file. The comments should be clear and concise. The code should be well-organized and easy to read. The code should be well-documented with comments explaining the purpose of each function and class, as well as any important details about the implementation.</p></li>

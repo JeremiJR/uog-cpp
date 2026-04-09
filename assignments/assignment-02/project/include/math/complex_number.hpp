@@ -4,8 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <initializer_list>
+#include <cmath>
 
-namespace math 
+namespace math
 {
 
     class ComplexNumber {
@@ -111,6 +112,12 @@ namespace math
         return result;
     }
 
+    /**
+     * Compute the magnitude of a complex number
+     */
+    inline double compute_magnitude(const ComplexNumber& number) {
+        return std::sqrt(std::pow(number.real(), 2) + std::pow(number.imag(), 2));
+    }
 } // namespace numcpp
 
 #endif // COMPLEX_NUMBER_HPP
